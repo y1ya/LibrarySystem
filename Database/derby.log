@@ -33,3 +33,6 @@ Database Class Loader started - derby.database.classpath=''
 Sun Apr 30 21:07:07 CST 2023:
 Shutting down instance a65c80ac-0187-d242-46cb-0000520a0da8 on database directory C:\Users\xtian\OneDrive\Documents\NetBeansProjects\LibrarySystem\Database\librarian_queue with class loader sun.misc.Launcher$AppClassLoader@1d44bcfa 
 Sun Apr 30 21:07:07 CST 2023 Thread[DRDAConnThread_3,5,main] (DATABASE = librarian_queue), (DRDAID = {4}), Database 'librarian_queue' shutdown.
+----------------------------------------------------------------
+Sun Apr 30 21:10:18 CST 2023: Shutting down Derby engine
+----------------------------------------------------------------
