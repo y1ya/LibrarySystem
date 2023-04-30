@@ -31,6 +31,7 @@ public class MainWindow extends javax.swing.JFrame {
         jButton3 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setResizable(false);
 
         btnReader.setText("Reader");
         btnReader.addActionListener(new java.awt.event.ActionListener() {
