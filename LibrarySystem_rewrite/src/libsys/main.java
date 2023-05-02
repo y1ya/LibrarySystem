@@ -5,6 +5,7 @@ import java.sql.*;
 import java.util.logging.*;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import java.util.Random;
 
 
 public class main extends javax.swing.JFrame{
@@ -51,6 +52,14 @@ public class main extends javax.swing.JFrame{
             }
         }
     }
+    
+    public static String RandomNumberGenerator (){
+        Random random = new Random();
+        int randNum = random.nextInt(999) + 1; // generates a random integer between 1 and 100
+        System.out.println("Random number: " + randNum);
+        return String.valueOf(randNum);
+    }
+
 
     public static void main(String[] args) {
         new MainWindow().setVisible(true);    

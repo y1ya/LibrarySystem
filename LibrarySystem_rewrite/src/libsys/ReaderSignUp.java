@@ -137,12 +137,14 @@ public class ReaderSignUp extends main {
         n = new_Name.getText();
         u = new_User.getText();
         p = String.valueOf(new_Pass.getPassword());
+        String i = main.RandomNumberGenerator();
         
         try {
             rs.moveToInsertRow();
             rs.updateString("USERNAME", u);
             rs.updateString("PASSWORD", p);
             rs.updateString("NAME", n);
+            rs.updateString("USERID", i);
             rs.insertRow();
             Refresh_RS_STMT();
             
