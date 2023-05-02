@@ -16,13 +16,13 @@ public class ReaderSignIn extends main {
     private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
-        txt_username = new javax.swing.JTextField();
+        txtLogName = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
-        txt_password = new javax.swing.JPasswordField();
+        txtLogPass = new javax.swing.JPasswordField();
         jLabel3 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
-        btn_confirm = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
+        btnCreateAcc = new javax.swing.JButton();
+        btnConfirm = new javax.swing.JButton();
+        btnClear = new javax.swing.JButton();
         btnBack = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -33,21 +33,21 @@ public class ReaderSignIn extends main {
 
         jLabel3.setText("Not signed in?");
 
-        jButton1.setText("Create account");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        btnCreateAcc.setText("Create account");
+        btnCreateAcc.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                btnCreateAccActionPerformed(evt);
             }
         });
 
-        btn_confirm.setText("Confirm");
-        btn_confirm.addActionListener(new java.awt.event.ActionListener() {
+        btnConfirm.setText("Confirm");
+        btnConfirm.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn_confirmActionPerformed(evt);
+                btnConfirmActionPerformed(evt);
             }
         });
 
-        jButton3.setText("Clear");
+        btnClear.setText("Clear");
 
         btnBack.setText("Back");
         btnBack.addActionListener(new java.awt.event.ActionListener() {
@@ -69,19 +69,19 @@ public class ReaderSignIn extends main {
                             .addComponent(jLabel2))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(txt_username)
-                            .addComponent(txt_password, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(txtLogName)
+                            .addComponent(txtLogPass, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addGap(80, 80, 80)
-                        .addComponent(btn_confirm)
+                        .addComponent(btnConfirm)
                         .addGap(72, 72, 72)
-                        .addComponent(jButton3)))
+                        .addComponent(btnClear)))
                 .addContainerGap(47, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
                 .addGap(20, 20, 20)
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton1)
+                .addComponent(btnCreateAcc)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(btnBack)
                 .addGap(20, 20, 20))
@@ -92,19 +92,19 @@ public class ReaderSignIn extends main {
                 .addGap(73, 73, 73)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(txt_username, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtLogName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(24, 24, 24)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(txt_password, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtLogPass, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(33, 33, 33)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btn_confirm)
-                    .addComponent(jButton3))
+                    .addComponent(btnConfirm)
+                    .addComponent(btnClear))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 57, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
-                    .addComponent(jButton1)
+                    .addComponent(btnCreateAcc)
                     .addComponent(btnBack))
                 .addGap(21, 21, 21))
         );
@@ -112,19 +112,19 @@ public class ReaderSignIn extends main {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void btnCreateAccActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCreateAccActionPerformed
         this.setVisible(false);
         main.sendDisplaySignal(new ReaderSignUp()); // <--- It goes to
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_btnCreateAccActionPerformed
  
     private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed
         this.setVisible(false);
         main.sendDisplaySignal(new MainWindow()); // <--- It goes back to
     }//GEN-LAST:event_btnBackActionPerformed
     // Login verifier
-    private void btn_confirmActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_confirmActionPerformed
-        user = txt_username.getText();
-        pass = String.valueOf(txt_password.getPassword());
+    private void btnConfirmActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConfirmActionPerformed
+        user = txtLogName.getText();
+        pass = String.valueOf(txtLogPass.getPassword());
         
         try {
             rs = stmt.executeQuery("SELECT * FROM ACCOUNTS");
@@ -143,17 +143,17 @@ public class ReaderSignIn extends main {
         } catch (SQLException e) {
             System.out.println(e);
         }
-    }//GEN-LAST:event_btn_confirmActionPerformed
+    }//GEN-LAST:event_btnConfirmActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBack;
-    private javax.swing.JButton btn_confirm;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton3;
+    private javax.swing.JButton btnClear;
+    private javax.swing.JButton btnConfirm;
+    private javax.swing.JButton btnCreateAcc;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JPasswordField txt_password;
-    private javax.swing.JTextField txt_username;
+    private javax.swing.JTextField txtLogName;
+    private javax.swing.JPasswordField txtLogPass;
     // End of variables declaration//GEN-END:variables
 }

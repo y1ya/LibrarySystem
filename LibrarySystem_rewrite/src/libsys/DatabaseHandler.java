@@ -16,16 +16,15 @@ public class DatabaseHandler extends main {
     }
     
     public void Select() {
-        String[] columnNames = {"USERNAME", "PASSWORD", "NAME", "USERID", "USERTYPE"};
+        String[] columnNames = {"FULLNAME", "PASSWORD", "USERID", "USERTYPE"};
         tbModel.setColumnIdentifiers(columnNames);
         try {
             while(rs.next()) {
-                u = rs.getString("USERNAME");
+                n = rs.getString("FULLNAME");
                 p = rs.getString("PASSWORD");
-                n = rs.getString("NAME");
                 i = rs.getInt("USERID");
                 ut = rs.getString("USERTYPE");
-                tbModel.addRow(new Object[] {u, p, n, i, ut});
+                tbModel.addRow(new Object[] {n, p, i, ut});
                 x++;
             }
         } catch (SQLException err) {

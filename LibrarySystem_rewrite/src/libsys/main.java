@@ -19,7 +19,7 @@ public class main extends javax.swing.JFrame{
     // Connects to the first database
     public void mainConnect() {
         try {
-            String host = "jdbc:derby://localhost:1527/accounts1";
+            String host = "jdbc:derby://localhost:1527/accounts";
             String uName = "userdb";
             String uPass = "1234";
             

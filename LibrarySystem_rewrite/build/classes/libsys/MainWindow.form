@@ -27,8 +27,8 @@
               <EmptySpace min="-2" pref="147" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" max="-2" attributes="0">
                   <Component id="btnReader" max="32767" attributes="0"/>
-                  <Component id="jButton2" alignment="0" pref="99" max="32767" attributes="0"/>
-                  <Component id="jButton3" alignment="0" max="32767" attributes="0"/>
+                  <Component id="btnLibrarian" alignment="0" pref="99" max="32767" attributes="0"/>
+                  <Component id="btnAdmin" alignment="0" max="32767" attributes="0"/>
               </Group>
               <EmptySpace pref="154" max="32767" attributes="0"/>
           </Group>
@@ -40,9 +40,9 @@
               <EmptySpace min="-2" pref="74" max="-2" attributes="0"/>
               <Component id="btnReader" min="-2" max="-2" attributes="0"/>
               <EmptySpace min="-2" pref="31" max="-2" attributes="0"/>
-              <Component id="jButton2" min="-2" max="-2" attributes="0"/>
+              <Component id="btnLibrarian" min="-2" max="-2" attributes="0"/>
               <EmptySpace min="-2" pref="33" max="-2" attributes="0"/>
-              <Component id="jButton3" min="-2" max="-2" attributes="0"/>
+              <Component id="btnAdmin" min="-2" max="-2" attributes="0"/>
               <EmptySpace pref="93" max="32767" attributes="0"/>
           </Group>
       </Group>
@@ -57,12 +57,12 @@
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnReaderActionPerformed"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JButton" name="jButton2">
+    <Component class="javax.swing.JButton" name="btnLibrarian">
       <Properties>
         <Property name="text" type="java.lang.String" value="Librarian"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JButton" name="jButton3">
+    <Component class="javax.swing.JButton" name="btnAdmin">
       <Properties>
         <Property name="text" type="java.lang.String" value="Admin"/>
       </Properties>
