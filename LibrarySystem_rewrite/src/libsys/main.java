@@ -1,3 +1,4 @@
+
 package libsys;
 
 import java.sql.*;
@@ -12,18 +13,18 @@ public class main extends javax.swing.JFrame{
     ResultSet rs;
     DefaultTableModel LoginModel = new DefaultTableModel();
     int newUserID, txt_userid, i;
-    String newPass, txt_user,txt_pass, user, pass, u, p, n, ut, temp_user, temp_pass;
+    String newPass, txt_pass, user, pass, u, p, n, ut, temp_user, temp_pass;
     
     public void mainConnect() {
         try {
-            String host = "jdbc:derby://localhost:1527/Accounts";
-            String uName = "mort";
+            String host = "jdbc:derby://localhost:1527/accounts1";
+            String uName = "userdb";
             String uPass = "1234";
             
             con = DriverManager.getConnection(host, uName, uPass);
             stmt = con.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, 
                     ResultSet.CONCUR_UPDATABLE);
-            String sql = "SELECT * FROM MORT.UNTITLED";
+            String sql = "SELECT * FROM USERDB.ACCOUNTS";
             rs = stmt.executeQuery(sql);
         } catch (SQLException err){
             JOptionPane.showMessageDialog(main.this, err.getMessage());
@@ -33,10 +34,9 @@ public class main extends javax.swing.JFrame{
     public void Refresh_RS_STMT() {
         try {
             stmt.close();
-            
             stmt = con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, 
                     ResultSet.CONCUR_UPDATABLE);
-            String sql = "SELECT * FROM MORT.UNTITLED";
+            String sql = "SELECT * FROM USERDB.ACCOUNTS";
             rs = stmt.executeQuery(sql);
         } catch (SQLException ex) {
             Logger.getLogger(main.class.getName()).log(Level.SEVERE, null, ex);
@@ -53,8 +53,6 @@ public class main extends javax.swing.JFrame{
     }
 
     public static void main(String[] args) {
-        
-        new MainWindow().setVisible(true);
-        
+        new MainWindow().setVisible(true);    
     }
 }
