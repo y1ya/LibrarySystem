@@ -15,6 +15,7 @@ public class DatabaseHandler extends main {
         Select();
     }
     
+    // The construction of how the "show table" is displayed
     public void Select() {
         String[] columnNames = {"FULLNAME", "PASSWORD", "USERID", "USERTYPE"};
         tbModel.setColumnIdentifiers(columnNames);

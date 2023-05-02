@@ -125,7 +125,7 @@ public class ReaderSignUp extends main {
 
     private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed
         this.setVisible(false);
-        main.sendDisplaySignal(new ReaderSignIn());
+        main.sendDisplaySignal(new ReaderSignIn()); // <--- It goes to
     }//GEN-LAST:event_btnBackActionPerformed
     // Places the registered account to the database
     private void btnConfirmActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConfirmActionPerformed
