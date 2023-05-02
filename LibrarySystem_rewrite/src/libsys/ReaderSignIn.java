@@ -4,17 +4,17 @@
  */
 package libsys;
 
-/**
- *
- * @author clezentine
- */
-public class ReaderSignIn extends javax.swing.JFrame {
+import java.sql.*;
+import javax.swing.JOptionPane;
+
+public class ReaderSignIn extends main {
 
     /**
      * Creates new form ReaderRegist
      */
     public ReaderSignIn() {
         initComponents();
+        mainConnect();
     }
 
     /**
@@ -27,9 +27,9 @@ public class ReaderSignIn extends javax.swing.JFrame {
     private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
-        txt_username = new javax.swing.JTextField();
+        txt_user = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
-        txt_password = new javax.swing.JPasswordField();
+        txt_pass = new javax.swing.JPasswordField();
         jLabel3 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
         btn_confirm = new javax.swing.JButton();
@@ -53,6 +53,11 @@ public class ReaderSignIn extends javax.swing.JFrame {
         });
 
         btn_confirm.setText("Confirm");
+        btn_confirm.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_confirmActionPerformed(evt);
+            }
+        });
 
         jButton3.setText("Clear");
 
@@ -76,8 +81,8 @@ public class ReaderSignIn extends javax.swing.JFrame {
                             .addComponent(jLabel2))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(txt_username)
-                            .addComponent(txt_password, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(txt_user)
+                            .addComponent(txt_pass, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addGap(80, 80, 80)
                         .addComponent(btn_confirm)
@@ -99,11 +104,11 @@ public class ReaderSignIn extends javax.swing.JFrame {
                 .addGap(73, 73, 73)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(txt_username, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txt_user, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(24, 24, 24)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(txt_password, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txt_pass, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(33, 33, 33)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btn_confirm)
@@ -129,6 +134,30 @@ public class ReaderSignIn extends javax.swing.JFrame {
         main.sendDisplaySignal(new MainWindow());
     }//GEN-LAST:event_btnBackActionPerformed
 
+    private void btn_confirmActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_confirmActionPerformed
+        // TODO add your handling code here:
+        user = txt_user.getText();
+        pass = String.valueOf(txt_pass.getPassword());
+        
+        try {
+            rs = stmt.executeQuery("SELECT * FROM ACCOUNT");
+            while (rs.next()) {
+                p = rs.getString("PASSWORD");
+                u = rs.getString("USERNAME");
+                if (user == u) {
+                    if (pass.equals(p)) {
+                        temp_user = user;
+                        temp_pass = pass;
+                        // need the interface of the homepage after logging in
+                        // not finish
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+    }//GEN-LAST:event_btn_confirmActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBack;
@@ -138,7 +167,7 @@ public class ReaderSignIn extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JPasswordField txt_password;
-    private javax.swing.JTextField txt_username;
+    private javax.swing.JPasswordField txt_pass;
+    private javax.swing.JTextField txt_user;
     // End of variables declaration//GEN-END:variables
 }

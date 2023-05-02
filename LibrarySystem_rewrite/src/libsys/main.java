@@ -1,14 +1,47 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- */
-
 package libsys;
 
-import javax.swing.JFrame;
+import java.sql.*;
+import java.util.logging.*;
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 
 
-public class main {
+public class main extends javax.swing.JFrame{
+    Connection con;
+    Statement stmt;
+    ResultSet rs;
+    DefaultTableModel LoginModel = new DefaultTableModel();
+    int newUserID, txt_userid, i;
+    String newPass, txt_user,txt_pass, user, pass, u, p, n, ut, temp_user, temp_pass;
     
+    public void mainConnect() {
+        try {
+            String host = "jdbc:derby://localhost:1527/Accounts";
+            String uName = "mort";
+            String uPass = "1234";
+            
+            con = DriverManager.getConnection(host, uName, uPass);
+            stmt = con.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, 
+                    ResultSet.CONCUR_UPDATABLE);
+            String sql = "SELECT * FROM MORT.UNTITLED";
+            rs = stmt.executeQuery(sql);
+        } catch (SQLException err){
+            JOptionPane.showMessageDialog(main.this, err.getMessage());
+        }
+    }
+    
+    public void Refresh_RS_STMT() {
+        try {
+            stmt.close();
+            
+            stmt = con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, 
+                    ResultSet.CONCUR_UPDATABLE);
+            String sql = "SELECT * FROM MORT.UNTITLED";
+            rs = stmt.executeQuery(sql);
+        } catch (SQLException ex) {
+            Logger.getLogger(main.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
     public static void sendDisplaySignal(JFrame sig)
     {
         JFrame[] jframe = {new MainWindow(), new ReaderSignIn(), new ReaderSignUp()};

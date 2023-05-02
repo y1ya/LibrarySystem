@@ -5,15 +5,15 @@
 
 package libsys;
 
-/**
- *
- * @author clezentine
- */
-public class ReaderSignUp extends javax.swing.JFrame {
+import java.sql.*;
+import javax.swing.JOptionPane;
+
+public class ReaderSignUp extends main {
 
     /** Creates new form ReaderSignUp */
     public ReaderSignUp() {
         initComponents();
+        mainConnect();
     }
 
     /** This method is called from within the constructor to
@@ -28,8 +28,8 @@ public class ReaderSignUp extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jPasswordField1 = new javax.swing.JPasswordField();
+        txt_username = new javax.swing.JTextField();
+        txt_password = new javax.swing.JPasswordField();
         jPasswordField2 = new javax.swing.JPasswordField();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
@@ -45,6 +45,11 @@ public class ReaderSignUp extends javax.swing.JFrame {
         jLabel3.setText("Confirm Password:");
 
         jButton1.setText("Confirm");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jButton2.setText("Clear");
 
@@ -69,9 +74,9 @@ public class ReaderSignUp extends javax.swing.JFrame {
                             .addComponent(jLabel3))
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jTextField1)
+                            .addComponent(txt_username)
                             .addComponent(jPasswordField2, javax.swing.GroupLayout.DEFAULT_SIZE, 180, Short.MAX_VALUE)
-                            .addComponent(jPasswordField1)))
+                            .addComponent(txt_password)))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(82, 82, 82)
                         .addComponent(jButton1)
@@ -89,11 +94,11 @@ public class ReaderSignUp extends javax.swing.JFrame {
                 .addGap(41, 41, 41)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txt_username, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(jPasswordField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txt_password, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
@@ -115,6 +120,26 @@ public class ReaderSignUp extends javax.swing.JFrame {
         main.sendDisplaySignal(new ReaderSignIn());
     }//GEN-LAST:event_btnBackActionPerformed
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        u = txt_username.getText();
+        p = String.valueOf(txt_password.getPassword());
+        
+        try {
+            rs.moveToInsertRow();
+            rs.updateString("USERNAME", u);
+            rs.updateString("PASSWORD", p);
+            rs.updateString("NAME", n);
+            rs.insertRow();
+            Refresh_RS_STMT();
+            
+            JOptionPane.showMessageDialog(ReaderSignUp.this, "Registration Complete!");
+        } catch (SQLException err) {
+            System.out.println(err.getMessage());
+        }
+    
+    }//GEN-LAST:event_jButton1ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBack;
@@ -123,9 +148,9 @@ public class ReaderSignUp extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JPasswordField jPasswordField1;
     private javax.swing.JPasswordField jPasswordField2;
-    private javax.swing.JTextField jTextField1;
+    private javax.swing.JPasswordField txt_password;
+    private javax.swing.JTextField txt_username;
     // End of variables declaration//GEN-END:variables
 
 }
