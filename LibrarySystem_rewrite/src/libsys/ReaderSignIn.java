@@ -114,14 +114,14 @@ public class ReaderSignIn extends main {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         this.setVisible(false);
-        main.sendDisplaySignal(new ReaderSignUp());
+        main.sendDisplaySignal(new ReaderSignUp()); // <--- It goes to
     }//GEN-LAST:event_jButton1ActionPerformed
-
+ 
     private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed
         this.setVisible(false);
-        main.sendDisplaySignal(new MainWindow());
+        main.sendDisplaySignal(new MainWindow()); // <--- It goes back to
     }//GEN-LAST:event_btnBackActionPerformed
-
+    // Login verifier
     private void btn_confirmActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_confirmActionPerformed
         user = txt_username.getText();
         pass = String.valueOf(txt_password.getPassword());

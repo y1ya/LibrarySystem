@@ -131,13 +131,13 @@ public class ReaderSignUp extends main {
         this.setVisible(false);
         main.sendDisplaySignal(new ReaderSignIn());
     }//GEN-LAST:event_btnBackActionPerformed
-
+    // Places the registered account to the database
     private void btn_confirmActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_confirmActionPerformed
 
         n = new_Name.getText();
         u = new_User.getText();
         p = String.valueOf(new_Pass.getPassword());
-        String i = main.RandomNumberGenerator();
+        String i = main.randNumGen();
         
         try {
             rs.moveToInsertRow();
@@ -153,7 +153,8 @@ public class ReaderSignUp extends main {
             System.out.println(err.getMessage());
         }
     }//GEN-LAST:event_btn_confirmActionPerformed
-
+    
+    // Shows the table
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
 
         try {

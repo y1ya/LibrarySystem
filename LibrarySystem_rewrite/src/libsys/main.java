@@ -16,6 +16,7 @@ public class main extends javax.swing.JFrame{
     int newUserID, txt_userid, i;
     String newPass, txt_pass, user, pass, u, p, n, ut, temp_user, temp_pass;
     
+    // Connects to the first database
     public void mainConnect() {
         try {
             String host = "jdbc:derby://localhost:1527/accounts1";
@@ -32,6 +33,7 @@ public class main extends javax.swing.JFrame{
         }
     }
     
+    // Refreshes the database
     public void Refresh_RS_STMT() {
         try {
             stmt.close();
@@ -43,6 +45,9 @@ public class main extends javax.swing.JFrame{
             Logger.getLogger(main.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    
+    // Gets called in every end of a JFrame so everything goes through the main
+    // rather than being thrown from JFrame to JFrame
     public static void sendDisplaySignal(JFrame sig)
     {
         JFrame[] jframe = {new MainWindow(), new ReaderSignIn(), new ReaderSignUp()};
@@ -53,14 +58,15 @@ public class main extends javax.swing.JFrame{
         }
     }
     
-    public static String RandomNumberGenerator (){
+    // When called, it provides a random number for the unique USERID
+    public static String randNumGen(){
         Random random = new Random();
         int randNum = random.nextInt(999) + 1; // generates a random integer between 1 and 100
         System.out.println("Random number: " + randNum);
         return String.valueOf(randNum);
     }
-
-
+    
+    // The first statement/s to be called
     public static void main(String[] args) {
         new MainWindow().setVisible(true);    
     }
