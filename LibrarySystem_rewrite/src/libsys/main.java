@@ -5,6 +5,10 @@ import java.util.logging.*;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.util.Random;
+import java.awt.Dimension;
+import java.awt.Toolkit;
+import javax.swing.JFrame;
+
 
 
 public class main extends javax.swing.JFrame{
@@ -87,6 +91,8 @@ public class main extends javax.swing.JFrame{
         JFrame[] jframe = {new MainWindow(), new AdminSignIn(), new ReaderSignIn(), new ReaderSignUp()};
         for (JFrame jframe1 : jframe) {
             if (jframe1.getClass().equals(sig.getClass())) {
+                Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();  // adapt to machinee's screen size
+                jframe1.setSize(screenSize.width, screenSize.height); // set size to screen size
                 jframe1.setVisible(true);
             }
         }
@@ -114,6 +120,6 @@ public class main extends javax.swing.JFrame{
     
     // The first statement/s to be called
     public static void main(String[] args) {
-        new MainWindow().setVisible(true);    
+        sendDisplaySignal(new MainWindow());
     }
 }
