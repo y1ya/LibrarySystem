@@ -144,6 +144,7 @@ public class ReaderSignUp extends main {
         n = txtNewName.getText();
         p = String.valueOf(txtNewPass.getPassword());
         cp = String.valueOf(txtNewPassConf.getPassword());
+        ut = "READER";
         int i = randNumGen();
         
         try {
