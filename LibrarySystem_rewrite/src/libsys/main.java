@@ -1,4 +1,3 @@
-
 package libsys;
 
 import java.sql.*;
@@ -14,7 +13,7 @@ public class main extends javax.swing.JFrame{
     Statement stmt;
     ResultSet rs;
     DefaultTableModel LoginModel = new DefaultTableModel();
-    int newUserID, txt_userid, i;
+    int i;
     String newPass, newUser, txt_pass, user, pass, cp, u, p, n, ut, temp_user, temp_pass;
     
     // Connects to the accounts database
@@ -94,11 +93,23 @@ public class main extends javax.swing.JFrame{
     }
     
     // When called, it provides a random number for the unique USERID of databases
-    public static String randNumGen(){
+    public int randNumGen(){
         Random random = new Random();
-        int randNum = random.nextInt(999) + 1; // generates a random integer between 1 and 100
-        System.out.println("Random number: " + randNum);
-        return String.valueOf(randNum);
+        int randNum = random.nextInt(9999); // generates a random integer between 1 and 99999 which is the limit
+
+        try {
+            stmt = con.createStatement();
+            rs = stmt.executeQuery("SELECT USERID FROM ACCOUNTS WHERE USERID=" + randNum);
+            // check if the generated random number recursively if it already exists in the database
+            while (rs.next()) {
+                randNum = random.nextInt(9999);
+                rs = stmt.executeQuery("SELECT USERID FROM ACCOUNTS WHERE USERID=" + randNum);
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+
+        return randNum;
     }
     
     // The first statement/s to be called

@@ -144,14 +144,18 @@ public class ReaderSignUp extends main {
         n = txtNewName.getText();
         p = String.valueOf(txtNewPass.getPassword());
         cp = String.valueOf(txtNewPassConf.getPassword());
-        String i = main.randNumGen();
+        int i = randNumGen();
         
         try {
+            stmt = con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+            rs = stmt.executeQuery("SELECT * FROM ACCOUNTS");
+            
             if (p.equals(cp)) {
                 rs.moveToInsertRow();
                 rs.updateString("PASSWORD", p);
                 rs.updateString("FULLNAME", n);
-                rs.updateString("USERID", i);
+                rs.updateInt("USERID", i);
+                rs.updateString("USERTYPE", ut);
                 rs.insertRow();
                 Refresh_RS_STMT();
                 
