@@ -22,7 +22,7 @@ public class main extends javax.swing.JFrame{
         try {
             String host = "jdbc:derby://localhost:1527/accounts";
             String uName = "userdb";
-            String uPass = "1234";
+            String uPass = "0000";
             
             con = DriverManager.getConnection(host, uName, uPass);
             stmt = con.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, 
