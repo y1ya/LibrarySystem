@@ -7,6 +7,8 @@ public class ReaderSignUp extends main {
     public ReaderSignUp() {
         initComponents();
         mainConnect();
+        
+        lblPassNotAligned.setVisible(false);
     }
     
     @SuppressWarnings("unchecked")
@@ -23,6 +25,7 @@ public class ReaderSignUp extends main {
         jLabel4 = new javax.swing.JLabel();
         txtNewName = new javax.swing.JTextField();
         btnShowTable = new javax.swing.JButton();
+        lblPassNotAligned = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -60,6 +63,10 @@ public class ReaderSignUp extends main {
             }
         });
 
+        lblPassNotAligned.setFont(new java.awt.Font("Tahoma", 2, 10)); // NOI18N
+        lblPassNotAligned.setForeground(new java.awt.Color(255, 51, 51));
+        lblPassNotAligned.setText("Password not Alligned");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -81,17 +88,19 @@ public class ReaderSignUp extends main {
                         .addGap(42, 42, 42)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel3)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(txtNewPassConf, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.TRAILING))
                                 .addGap(18, 18, 18)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addComponent(txtNewPass, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(txtNewName, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE))))))
+                                    .addComponent(txtNewName, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel3)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(lblPassNotAligned)
+                                    .addComponent(txtNewPassConf, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE))))))
                 .addContainerGap(44, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -105,7 +114,9 @@ public class ReaderSignUp extends main {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(txtNewPass, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(23, 23, 23)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lblPassNotAligned)
+                .addGap(4, 4, 4)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
                     .addComponent(txtNewPassConf, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -132,20 +143,25 @@ public class ReaderSignUp extends main {
 
         n = txtNewName.getText();
         p = String.valueOf(txtNewPass.getPassword());
+        cp = String.valueOf(txtNewPassConf.getPassword());
         String i = main.randNumGen();
         
         try {
-            rs.moveToInsertRow();
-            rs.updateString("PASSWORD", p);
-            rs.updateString("FULLNAME", n);
-            rs.updateString("USERID", i);
-            rs.insertRow();
-            Refresh_RS_STMT();
-            
-            JOptionPane.showMessageDialog(ReaderSignUp.this, "Registration Complete!");
+            if (p.equals(cp)) {
+                rs.moveToInsertRow();
+                rs.updateString("PASSWORD", p);
+                rs.updateString("FULLNAME", n);
+                rs.updateString("USERID", i);
+                rs.insertRow();
+                Refresh_RS_STMT();
+                
+                JOptionPane.showMessageDialog(ReaderSignUp.this, "Registration Complete!");
+            } else {
+                lblPassNotAligned.setVisible(true);
+            }
         } catch (SQLException err) {
             System.out.println(err.getMessage());
-        }
+        }        
     }//GEN-LAST:event_btnConfirmActionPerformed
     
     // Shows the table [TEMP]
@@ -162,7 +178,9 @@ public class ReaderSignUp extends main {
     }//GEN-LAST:event_btnShowTableActionPerformed
 
     private void btnClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearActionPerformed
-        // TODO add your handling code here:
+        txtNewPassConf.setText(null);
+        txtNewPass.setText(null);
+        txtNewName.setText(null);
     }//GEN-LAST:event_btnClearActionPerformed
 
 
@@ -174,6 +192,7 @@ public class ReaderSignUp extends main {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel lblPassNotAligned;
     private javax.swing.JTextField txtNewName;
     private javax.swing.JPasswordField txtNewPass;
     private javax.swing.JPasswordField txtNewPassConf;

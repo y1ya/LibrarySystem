@@ -27,6 +27,11 @@ public class MainWindow extends javax.swing.JFrame {
         btnLibrarian.setText("Librarian");
 
         btnAdmin.setText("Admin");
+        btnAdmin.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAdminActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -59,6 +64,11 @@ public class MainWindow extends javax.swing.JFrame {
         this.setVisible(false);
         main.sendDisplaySignal(new ReaderSignIn()); // <--- It goes to
     }//GEN-LAST:event_btnReaderActionPerformed
+
+    private void btnAdminActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdminActionPerformed
+        this.setVisible(false);
+        main.sendDisplaySignal(new AdminSignIn()); // <--- It goes to
+    }//GEN-LAST:event_btnAdminActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAdmin;

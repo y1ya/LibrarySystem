@@ -9,12 +9,13 @@ import java.util.Random;
 
 
 public class main extends javax.swing.JFrame{
+    // nsme variables and their purposes [TO-DO]
     Connection con;
     Statement stmt;
     ResultSet rs;
     DefaultTableModel LoginModel = new DefaultTableModel();
     int newUserID, txt_userid, i;
-    String newPass, txt_pass, user, pass, u, p, n, ut, temp_user, temp_pass;
+    String newPass, newUser, txt_pass, user, pass, cp, u, p, n, ut, temp_user, temp_pass;
     
     // Connects to the first database
     public void mainConnect() {
@@ -50,7 +51,7 @@ public class main extends javax.swing.JFrame{
     // rather than being thrown from JFrame to JFrame
     public static void sendDisplaySignal(JFrame sig)
     {
-        JFrame[] jframe = {new MainWindow(), new ReaderSignIn(), new ReaderSignUp()};
+        JFrame[] jframe = {new MainWindow(), new AdminSignIn(), new ReaderSignIn(), new ReaderSignUp()};
         for (JFrame jframe1 : jframe) {
             if (jframe1.getClass().equals(sig.getClass())) {
                 jframe1.setVisible(true);
