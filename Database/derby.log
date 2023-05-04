@@ -402,3 +402,20 @@ os.arch=amd64
 os.version=10.0
 derby.system.home=C:\Users\vboxuser\Documents\GitHub\LibrarySystem\Database
 Database Class Loader started - derby.database.classpath=''
+----------------------------------------------------------------
+Fri May 05 01:42:33 SGT 2023:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.11.1.2 - (1629631): instance 19e1419a-0187-e7ca-a38d-000058e8afff 
+on database directory C:\Users\vboxuser\Documents\GitHub\LibrarySystem\Database\librarianqueue with class loader sun.misc.Launcher$AppClassLoader@1d44bcfa 
+Loaded from file:/C:/Program%20Files/Java/jdk1.8.0_141/db/lib/derby.jar
+java.vendor=Oracle Corporation
+java.runtime.version=1.8.0_141-b15
+user.dir=C:\Program Files\Java\jdk1.8.0_141\db
+os.name=Windows 10
+os.arch=amd64
+os.version=10.0
+derby.system.home=C:\Users\vboxuser\Documents\GitHub\LibrarySystem\Database
+Database Class Loader started - derby.database.classpath=''
+----------------------------------------------------------------
+Fri May 05 01:42:33 SGT 2023:
+Shutting down instance 19e1419a-0187-e7ca-a38d-000058e8afff on database directory C:\Users\vboxuser\Documents\GitHub\LibrarySystem\Database\librarianqueue with class loader sun.misc.Launcher$AppClassLoader@1d44bcfa 
+Fri May 05 01:42:33 SGT 2023 Thread[DRDAConnThread_9,5,main] (DATABASE = librarianqueue), (DRDAID = {33}), Database 'librarianqueue' shutdown.

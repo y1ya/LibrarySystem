@@ -17,8 +17,8 @@ public class main extends javax.swing.JFrame{
     int newUserID, txt_userid, i;
     String newPass, newUser, txt_pass, user, pass, cp, u, p, n, ut, temp_user, temp_pass;
     
-    // Connects to the first database
-    public void mainConnect() {
+    // Connects to the accounts database
+    public void accountsConnect() {
         try {
             String host = "jdbc:derby://localhost:1527/accounts";
             String uName = "userdb";
@@ -28,6 +28,40 @@ public class main extends javax.swing.JFrame{
             stmt = con.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, 
                     ResultSet.CONCUR_UPDATABLE);
             String sql = "SELECT * FROM USERDB.ACCOUNTS";
+            rs = stmt.executeQuery(sql);
+        } catch (SQLException err){
+            JOptionPane.showMessageDialog(main.this, err.getMessage());
+        }
+    }
+   
+    // Connects to the books database
+    public void booksConnect() {
+        try {
+            String host = "jdbc:derby://localhost:1527/books";
+            String uName = "userdb";
+            String uPass = "0000";
+            
+            con = DriverManager.getConnection(host, uName, uPass);
+            stmt = con.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, 
+                    ResultSet.CONCUR_UPDATABLE);
+            String sql = "SELECT * FROM USERDB.BOOKS";
+            rs = stmt.executeQuery(sql);
+        } catch (SQLException err){
+            JOptionPane.showMessageDialog(main.this, err.getMessage());
+        }
+    }
+    
+        // Connects to the books database
+    public void librarianqueueConnect() {
+        try {
+            String host = "jdbc:derby://localhost:1527/librarianqueue";
+            String uName = "userdb";
+            String uPass = "0000";
+            
+            con = DriverManager.getConnection(host, uName, uPass);
+            stmt = con.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, 
+                    ResultSet.CONCUR_UPDATABLE);
+            String sql = "SELECT * FROM USERDB.BOOKS";
             rs = stmt.executeQuery(sql);
         } catch (SQLException err){
             JOptionPane.showMessageDialog(main.this, err.getMessage());
@@ -59,7 +93,7 @@ public class main extends javax.swing.JFrame{
         }
     }
     
-    // When called, it provides a random number for the unique USERID
+    // When called, it provides a random number for the unique USERID of databases
     public static String randNumGen(){
         Random random = new Random();
         int randNum = random.nextInt(999) + 1; // generates a random integer between 1 and 100

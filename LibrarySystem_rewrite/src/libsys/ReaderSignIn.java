@@ -8,7 +8,7 @@ public class ReaderSignIn extends main {
 
     public ReaderSignIn() {
         initComponents();
-        mainConnect();
+        accountsConnect();
     }
     
     @SuppressWarnings("unchecked")

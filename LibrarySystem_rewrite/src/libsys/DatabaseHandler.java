@@ -11,7 +11,7 @@ public class DatabaseHandler extends main {
     
     public DatabaseHandler() {
         initComponents();
-        mainConnect();
+        accountsConnect();
         Select();
     }
     

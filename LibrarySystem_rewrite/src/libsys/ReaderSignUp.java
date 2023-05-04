@@ -6,7 +6,7 @@ import javax.swing.*;
 public class ReaderSignUp extends main {
     public ReaderSignUp() {
         initComponents();
-        mainConnect();
+        accountsConnect();
         
         lblPassNotAligned.setVisible(false);
     }
