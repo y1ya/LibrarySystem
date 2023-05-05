@@ -22,6 +22,8 @@ public class main extends javax.swing.JFrame {
     int id;
     // variables for books databases
     String t;
+    
+    public static String uniFullName;
 
     // Connects to the reffered database
     public void databaseConnect(String dbName) {
@@ -58,7 +60,7 @@ public class main extends javax.swing.JFrame {
     public static void sendDisplaySignal(JFrame sig) {
         JFrame[] jframe = {
             new MainWindow(), new AdminSignIn(), new ReaderSignIn(),
-            new ReaderSignUp(), new SearchEngine("uuu")
+            new ReaderSignUp(), new SearchEngine(uniFullName)
         };
         for (JFrame jframe1 : jframe) {
             if (jframe1.getClass().equals(sig.getClass())) {

@@ -11,7 +11,6 @@ import java.util.List;
 import javax.swing.JLabel;
 
 public class SearchEngine extends main {
-    public String uniFullName;
             
     public SearchEngine(String uniFullName) {
         initComponents();

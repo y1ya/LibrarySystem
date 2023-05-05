@@ -142,7 +142,7 @@ public class ReaderSignIn extends main {
         main.sendDisplaySignal(new MainWindow()); // <--- It goes back to
     }//GEN-LAST:event_btnBackActionPerformed
     
-// Login verifier
+    // Sign in verifier
     private void btnConfirmActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConfirmActionPerformed
         databaseConnect("accounts");
         siFullName = txtLogName.getText();
