@@ -11,11 +11,12 @@ public class DatabaseHandler extends main {
     
     public DatabaseHandler() {
         initComponents();
-        accountsConnect();
         Select();
     }
     
     // The construction of how the "show table" is displayed
+    // [POSSIBLE BUG]
+    // This connection depends on the last reference object of databaseConnect()
     public void Select() {
         String[] columnNames = {"FULLNAME", "PASSWORD", "USERID", "USERTYPE"};
         tbModel.setColumnIdentifiers(columnNames);

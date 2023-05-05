@@ -8,7 +8,6 @@ public class ReaderSignIn extends main {
 
     public ReaderSignIn() {
         initComponents();
-        accountsConnect();
     }
     
     @SuppressWarnings("unchecked")
@@ -144,6 +143,7 @@ public class ReaderSignIn extends main {
     }//GEN-LAST:event_btnBackActionPerformed
     // Login verifier
     private void btnConfirmActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConfirmActionPerformed
+        databaseConnect("accounts");
         user = txtLogName.getText();
         pass = String.valueOf(txtLogPass.getPassword());
         
@@ -172,9 +172,10 @@ public class ReaderSignIn extends main {
 
         if (matchAcc && matchPass)
         {
-            temp_user = newUser;
-            temp_pass = newPass;
+            tempUser = newUser;
+            tempPass = newPass;
             JOptionPane.showMessageDialog(null, "Successfully Logged in!");
+            // ESTABLISH THE CONNECTION TO THE BOOKS DATABASE
         }
         else if (matchAcc && !matchPass)
         {

@@ -70,7 +70,6 @@
                           <Component id="btnConfirm" min="-2" max="-2" attributes="0"/>
                           <EmptySpace min="-2" pref="72" max="-2" attributes="0"/>
                           <Component id="btnClear" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace min="92" pref="92" max="-2" attributes="0"/>
                       </Group>
                   </Group>
                   <EmptySpace pref="510" max="32767" attributes="0"/>

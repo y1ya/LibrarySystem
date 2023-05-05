@@ -12,59 +12,29 @@ import javax.swing.JFrame;
 
 
 public class main extends javax.swing.JFrame{
-    // nsme variables and their purposes [TO-DO]
+    // init connection to databases
     Connection con;
     Statement stmt;
     ResultSet rs;
+    // displaying the database table
     DefaultTableModel LoginModel = new DefaultTableModel();
+    // variables for accounts database
+    String newPass, newUser, tempUser, tempPass, txtPass, user, pass, cp, u, p, n, ut;
     int i;
-    String newPass, newUser, txt_pass, user, pass, cp, u, p, n, ut, temp_user, temp_pass;
+    // variables for books databases
+    String t;
     
     // Connects to the accounts database
-    public void accountsConnect() {
+    public void databaseConnect(String dbName) {
         try {
-            String host = "jdbc:derby://localhost:1527/accounts";
+            String host = "jdbc:derby://localhost:1527/" + dbName;
             String uName = "userdb";
             String uPass = "0000";
             
             con = DriverManager.getConnection(host, uName, uPass);
             stmt = con.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, 
                     ResultSet.CONCUR_UPDATABLE);
-            String sql = "SELECT * FROM USERDB.ACCOUNTS";
-            rs = stmt.executeQuery(sql);
-        } catch (SQLException err){
-            JOptionPane.showMessageDialog(main.this, err.getMessage());
-        }
-    }
-   
-    // Connects to the books database
-    public void booksConnect() {
-        try {
-            String host = "jdbc:derby://localhost:1527/books";
-            String uName = "userdb";
-            String uPass = "0000";
-            
-            con = DriverManager.getConnection(host, uName, uPass);
-            stmt = con.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, 
-                    ResultSet.CONCUR_UPDATABLE);
-            String sql = "SELECT * FROM USERDB.BOOKS";
-            rs = stmt.executeQuery(sql);
-        } catch (SQLException err){
-            JOptionPane.showMessageDialog(main.this, err.getMessage());
-        }
-    }
-    
-        // Connects to the books database
-    public void librarianqueueConnect() {
-        try {
-            String host = "jdbc:derby://localhost:1527/librarianqueue";
-            String uName = "userdb";
-            String uPass = "0000";
-            
-            con = DriverManager.getConnection(host, uName, uPass);
-            stmt = con.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, 
-                    ResultSet.CONCUR_UPDATABLE);
-            String sql = "SELECT * FROM USERDB.BOOKS";
+            String sql = "SELECT * FROM USERDB." + dbName.toUpperCase();
             rs = stmt.executeQuery(sql);
         } catch (SQLException err){
             JOptionPane.showMessageDialog(main.this, err.getMessage());
@@ -88,7 +58,10 @@ public class main extends javax.swing.JFrame{
     // rather than being thrown from JFrame to JFrame
     public static void sendDisplaySignal(JFrame sig)
     {
-        JFrame[] jframe = {new MainWindow(), new AdminSignIn(), new ReaderSignIn(), new ReaderSignUp()};
+        JFrame[] jframe = {
+            new MainWindow(), new AdminSignIn(), new ReaderSignIn(), 
+            new ReaderSignUp(), new SearchEngine()
+        };
         for (JFrame jframe1 : jframe) {
             if (jframe1.getClass().equals(sig.getClass())) {
                 Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();  // adapt to machinee's screen size
@@ -98,7 +71,7 @@ public class main extends javax.swing.JFrame{
         }
     }
     
-    // When called, it provides a random number for the unique USERID of databases
+    // When called, it provides a random number for the unique ID of databases
     public int randNumGen(){
         Random random = new Random();
         int randNum = random.nextInt(9999); // generates a random integer between 1 and 99999 which is the limit
@@ -116,6 +89,14 @@ public class main extends javax.swing.JFrame{
         }
 
         return randNum;
+    }
+    
+    public void regComplete()
+    {
+        databaseConnect("books");
+        SearchEngine searchEngine = new SearchEngine();
+        searchEngine.initialSearch();
+        sendDisplaySignal(new SearchEngine());
     }
     
     // The first statement/s to be called

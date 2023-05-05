@@ -6,8 +6,7 @@ import javax.swing.*;
 public class ReaderSignUp extends main {
     public ReaderSignUp() {
         initComponents();
-        accountsConnect();
-        
+      
         lblPassNotAligned.setVisible(false);
     }
     
@@ -146,17 +145,14 @@ public class ReaderSignUp extends main {
     }//GEN-LAST:event_btnBackActionPerformed
     // Places the registered account to the database
     private void btnConfirmActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConfirmActionPerformed
-
+    
         n = txtNewName.getText();
         p = String.valueOf(txtNewPass.getPassword());
         cp = String.valueOf(txtNewPassConf.getPassword());
         ut = "READER";
         int i = randNumGen();
         
-        try {
-            stmt = con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
-            rs = stmt.executeQuery("SELECT * FROM ACCOUNTS");
-            
+        try {  
             if (p.equals(cp)) {
                 rs.moveToInsertRow();
                 rs.updateString("PASSWORD", p);
@@ -167,12 +163,16 @@ public class ReaderSignUp extends main {
                 Refresh_RS_STMT();
                 
                 JOptionPane.showMessageDialog(ReaderSignUp.this, "Registration Complete!");
-            } else {
+                // ESTABLISH THE CONNECTION TO THE BOOKS DATABASE
+            } 
+            else 
+            {
                 lblPassNotAligned.setVisible(true);
             }
         } catch (SQLException err) {
             System.out.println(err.getMessage());
-        }        
+        }
+
     }//GEN-LAST:event_btnConfirmActionPerformed
     
     private void btnClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearActionPerformed
