@@ -145,34 +145,36 @@ public class ReaderSignUp extends main {
     }//GEN-LAST:event_btnBackActionPerformed
     // Places the registered account to the database
     private void btnConfirmActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConfirmActionPerformed
-    
-        n = txtNewName.getText();
-        p = String.valueOf(txtNewPass.getPassword());
-        cp = String.valueOf(txtNewPassConf.getPassword());
-        ut = "READER";
-        int i = randNumGen();
+        databaseConnect("accounts");
+        Refresh_RS_STMT("accounts");
+        //int i = randNumGen();
         
         try {  
-            if (p.equals(cp)) {
-                rs.moveToInsertRow();
-                rs.updateString("PASSWORD", p);
-                rs.updateString("FULLNAME", n);
-                rs.updateInt("USERID", i);
-                rs.updateString("USERTYPE", ut);
-                rs.insertRow();
-                Refresh_RS_STMT();
-                
-                JOptionPane.showMessageDialog(ReaderSignUp.this, "Registration Complete!");
-                // ESTABLISH THE CONNECTION TO THE BOOKS DATABASE
-            } 
-            else 
-            {
+            if (!txtNewPass.equals(txtNewPassConf)) 
                 lblPassNotAligned.setVisible(true);
-            }
-        } catch (SQLException err) {
+            
+            rs.moveToInsertRow();
+            rs.updateString("PASSWORD", String.valueOf(txtNewPass.getPassword()));
+            rs.updateString("FULLNAME", txtNewName.getText());
+            rs.updateInt("USERID", 0);
+            rs.updateString("USERTYPE", "READER");
+            rs.insertRow();
+            Refresh_RS_STMT("accounts");
+                
+            JOptionPane.showMessageDialog(ReaderSignUp.this, "Registration Complete!");
+            
+            // ESTABLISH THE CONNECTION TO THE BOOKS DATABASE
+            databaseConnect("books");
+            Refresh_RS_STMT("books");
+            sendDisplaySignal(new SearchEngine());
+            SearchEngine searchEngine = new SearchEngine();
+            searchEngine.initialSearch();
+        } 
+        catch (SQLException err)
+        {
             System.out.println(err.getMessage());
         }
-
+            
     }//GEN-LAST:event_btnConfirmActionPerformed
     
     private void btnClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearActionPerformed

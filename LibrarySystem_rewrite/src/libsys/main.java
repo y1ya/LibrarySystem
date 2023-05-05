@@ -10,7 +10,6 @@ import java.awt.Toolkit;
 import javax.swing.JFrame;
 
 
-
 public class main extends javax.swing.JFrame{
     // init connection to databases
     Connection con;
@@ -42,12 +41,12 @@ public class main extends javax.swing.JFrame{
     }
     
     // Refreshes the database
-    public void Refresh_RS_STMT() {
+    public void Refresh_RS_STMT(String dbName) {
         try {
             stmt.close();
             stmt = con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, 
                     ResultSet.CONCUR_UPDATABLE);
-            String sql = "SELECT * FROM USERDB.ACCOUNTS";
+            String sql = "SELECT * FROM USERDB." + dbName.toUpperCase();
             rs = stmt.executeQuery(sql);
         } catch (SQLException ex) {
             Logger.getLogger(main.class.getName()).log(Level.SEVERE, null, ex);
@@ -72,17 +71,17 @@ public class main extends javax.swing.JFrame{
     }
     
     // When called, it provides a random number for the unique ID of databases
-    public int randNumGen(){
+    public int randNumGen(String dbName, String dbId){
         Random random = new Random();
         int randNum = random.nextInt(9999); // generates a random integer between 1 and 99999 which is the limit
 
         try {
             stmt = con.createStatement();
-            rs = stmt.executeQuery("SELECT USERID FROM ACCOUNTS WHERE USERID=" + randNum);
+            rs = stmt.executeQuery("SELECT "+ dbId.toUpperCase() +" FROM "+ dbName.toUpperCase() +" WHERE USERID=" + randNum);
             // check if the generated random number recursively if it already exists in the database
             while (rs.next()) {
                 randNum = random.nextInt(9999);
-                rs = stmt.executeQuery("SELECT USERID FROM ACCOUNTS WHERE USERID=" + randNum);
+                rs = stmt.executeQuery("SELECT "+ dbId.toUpperCase() +" FROM "+ dbName.toUpperCase() +" WHERE USERID=" + randNum);
             }
         } catch (SQLException e) {
             System.out.println(e);
@@ -91,7 +90,8 @@ public class main extends javax.swing.JFrame{
         return randNum;
     }
     
-    public void regComplete()
+    //TEMP
+    public void readerRegComplete()
     {
         databaseConnect("books");
         SearchEngine searchEngine = new SearchEngine();

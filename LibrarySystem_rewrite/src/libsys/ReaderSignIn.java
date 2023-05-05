@@ -164,6 +164,7 @@ public class ReaderSignIn extends main {
                     matchPass = false;
                 }
             } 
+            Refresh_RS_STMT("accounts");
         } 
         catch (SQLException e) 
         {
@@ -176,6 +177,11 @@ public class ReaderSignIn extends main {
             tempPass = newPass;
             JOptionPane.showMessageDialog(null, "Successfully Logged in!");
             // ESTABLISH THE CONNECTION TO THE BOOKS DATABASE
+            databaseConnect("books");
+            Refresh_RS_STMT("books");
+            sendDisplaySignal(new SearchEngine());
+            SearchEngine searchEngine = new SearchEngine();
+            searchEngine.initialSearch();
         }
         else if (matchAcc && !matchPass)
         {
