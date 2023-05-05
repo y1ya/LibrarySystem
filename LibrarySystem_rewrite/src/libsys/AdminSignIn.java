@@ -119,18 +119,16 @@ public class AdminSignIn extends main {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnConfirmActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConfirmActionPerformed
-        user = txtLogName.getText();
-        pass = String.valueOf(txtLogPass.getPassword());
+        tryFullName = txtLogName.getText();
+        tryPass = String.valueOf(txtLogPass.getPassword());
 
         try {
             rs = stmt.executeQuery("SELECT * FROM ACCOUNTS");
             while (rs.next()) {
-                p = rs.getString("PASSWORD");
-                u = rs.getString("USERNAME");
-                if (user.equals(u)) {
-                    if (pass.equals(p)) {
-                        tempUser = user;
-                        tempPass = pass;
+                dbPass = rs.getString("PASSWORD");
+                dbFullName = rs.getString("USERNAME");
+                if (tryFullName.equals(dbPass)) {
+                    if (tryPass.equals(dbPass)) {
 
                         JOptionPane.showMessageDialog(null, "Successfully Logged in!");
                     }

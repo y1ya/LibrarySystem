@@ -144,18 +144,18 @@ public class ReaderSignIn extends main {
     // Login verifier
     private void btnConfirmActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConfirmActionPerformed
         databaseConnect("accounts");
-        user = txtLogName.getText();
-        pass = String.valueOf(txtLogPass.getPassword());
+        tryFullName = txtLogName.getText();
+        tryPass = String.valueOf(txtLogPass.getPassword());
         
         boolean matchAcc = false, matchPass = false; 
         
         try {
             stmt = con.createStatement();
-            rs = stmt.executeQuery("SELECT PASSWORD FROM ACCOUNTS WHERE FULLNAME='" + user + "'");
+            rs = stmt.executeQuery("SELECT PASSWORD FROM ACCOUNTS WHERE FULLNAME='" + tryFullName + "'");
             if (rs.next()) 
             {
-                p = rs.getString("PASSWORD");
-                if (pass.equals(p)) {
+                dbPass = rs.getString("PASSWORD");
+                if (tryPass.equals(dbPass)) {
                     matchAcc = true; 
                     matchPass = true;
                 }
@@ -173,15 +173,9 @@ public class ReaderSignIn extends main {
 
         if (matchAcc && matchPass)
         {
-            tempUser = newUser;
-            tempPass = newPass;
             JOptionPane.showMessageDialog(null, "Successfully Logged in!");
-            // ESTABLISH THE CONNECTION TO THE BOOKS DATABASE
-            databaseConnect("books");
-            Refresh_RS_STMT("books");
-            sendDisplaySignal(new SearchEngine());
-            SearchEngine searchEngine = new SearchEngine();
-            searchEngine.initialSearch();
+            this.dispose();
+            readerUpInComplete(tryFullName);
         }
         else if (matchAcc && !matchPass)
         {

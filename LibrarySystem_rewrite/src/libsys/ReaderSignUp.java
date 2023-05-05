@@ -147,28 +147,28 @@ public class ReaderSignUp extends main {
     private void btnConfirmActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConfirmActionPerformed
         databaseConnect("accounts");
         Refresh_RS_STMT("accounts");
-        //int i = randNumGen();
+        //int id = randNumGen();
+        dbFullName = txtNewName.getText();
         
         try {  
             if (!txtNewPass.equals(txtNewPassConf)) 
                 lblPassNotAligned.setVisible(true);
-            
-            rs.moveToInsertRow();
-            rs.updateString("PASSWORD", String.valueOf(txtNewPass.getPassword()));
-            rs.updateString("FULLNAME", txtNewName.getText());
-            rs.updateInt("USERID", 0);
-            rs.updateString("USERTYPE", "READER");
-            rs.insertRow();
-            Refresh_RS_STMT("accounts");
+            else
+            {
+                rs.moveToInsertRow();
+                rs.updateString("PASSWORD", String.valueOf(txtNewPass.getPassword()));
+                rs.updateString("FULLNAME", txtNewName.getText());
+                rs.updateInt("USERID", 90);
+                rs.updateString("USERTYPE", "READER");
+                rs.insertRow();
+                Refresh_RS_STMT("accounts");
                 
-            JOptionPane.showMessageDialog(ReaderSignUp.this, "Registration Complete!");
-            
-            // ESTABLISH THE CONNECTION TO THE BOOKS DATABASE
-            databaseConnect("books");
-            Refresh_RS_STMT("books");
-            sendDisplaySignal(new SearchEngine());
-            SearchEngine searchEngine = new SearchEngine();
-            searchEngine.initialSearch();
+                JOptionPane.showMessageDialog(ReaderSignUp.this, "Registration Complete!");
+                this.dispose();
+                
+                // ESTABLISH THE CONNECTION TO THE BOOKS DATABASE
+                readerUpInComplete(dbFullName);
+            }
         } 
         catch (SQLException err)
         {

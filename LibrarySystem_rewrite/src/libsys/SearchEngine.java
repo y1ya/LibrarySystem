@@ -104,12 +104,15 @@ public class SearchEngine extends main {
     {   
         try
         {
+            databaseConnect("books");
+            Refresh_RS_STMT("books");
             while (rs.next())
             {
                 t = rs.getString("TITLE");
                 listModel.addElement(t);
             }
             predictList.setModel(listModel);
+            predictList.repaint();
         }
         catch (SQLException err) 
         {
@@ -125,6 +128,8 @@ public class SearchEngine extends main {
         
         try
         {
+            databaseConnect("books");
+            Refresh_RS_STMT("books");
             while (rs.next())
             {
                 t = rs.getString("TITLE");
@@ -139,11 +144,11 @@ public class SearchEngine extends main {
             System.out.println(err.getMessage());
         }
 
-        Collections.sort(matchingElements);
         for (String element : matchingElements) {
             listModel.addElement(element);
         }
-        predictList.setModel(listModel);
+        predictList.setModel(listModel);    
+        predictList.repaint();
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

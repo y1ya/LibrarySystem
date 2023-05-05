@@ -18,6 +18,8 @@ public class DatabaseHandler extends main {
     // [POSSIBLE BUG]
     // This connection depends on the last reference object of databaseConnect()
     public void Select() {
+        String n, p, ut;
+        int i;
         String[] columnNames = {"FULLNAME", "PASSWORD", "USERID", "USERTYPE"};
         tbModel.setColumnIdentifiers(columnNames);
         try {
