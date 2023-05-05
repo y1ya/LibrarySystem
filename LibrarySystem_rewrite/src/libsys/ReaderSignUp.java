@@ -148,7 +148,7 @@ public class ReaderSignUp extends main {
         databaseConnect("accounts");
         Refresh_RS_STMT("accounts");
         //int id = randNumGen();
-        dbFullName = txtNewName.getText();
+        suFullName = txtNewName.getText();
         
         try {  
             if (!txtNewPass.equals(txtNewPassConf)) 
@@ -165,16 +165,13 @@ public class ReaderSignUp extends main {
                 
                 JOptionPane.showMessageDialog(ReaderSignUp.this, "Registration Complete!");
                 this.dispose();
-                
-                // ESTABLISH THE CONNECTION TO THE BOOKS DATABASE
-                readerUpInComplete(dbFullName);
+                readerUpInComplete(suFullName);
             }
         } 
         catch (SQLException err)
         {
             System.out.println(err.getMessage());
         }
-            
     }//GEN-LAST:event_btnConfirmActionPerformed
     
     private void btnClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearActionPerformed

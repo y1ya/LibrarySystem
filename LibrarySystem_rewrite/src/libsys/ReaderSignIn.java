@@ -141,21 +141,22 @@ public class ReaderSignIn extends main {
         this.setVisible(false);
         main.sendDisplaySignal(new MainWindow()); // <--- It goes back to
     }//GEN-LAST:event_btnBackActionPerformed
-    // Login verifier
+    
+// Login verifier
     private void btnConfirmActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConfirmActionPerformed
         databaseConnect("accounts");
-        tryFullName = txtLogName.getText();
-        tryPass = String.valueOf(txtLogPass.getPassword());
+        siFullName = txtLogName.getText();
+        siPass = String.valueOf(txtLogPass.getPassword());
         
         boolean matchAcc = false, matchPass = false; 
         
         try {
             stmt = con.createStatement();
-            rs = stmt.executeQuery("SELECT PASSWORD FROM ACCOUNTS WHERE FULLNAME='" + tryFullName + "'");
+            rs = stmt.executeQuery("SELECT PASSWORD FROM ACCOUNTS WHERE FULLNAME='" + siFullName + "'");
             if (rs.next()) 
             {
-                dbPass = rs.getString("PASSWORD");
-                if (tryPass.equals(dbPass)) {
+                suPass = rs.getString("PASSWORD");
+                if (siPass.equals(suPass)) {
                     matchAcc = true; 
                     matchPass = true;
                 }
@@ -175,7 +176,7 @@ public class ReaderSignIn extends main {
         {
             JOptionPane.showMessageDialog(null, "Successfully Logged in!");
             this.dispose();
-            readerUpInComplete(tryFullName);
+            readerUpInComplete(siFullName);
         }
         else if (matchAcc && !matchPass)
         {
@@ -188,9 +189,7 @@ public class ReaderSignIn extends main {
             txtLogName.setText(null);
             txtLogPass.setText(null);
             JOptionPane.showMessageDialog(null, "Account not found!", "",JOptionPane.ERROR_MESSAGE);
-        }
-            
-        
+        }     
     }//GEN-LAST:event_btnConfirmActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

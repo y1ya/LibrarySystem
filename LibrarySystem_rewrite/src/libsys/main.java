@@ -18,12 +18,12 @@ public class main extends javax.swing.JFrame {
     // displaying the database table
     DefaultTableModel LoginModel = new DefaultTableModel();
     // variables for accounts database
-    String tryFullName, tryPass, dbFullName, dbPass;
+    String siFullName, siPass, suFullName, suPass;
     int id;
     // variables for books databases
     String t;
 
-    // Connects to the reffered accounts database
+    // Connects to the reffered database
     public void databaseConnect(String dbName) {
         try {
             String host = "jdbc:derby://localhost:1527/" + dbName;
@@ -58,7 +58,7 @@ public class main extends javax.swing.JFrame {
     public static void sendDisplaySignal(JFrame sig) {
         JFrame[] jframe = {
             new MainWindow(), new AdminSignIn(), new ReaderSignIn(),
-            new ReaderSignUp(), new SearchEngine()
+            new ReaderSignUp(), new SearchEngine("uuu")
         };
         for (JFrame jframe1 : jframe) {
             if (jframe1.getClass().equals(sig.getClass())) {
@@ -69,7 +69,7 @@ public class main extends javax.swing.JFrame {
         }
     }
     
-    // Depreceated
+    // Deprecated
     // When called, it provides a random number for the unique ID of databases
     public int randNumGen(String dbName, String dbId) {
         Random random = new Random();
@@ -86,17 +86,16 @@ public class main extends javax.swing.JFrame {
         } catch (SQLException e) {
             System.out.println(e);
         }
-
         return randNum;
     }
 
-    // Gets called after signing up or singning in
+    // Gets called after signing up or signing in
     // Sends the full name of the current user to display name
     public void readerUpInComplete(String currentUser) {
-        SearchEngine searchEngine = new SearchEngine(); 
-        searchEngine.initialSearch(); // Readying the Search Engine
-        sendDisplaySignal(new SearchEngine()); // <--- It goes to
-        
+        databaseConnect("books");
+        Refresh_RS_STMT("books"); 
+        //searchEngine.initialSearch(); // Readying the Search Engine
+        sendDisplaySignal(new SearchEngine(currentUser)); // <--- It goes to
     }
 
     // The first statement/s to be called

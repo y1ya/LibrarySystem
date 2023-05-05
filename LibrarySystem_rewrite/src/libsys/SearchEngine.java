@@ -8,11 +8,15 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import javax.swing.JLabel;
 
 public class SearchEngine extends main {
-
-    public SearchEngine() {
+    public String uniFullName;
+            
+    public SearchEngine(String uniFullName) {
         initComponents();
+        this.uniFullName = uniFullName;
+        lblGreetName.setText("Welcome " + uniFullName + "!!!");
     }
 
     @SuppressWarnings("unchecked")
@@ -25,6 +29,7 @@ public class SearchEngine extends main {
         jScrollPane1 = new javax.swing.JScrollPane();
         predictList = new javax.swing.JList<>();
         btnSearch = new javax.swing.JButton();
+        lblGreetName = new javax.swing.JLabel();
 
         jToggleButton1.setText("jToggleButton1");
 
@@ -46,6 +51,8 @@ public class SearchEngine extends main {
             }
         });
 
+        lblGreetName.setText("Welcome");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -59,13 +66,16 @@ public class SearchEngine extends main {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(searchField, javax.swing.GroupLayout.PREFERRED_SIZE, 1257, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 1257, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 1257, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblGreetName, javax.swing.GroupLayout.PREFERRED_SIZE, 279, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(0, 17, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(49, 49, 49)
+                .addContainerGap()
+                .addComponent(lblGreetName)
+                .addGap(27, 27, 27)
                 .addComponent(searchField, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(btnSearch)
@@ -95,67 +105,16 @@ public class SearchEngine extends main {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
-        wordFinder();
+      
     }//GEN-LAST:event_btnSearchActionPerformed
 
-    public DefaultListModel<String> listModel = new DefaultListModel<>();
-    
-    public void initialSearch()
-    {   
-        try
-        {
-            databaseConnect("books");
-            Refresh_RS_STMT("books");
-            while (rs.next())
-            {
-                t = rs.getString("TITLE");
-                listModel.addElement(t);
-            }
-            predictList.setModel(listModel);
-            predictList.repaint();
-        }
-        catch (SQLException err) 
-        {
-            System.out.println(err.getMessage());
-        }  
-    }
-   
-    private void wordFinder()
-    {
-        listModel.clear();
-        String text = searchField.getText().toLowerCase();
-        List<String> matchingElements = new ArrayList<>();
-        
-        try
-        {
-            databaseConnect("books");
-            Refresh_RS_STMT("books");
-            while (rs.next())
-            {
-                t = rs.getString("TITLE");
-                if (t.toLowerCase().startsWith(text)) 
-                {
-                    matchingElements.add(t);
-                }
-            }
-        }
-        catch (SQLException err)
-        {
-            System.out.println(err.getMessage());
-        }
-
-        for (String element : matchingElements) {
-            listModel.addElement(element);
-        }
-        predictList.setModel(listModel);    
-        predictList.repaint();
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnSearch;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JToggleButton jToggleButton1;
+    private javax.swing.JLabel lblGreetName;
     private javax.swing.JList<String> predictList;
     private javax.swing.JTextField searchField;
     // End of variables declaration//GEN-END:variables
