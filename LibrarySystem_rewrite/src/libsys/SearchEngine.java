@@ -17,7 +17,8 @@ public class SearchEngine extends main {
         this.uniFullName = uniFullName;
         lblGreetName.setText("Welcome " + uniFullName + "!!!");
     }
-
+    DefaultListModel bookList = new DefaultListModel();
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -36,11 +37,6 @@ public class SearchEngine extends main {
 
         jPanel1.setPreferredSize(new java.awt.Dimension(1280, 720));
 
-        predictList.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
-        });
         jScrollPane1.setViewportView(predictList);
 
         btnSearch.setText("Search");
@@ -104,9 +100,47 @@ public class SearchEngine extends main {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
-      
+        databaseConnect("books");
+        bookList.clear();
+        String text = searchField.getText().toLowerCase();
+        try
+        {
+            while (rs.next())
+            {
+                String bookTitle = rs.getString("TITLE");
+                System.out.println(bookTitle);
+                if (bookTitle.toLowerCase().startsWith(text)) 
+                {
+                    bookList.addElement(bookTitle);
+                }
+            }
+            Refresh_RS_STMT("books");
+        }
+        catch (SQLException err)
+        {
+            System.out.println(err.getMessage());
+        }
+        predictList.setModel(bookList);
     }//GEN-LAST:event_btnSearchActionPerformed
 
+    public void initialSearch()
+    {
+        databaseConnect("books");
+        try
+        {
+            while(rs.next())
+            {
+                String bookTitle = rs.getString("TITLE");
+                bookList.addElement(bookTitle);
+            }
+             Refresh_RS_STMT("books");
+        }
+        catch (SQLException err)
+        {
+            System.out.println(err.getMessage());
+        }
+        predictList.setModel(bookList);
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnSearch;

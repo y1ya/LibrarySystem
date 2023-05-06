@@ -60,12 +60,12 @@ public class main extends javax.swing.JFrame {
     public static void sendDisplaySignal(JFrame sig) {
         JFrame[] jframe = {
             new MainWindow(), new AdminSignIn(), new ReaderSignIn(),
-            new ReaderSignUp(), new SearchEngine(uniFullName)
+            new ReaderSignUp()
         };
         for (JFrame jframe1 : jframe) {
             if (jframe1.getClass().equals(sig.getClass())) {
-                Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();  // adapt to machinee's screen size
-                jframe1.setSize(screenSize.width, screenSize.height); // set size to screen size
+                //Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();  // adapt to machinee's screen size
+                //jframe1.setSize(screenSize.width, screenSize.height); // set size to screen size
                 jframe1.setVisible(true);
             }
         }
@@ -94,10 +94,9 @@ public class main extends javax.swing.JFrame {
     // Gets called after signing up or signing in
     // Sends the full name of the current user to display name
     public void readerUpInComplete(String currentUser) {
-        databaseConnect("books");
-        Refresh_RS_STMT("books"); 
-        //searchEngine.initialSearch(); // Readying the Search Engine
-        sendDisplaySignal(new SearchEngine(currentUser)); // <--- It goes to
+        SearchEngine searchEngine = new SearchEngine(currentUser);
+        searchEngine.initialSearch(); // Readying the Search Engine
+        searchEngine.setVisible(true); // <--- It goes to
     }
 
     // The first statement/s to be called

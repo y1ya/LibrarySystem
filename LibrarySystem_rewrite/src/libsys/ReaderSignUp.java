@@ -146,7 +146,6 @@ public class ReaderSignUp extends main {
     // Reader account register
     private void btnConfirmActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConfirmActionPerformed
         databaseConnect("accounts");
-        Refresh_RS_STMT("accounts");
         //int id = randNumGen();
         suFullName = txtNewName.getText();
         System.out.print("clicked");
@@ -167,6 +166,7 @@ public class ReaderSignUp extends main {
                 this.dispose();
                 readerUpInComplete(suFullName);
             }
+            Refresh_RS_STMT("accounts");
         } 
         catch (SQLException err)
         {
