@@ -1,8 +1,5 @@
 package libsys;
 
-import java.sql.*;
-import javax.swing.*;
-
 public class ReaderSignUp extends main {
     public ReaderSignUp() {
         initComponents();

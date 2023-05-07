@@ -1,8 +1,5 @@
-
 package libsys;
 
-import java.sql.*;
-import javax.swing.JOptionPane;
 import libsys.MainWindow;
 import libsys.ReaderSignUp;
 import libsys.main;
