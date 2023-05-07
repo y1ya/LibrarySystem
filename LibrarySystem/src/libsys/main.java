@@ -98,9 +98,9 @@ public class main extends javax.swing.JFrame {
     // Gets called after signing up or signing in
     // Sends the full name of the current user to display name
     public void readerUpInComplete() {
-        SearchEngine searchEngine = new SearchEngine(currFullName);
-        searchEngine.initialSearch(); // Readying the Search Engine
-        searchEngine.setVisible(true); // <--- It goes to
+        ReaderBase readerBase = new ReaderBase(currFullName);
+        readerBase.initialSearch(); // Readying the Search Engine
+        readerBase.setVisible(true); // <--- It goes to
     }
     
     //[POSSIBLE BUG] Did not yet account for where the librarian goes once registered
@@ -115,7 +115,7 @@ public class main extends javax.swing.JFrame {
                 rs.moveToInsertRow();
                 rs.updateString("PASSWORD", usuPass);
                 rs.updateString("FULLNAME", usuFullName);
-                rs.updateInt("USERID", 125); // <--- Still needs the auto-increment function
+                rs.updateInt("USERID", 1235); // <--- Still needs the auto-increment function
                 rs.updateString("USERTYPE", "READER");
                 rs.insertRow();
                 refreshRsStmt("accounts");

@@ -1,18 +1,12 @@
 
 package libsys;
 
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.swing.DefaultListModel;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import javax.swing.JLabel;
 
-public class SearchEngine extends main {
+public class ReaderBase extends main {
             
-    public SearchEngine(String currFullName) {
+    public ReaderBase(String currFullName) {
         initComponents();
         this.currFullName = currFullName;
         lblGreetName.setText("Welcome " + currFullName + "!!!");
