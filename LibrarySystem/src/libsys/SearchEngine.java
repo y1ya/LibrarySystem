@@ -12,10 +12,10 @@ import javax.swing.JLabel;
 
 public class SearchEngine extends main {
             
-    public SearchEngine(String uniFullName) {
+    public SearchEngine(String currFullName) {
         initComponents();
-        this.currFullName = uniFullName;
-        lblGreetName.setText("Welcome " + uniFullName + "!!!");
+        this.currFullName = currFullName;
+        lblGreetName.setText("Welcome " + currFullName + "!!!");
     }
     DefaultListModel bookList = new DefaultListModel();
     
@@ -101,25 +101,7 @@ public class SearchEngine extends main {
 
     private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
         databaseConnect("books");
-        bookList.clear();
-        String text = searchField.getText().toLowerCase();
-        try
-        {
-            while (rs.next())
-            {
-                String bookTitle = rs.getString("TITLE");
-                if (bookTitle.toLowerCase().startsWith(text)) 
-                {
-                    bookList.addElement(bookTitle);
-                }
-            }
-            Refresh_RS_STMT("books");
-        }
-        catch (SQLException err)
-        {
-            System.out.println(err.getMessage());
-        }
-        predictList.setModel(bookList);
+        bookFinder();
     }//GEN-LAST:event_btnSearchActionPerformed
 
     public void initialSearch()
@@ -132,7 +114,30 @@ public class SearchEngine extends main {
                 String bookTitle = rs.getString("TITLE");
                 bookList.addElement(bookTitle);
             }
-             Refresh_RS_STMT("books");
+             refreshRsStmt("books");
+        }
+        catch (SQLException err)
+        {
+            System.out.println(err.getMessage());
+        }
+        predictList.setModel(bookList);
+    }
+    
+    public void bookFinder()
+    {
+        bookList.clear();
+        String text = searchField.getText().toLowerCase();
+        try
+        {
+            while (rs.next())
+            {
+                String bookTitle = rs.getString("TITLE");
+                if (bookTitle.toLowerCase().startsWith(text)) 
+                {
+                    bookList.addElement(bookTitle);
+                }
+            }
+            refreshRsStmt("books");
         }
         catch (SQLException err)
         {

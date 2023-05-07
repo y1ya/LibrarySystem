@@ -47,7 +47,7 @@ public class main extends javax.swing.JFrame {
     }
 
     // Refreshes the reffered database contents
-    public void Refresh_RS_STMT(String dbName) {
+    public void refreshRsStmt(String dbName) {
         try {
             stmt.close();
             stmt = con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,
@@ -64,7 +64,7 @@ public class main extends javax.swing.JFrame {
     public static void sendDisplaySignal(JFrame sig) {
         JFrame[] jframe = {
             new MainWindow(), new AdminSignIn(), new ReaderSignIn(),
-            new ReaderSignUp(), new AdminBase()
+            new ReaderSignUp(), new AdminBase(),
         };
         for (JFrame jframe1 : jframe) {
             if (jframe1.getClass().equals(sig.getClass())) {
@@ -90,15 +90,15 @@ public class main extends javax.swing.JFrame {
                 rs = stmt.executeQuery("SELECT " + dbId.toUpperCase() + " FROM " + dbName.toUpperCase() + " WHERE USERID=" + randNum);
             }
         } catch (SQLException e) {
-            System.out.println(e);
+            System.out.println(e.getMessage());
         }
         return randNum;
     }
 
     // Gets called after signing up or signing in
     // Sends the full name of the current user to display name
-    public void readerUpInComplete(String currentUser) {
-        SearchEngine searchEngine = new SearchEngine(currentUser);
+    public void readerUpInComplete() {
+        SearchEngine searchEngine = new SearchEngine(currFullName);
         searchEngine.initialSearch(); // Readying the Search Engine
         searchEngine.setVisible(true); // <--- It goes to
     }
@@ -115,16 +115,18 @@ public class main extends javax.swing.JFrame {
                 rs.moveToInsertRow();
                 rs.updateString("PASSWORD", usuPass);
                 rs.updateString("FULLNAME", usuFullName);
-                rs.updateInt("USERID", 1245);
+                rs.updateInt("USERID", 125); // <--- Still needs the auto-increment function
                 rs.updateString("USERTYPE", "READER");
                 rs.insertRow();
-                Refresh_RS_STMT("accounts");
+                refreshRsStmt("accounts");
                 
                 JOptionPane.showMessageDialog(null, "Registration Complete!");
                 this.dispose();
-                readerUpInComplete(usuFullName);
+                currFullName = usuFullName;
+                toUsertypeBases(userType);
+                
             }
-            Refresh_RS_STMT("accounts");
+            refreshRsStmt("accounts");
         } 
         catch (SQLException err)
         {
@@ -166,7 +168,7 @@ public class main extends javax.swing.JFrame {
                     matchAcc = true;
                 }
             } 
-            Refresh_RS_STMT("accounts");
+            refreshRsStmt("accounts");
         } 
         catch (SQLException e) 
         {
@@ -177,14 +179,8 @@ public class main extends javax.swing.JFrame {
         {
             JOptionPane.showMessageDialog(null, "Successfully Logged in!");
             this.dispose();
-            switch (userType)
-            {
-                case "ADMIN":
-                    sendDisplaySignal(new AdminBase()); break;
-                case "LIBRARIAN":
-                    //Where to go??
-            }
-            //readerUpInComplete(usiFullName);
+            currFullName = usiFullName;
+            toUsertypeBases(userType);
         }
         else if (matchAcc && matchPass && !matchType)
         {
@@ -203,6 +199,20 @@ public class main extends javax.swing.JFrame {
             txtLogPass.setText(null);
             JOptionPane.showMessageDialog(null, "Account not found!", "",JOptionPane.ERROR_MESSAGE);
         }
+    }
+    
+    public void toUsertypeBases(String userType)
+    {
+        switch (userType)
+            {
+                case "ADMIN":
+                    sendDisplaySignal(new AdminBase()); break;
+                case "LIBRARIAN":
+                    //Where to go??
+                    break;
+                case "READER":
+                    readerUpInComplete(); break;
+            }
     }
     
     // The first statement/s to be called
