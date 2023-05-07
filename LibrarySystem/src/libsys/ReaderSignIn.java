@@ -146,72 +146,10 @@ public class ReaderSignIn extends main {
     private void btnConfirmActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConfirmActionPerformed
         databaseConnect("accounts");
         
-        rsiFullName = txtLogName.getText();
-        rsiPass = String.valueOf(txtLogPass.getPassword());
-  
-        boolean matchAcc = false, matchPass = false, matchType = false; 
+        usiFullName = txtLogName.getText();
+        usiPass = String.valueOf(txtLogPass.getPassword());
         
-        try {
-            stmt = con.createStatement();
-            rs = stmt.executeQuery("SELECT PASSWORD FROM ACCOUNTS WHERE FULLNAME='" + rsiFullName + "'");
-            if (rs.next()) 
-            {
-                rsicPass = rs.getString("PASSWORD");
-                if (rsiPass.equals(rsicPass)) 
-                {
-                    stmt = con.createStatement();
-                    rs = stmt.executeQuery("SELECT USERTYPE FROM ACCOUNTS WHERE FULLNAME='" + rsiFullName + "'");
-                    if (rs.next()) 
-                    {
-                        rsiUsertype = rs.getString("USERTYPE");
-                        if (rsiUsertype.equals("READER"))
-                        {
-                            matchAcc = true; 
-                            matchPass = true;
-                            matchType = true;
-                        }
-                        else
-                        {
-                            matchAcc = true; 
-                            matchPass = true;
-                        }
-                    }
-                }
-                else 
-                {
-                    matchAcc = true;
-                }
-            } 
-            Refresh_RS_STMT("accounts");
-        } 
-        catch (SQLException e) 
-        {
-            System.out.println(e);
-        }
-
-        if (matchAcc && matchPass && matchType)
-        {
-            JOptionPane.showMessageDialog(null, "Successfully Logged in!");
-            this.dispose();
-            readerUpInComplete(rsiFullName);
-        }
-        else if (matchAcc && matchPass && !matchType)
-        {
-            JOptionPane.showMessageDialog(null, "Wrong Sign up form.");
-            // add redirection feature
-        }
-        else if (matchAcc && !matchPass)
-        {
-            txtLogName.setText(null);
-            txtLogPass.setText(null);
-            JOptionPane.showMessageDialog(null, "Incorrect Password!");
-        }
-        else
-        {
-            txtLogName.setText(null);
-            txtLogPass.setText(null);
-            JOptionPane.showMessageDialog(null, "Account not found!", "",JOptionPane.ERROR_MESSAGE);
-        }     
+        signIn(usiFullName, usiPass, "READER", txtLogName, txtLogPass);
     }//GEN-LAST:event_btnConfirmActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

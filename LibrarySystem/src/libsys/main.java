@@ -8,6 +8,8 @@ import java.util.Random;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import javax.swing.JFrame;
+import javax.swing.JTextField;
+import javax.swing.JPasswordField;
 
 public class main extends javax.swing.JFrame {
 
@@ -17,16 +19,15 @@ public class main extends javax.swing.JFrame {
     ResultSet rs;
     // displaying the database table
     DefaultTableModel LoginModel = new DefaultTableModel();
-    // variables for accounts database
-    String rsiFullName, rsiPass, rsicPass, rsiUsertype, // ReaderSignIn
-           rsuFullName, rsuPass,                        // ReaderSignUp
-           asiUserType, asiFullName, 
-           asiPass, asicFullName, asicPass, asiUsertype;
-    int id;
+    // universal variables for accounts database
+    String usiFullName, usiPass, usicPass, usiUsertype, 
+           usuFullName, usuPass, usucPass, usuUserType;
+    int usiId, usuID;
+    boolean matchAcc = false, matchPass = false, matchType = false;
     // variables for books databases
     String t;
-    
-    public static String uniFullName;
+    // personalization variables
+    public static String currFullName;
 
     // Connects to the reffered database
     public void databaseConnect(String dbName) {
@@ -74,7 +75,7 @@ public class main extends javax.swing.JFrame {
         }
     }
     
-    // Deprecated
+    // [DEPRECATED]
     // When called, it provides a random number for the unique ID of databases
     public int randNumGen(String dbName, String dbId) {
         Random random = new Random();
@@ -101,7 +102,109 @@ public class main extends javax.swing.JFrame {
         searchEngine.initialSearch(); // Readying the Search Engine
         searchEngine.setVisible(true); // <--- It goes to
     }
+    
+    //[POSSIBLE BUG] Did not yet account for where the librarian goes once registered
+    public void signUp(String usuFullName, String usuPass, String userType, JTextField txtNewName, JPasswordField txtNewPass, JPasswordField txtNewPassConf, JLabel lblPassNotAligned)
+    {
+        try 
+        {  
+            if (!String.valueOf(txtNewPass.getPassword()).equals(String.valueOf(txtNewPassConf.getPassword())))
+                lblPassNotAligned.setVisible(true);
+            else
+            {
+                rs.moveToInsertRow();
+                rs.updateString("PASSWORD", usuPass);
+                rs.updateString("FULLNAME", usuFullName);
+                rs.updateInt("USERID", 1245);
+                rs.updateString("USERTYPE", "READER");
+                rs.insertRow();
+                Refresh_RS_STMT("accounts");
+                
+                JOptionPane.showMessageDialog(null, "Registration Complete!");
+                this.dispose();
+                readerUpInComplete(usuFullName);
+            }
+            Refresh_RS_STMT("accounts");
+        } 
+        catch (SQLException err)
+        {
+            System.out.println(err.getMessage());
+        }
+    }
 
+    //[POSSIBLE BUG] Did not yet consider for where the the librarian go once signed in
+    public void signIn(String usiFullName, String usiPass, String userType, JTextField txtLogName, JPasswordField txtLogPass)
+    {
+        try {
+            stmt = con.createStatement();
+            rs = stmt.executeQuery("SELECT PASSWORD FROM ACCOUNTS WHERE FULLNAME='" + usiFullName + "'");
+            if (rs.next()) 
+            {
+                usicPass = rs.getString("PASSWORD");
+                if (usiPass.equals(usicPass)) 
+                {
+                    stmt = con.createStatement();
+                    rs = stmt.executeQuery("SELECT USERTYPE FROM ACCOUNTS WHERE FULLNAME='" + usiFullName + "'");
+                    if (rs.next()) 
+                    {
+                        usiUsertype = rs.getString("USERTYPE");
+                        if (usiUsertype.equals(userType))
+                        {
+                            matchAcc = true; 
+                            matchPass = true;
+                            matchType = true;
+                        }
+                        else
+                        {
+                            matchAcc = true; 
+                            matchPass = true;
+                        }
+                    }
+                }
+                else 
+                {
+                    matchAcc = true;
+                }
+            } 
+            Refresh_RS_STMT("accounts");
+        } 
+        catch (SQLException e) 
+        {
+            System.out.println(e);
+        }
+        
+        if (matchAcc && matchPass && matchType)
+        {
+            JOptionPane.showMessageDialog(null, "Successfully Logged in!");
+            this.dispose();
+            switch (userType)
+            {
+                case "ADMIN":
+                    sendDisplaySignal(new AdminBase()); break;
+                case "LIBRARIAN":
+                    //Where to go??
+            }
+            //readerUpInComplete(usiFullName);
+        }
+        else if (matchAcc && matchPass && !matchType)
+        {
+            JOptionPane.showMessageDialog(null, "Wrong Sign up form.");
+            // add redirection feature
+        }
+        else if (matchAcc && !matchPass)
+        {
+            txtLogName.setText(null);
+            txtLogPass.setText(null);
+            JOptionPane.showMessageDialog(null, "Incorrect Password!");
+        }
+        else
+        {
+            txtLogName.setText(null);
+            txtLogPass.setText(null);
+            JOptionPane.showMessageDialog(null, "Account not found!", "",JOptionPane.ERROR_MESSAGE);
+        }
+    }
+    
     // The first statement/s to be called
     public static void main(String[] args) {
         sendDisplaySignal(new MainWindow());

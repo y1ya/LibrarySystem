@@ -14,7 +14,7 @@ public class SearchEngine extends main {
             
     public SearchEngine(String uniFullName) {
         initComponents();
-        this.uniFullName = uniFullName;
+        this.currFullName = uniFullName;
         lblGreetName.setText("Welcome " + uniFullName + "!!!");
     }
     DefaultListModel bookList = new DefaultListModel();

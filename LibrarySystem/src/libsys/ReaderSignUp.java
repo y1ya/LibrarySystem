@@ -148,33 +148,12 @@ public class ReaderSignUp extends main {
     private void btnConfirmActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConfirmActionPerformed
         databaseConnect("accounts");
         
-        rsuFullName = txtNewName.getText();
-        rsuPass = String.valueOf(txtNewPass.getPassword());
+        usuFullName = txtNewName.getText();
+        usuPass = String.valueOf(txtNewPass.getPassword());
         //int id = randNumGen();
         
-        try {  
-            if (!String.valueOf(txtNewPass.getPassword()).equals(String.valueOf(txtNewPassConf.getPassword())))
-                lblPassNotAligned.setVisible(true);
-            else
-            {
-                rs.moveToInsertRow();
-                rs.updateString("PASSWORD", rsuPass);
-                rs.updateString("FULLNAME", rsuFullName);
-                rs.updateInt("USERID", 1245);
-                rs.updateString("USERTYPE", "READER");
-                rs.insertRow();
-                Refresh_RS_STMT("accounts");
-                
-                JOptionPane.showMessageDialog(null, "Registration Complete!");
-                this.dispose();
-                readerUpInComplete(rsuFullName);
-            }
-            Refresh_RS_STMT("accounts");
-        } 
-        catch (SQLException err)
-        {
-            System.out.println(err.getMessage());
-        }
+        //ID still lacking
+        signUp(usuFullName, usuPass, "READER", txtNewName, txtNewPass, txtNewPassConf, lblPassNotAligned);
     }//GEN-LAST:event_btnConfirmActionPerformed
     
     private void btnClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearActionPerformed
