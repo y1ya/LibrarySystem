@@ -145,24 +145,41 @@ public class ReaderSignIn extends main {
     // Sign in verifier
     private void btnConfirmActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConfirmActionPerformed
         databaseConnect("accounts");
-        siFullName = txtLogName.getText();
-        siPass = String.valueOf(txtLogPass.getPassword());
         
-        boolean matchAcc = false, matchPass = false; 
+        rsiFullName = txtLogName.getText();
+        rsiPass = String.valueOf(txtLogPass.getPassword());
+  
+        boolean matchAcc = false, matchPass = false, matchType = false; 
         
         try {
             stmt = con.createStatement();
-            rs = stmt.executeQuery("SELECT PASSWORD FROM ACCOUNTS WHERE FULLNAME='" + siFullName + "'");
+            rs = stmt.executeQuery("SELECT PASSWORD FROM ACCOUNTS WHERE FULLNAME='" + rsiFullName + "'");
             if (rs.next()) 
             {
-                suPass = rs.getString("PASSWORD");
-                if (siPass.equals(suPass)) {
-                    matchAcc = true; 
-                    matchPass = true;
+                rsicPass = rs.getString("PASSWORD");
+                if (rsiPass.equals(rsicPass)) 
+                {
+                    stmt = con.createStatement();
+                    rs = stmt.executeQuery("SELECT USERTYPE FROM ACCOUNTS WHERE FULLNAME='" + rsiFullName + "'");
+                    if (rs.next()) 
+                    {
+                        rsiUsertype = rs.getString("USERTYPE");
+                        if (rsiUsertype.equals("READER"))
+                        {
+                            matchAcc = true; 
+                            matchPass = true;
+                            matchType = true;
+                        }
+                        else
+                        {
+                            matchAcc = true; 
+                            matchPass = true;
+                        }
+                    }
                 }
-                else {
-                    matchAcc = true; 
-                    matchPass = false;
+                else 
+                {
+                    matchAcc = true;
                 }
             } 
             Refresh_RS_STMT("accounts");
@@ -172,11 +189,16 @@ public class ReaderSignIn extends main {
             System.out.println(e);
         }
 
-        if (matchAcc && matchPass)
+        if (matchAcc && matchPass && matchType)
         {
             JOptionPane.showMessageDialog(null, "Successfully Logged in!");
             this.dispose();
-            readerUpInComplete(siFullName);
+            readerUpInComplete(rsiFullName);
+        }
+        else if (matchAcc && matchPass && !matchType)
+        {
+            JOptionPane.showMessageDialog(null, "Wrong Sign up form.");
+            // add redirection feature
         }
         else if (matchAcc && !matchPass)
         {

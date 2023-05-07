@@ -18,7 +18,10 @@ public class main extends javax.swing.JFrame {
     // displaying the database table
     DefaultTableModel LoginModel = new DefaultTableModel();
     // variables for accounts database
-    String siFullName, siPass, suFullName, suPass;
+    String rsiFullName, rsiPass, rsicPass, rsiUsertype, // ReaderSignIn
+           rsuFullName, rsuPass,                        // ReaderSignUp
+           asiUserType, asiFullName, 
+           asiPass, asicFullName, asicPass, asiUsertype;
     int id;
     // variables for books databases
     String t;
@@ -60,7 +63,7 @@ public class main extends javax.swing.JFrame {
     public static void sendDisplaySignal(JFrame sig) {
         JFrame[] jframe = {
             new MainWindow(), new AdminSignIn(), new ReaderSignIn(),
-            new ReaderSignUp()
+            new ReaderSignUp(), new AdminBase()
         };
         for (JFrame jframe1 : jframe) {
             if (jframe1.getClass().equals(sig.getClass())) {

@@ -3,9 +3,12 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/vboxuser/Documents/GitHub/LibrarySystem/LibrarySystem_rewrite/src/libsys/main.java</file>
-            <file>file:/C:/Users/vboxuser/Documents/GitHub/LibrarySystem/LibrarySystem_rewrite/src/libsys/ReaderSignIn.java</file>
-            <file>file:/C:/Users/vboxuser/Documents/GitHub/LibrarySystem/LibrarySystem_rewrite/src/libsys/SearchEngine.java</file>
+            <file>file:/C:/Users/vboxuser/Documents/GitHub/LibrarySystem/LibrarySystem/src/libsys/AdminSignIn.java</file>
+            <file>file:/C:/Users/vboxuser/Documents/GitHub/LibrarySystem/LibrarySystem/src/libsys/main.java</file>
+            <file>file:/C:/Users/vboxuser/Documents/GitHub/LibrarySystem/LibrarySystem/src/libsys/DatabaseHandler.java</file>
+            <file>file:/C:/Users/vboxuser/Documents/GitHub/LibrarySystem/LibrarySystem/src/libsys/ReaderSignIn.java</file>
+            <file>file:/C:/Users/vboxuser/Documents/GitHub/LibrarySystem/LibrarySystem/src/libsys/ReaderSignUp.java</file>
+            <file>file:/C:/Users/vboxuser/Documents/GitHub/LibrarySystem/LibrarySystem/src/libsys/SearchEngine.java</file>
         </group>
     </open-files>
 </project-private>

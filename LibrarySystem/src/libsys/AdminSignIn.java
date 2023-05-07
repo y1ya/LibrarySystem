@@ -119,23 +119,72 @@ public class AdminSignIn extends main {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnConfirmActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConfirmActionPerformed
-        siFullName = txtLogName.getText();
-        siPass = String.valueOf(txtLogPass.getPassword());
-
+        databaseConnect("accounts");
+ 
+        asiFullName = txtLogName.getText();
+        asiPass = String.valueOf(txtLogPass.getPassword());
+        boolean matchAcc = false, matchPass = false, matchType = false;
+        
         try {
-            rs = stmt.executeQuery("SELECT * FROM ACCOUNTS");
-            while (rs.next()) {
-                suPass = rs.getString("PASSWORD");
-                suFullName = rs.getString("USERNAME");
-                if (siFullName.equals(suPass)) {
-                    if (siPass.equals(suPass)) {
-
-                        JOptionPane.showMessageDialog(null, "Successfully Logged in!");
+            stmt = con.createStatement();
+            rs = stmt.executeQuery("SELECT PASSWORD FROM ACCOUNTS WHERE FULLNAME='" + asiFullName + "'");
+            if (rs.next()) 
+            {
+                asicPass = rs.getString("PASSWORD");
+                if (asiPass.equals(asicPass)) 
+                {
+                    stmt = con.createStatement();
+                    rs = stmt.executeQuery("SELECT USERTYPE FROM ACCOUNTS WHERE FULLNAME='" + asiFullName + "'");
+                    if (rs.next()) 
+                    {
+                        asiUsertype = rs.getString("USERTYPE");
+                        if (asiUsertype.equals("ADMIN"))
+                        {
+                            matchAcc = true; 
+                            matchPass = true;
+                            matchType = true;
+                        }
+                        else
+                        {
+                            matchAcc = true; 
+                            matchPass = true;
+                        }
                     }
                 }
-            }
-        } catch (SQLException e) {
+                else 
+                {
+                    matchAcc = true;
+                }
+            } 
+            Refresh_RS_STMT("accounts");
+        } 
+        catch (SQLException e) 
+        {
             System.out.println(e);
+        }
+
+        if (matchAcc && matchPass && matchType)
+        {
+            JOptionPane.showMessageDialog(null, "Successfully Logged in!");
+            this.dispose();
+            //readerUpInComplete(rsiFullName);
+        }
+        else if (matchAcc && matchPass && !matchType)
+        {
+            JOptionPane.showMessageDialog(null, "Wrong Sign up form.");
+            // add redirection feature
+        }
+        else if (matchAcc && !matchPass)
+        {
+            txtLogName.setText(null);
+            txtLogPass.setText(null);
+            JOptionPane.showMessageDialog(null, "Incorrect Password!");
+        }
+        else
+        {
+            txtLogName.setText(null);
+            txtLogPass.setText(null);
+            JOptionPane.showMessageDialog(null, "Account not found!", "",JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_btnConfirmActionPerformed
 

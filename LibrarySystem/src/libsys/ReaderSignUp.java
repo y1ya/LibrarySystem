@@ -143,20 +143,23 @@ public class ReaderSignUp extends main {
         this.setVisible(false);
         main.sendDisplaySignal(new ReaderSignIn()); // <--- It goes to
     }//GEN-LAST:event_btnBackActionPerformed
+    
     // Reader account register
     private void btnConfirmActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConfirmActionPerformed
         databaseConnect("accounts");
+        
+        rsuFullName = txtNewName.getText();
+        rsuPass = String.valueOf(txtNewPass.getPassword());
         //int id = randNumGen();
-        suFullName = txtNewName.getText();
-        System.out.print("clicked");
+        
         try {  
             if (!String.valueOf(txtNewPass.getPassword()).equals(String.valueOf(txtNewPassConf.getPassword())))
                 lblPassNotAligned.setVisible(true);
             else
             {
                 rs.moveToInsertRow();
-                rs.updateString("PASSWORD", String.valueOf(txtNewPass.getPassword()));
-                rs.updateString("FULLNAME", txtNewName.getText());
+                rs.updateString("PASSWORD", rsuPass);
+                rs.updateString("FULLNAME", rsuFullName);
                 rs.updateInt("USERID", 1245);
                 rs.updateString("USERTYPE", "READER");
                 rs.insertRow();
@@ -164,7 +167,7 @@ public class ReaderSignUp extends main {
                 
                 JOptionPane.showMessageDialog(null, "Registration Complete!");
                 this.dispose();
-                readerUpInComplete(suFullName);
+                readerUpInComplete(rsuFullName);
             }
             Refresh_RS_STMT("accounts");
         } 

@@ -108,7 +108,6 @@ public class SearchEngine extends main {
             while (rs.next())
             {
                 String bookTitle = rs.getString("TITLE");
-                System.out.println(bookTitle);
                 if (bookTitle.toLowerCase().startsWith(text)) 
                 {
                     bookList.addElement(bookTitle);

@@ -86,7 +86,7 @@ public class MainWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_btnReaderActionPerformed
 
     private void btnAdminActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdminActionPerformed
-        this.setVisible(false);
+        this.dispose();
         main.sendDisplaySignal(new AdminSignIn()); // <--- It goes to
     }//GEN-LAST:event_btnAdminActionPerformed
 
