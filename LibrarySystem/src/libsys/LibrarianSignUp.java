@@ -1,10 +1,7 @@
 package libsys;
 
-import java.sql.*;
-import javax.swing.*;
-
-public class ReaderSignUp extends main {
-    public ReaderSignUp() {
+public class LibrarianSignUp extends main {
+    public LibrarianSignUp() {
         initComponents();
       
         lblPassNotAligned.setVisible(false);
@@ -150,10 +147,11 @@ public class ReaderSignUp extends main {
         
         usuFullName = txtNewName.getText();
         usuPass = String.valueOf(txtNewPass.getPassword());
-        //int id = randNumGen();
+        // int id = randNumGen();
         
-        //ID still lacking
-        signUp(usuFullName, usuPass, "READER", txtNewName, txtNewPass, txtNewPassConf, lblPassNotAligned);
+        // ID still lacking
+        // [DEPRECATED] Librarian sign up functions differently
+        signUp(usuFullName, usuPass, "LIBRARIAN", txtNewName, txtNewPass, txtNewPassConf, lblPassNotAligned);
     }//GEN-LAST:event_btnConfirmActionPerformed
     
     private void btnClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearActionPerformed

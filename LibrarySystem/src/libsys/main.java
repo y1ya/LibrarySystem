@@ -63,8 +63,9 @@ public class main extends javax.swing.JFrame {
     // rather than being thrown and adjusted from JFrame to JFrame
     public static void sendDisplaySignal(JFrame sig) {
         JFrame[] jframe = {
-            new MainWindow(), new AdminSignIn(), new ReaderSignIn(),
-            new ReaderSignUp(), new AdminBase(), new BookRegistry()
+            new MainWindow(), new AdminSignIn(), new LibrarianSignIn(), 
+            new LibrarianSignUp(), new ReaderSignIn(), new ReaderSignUp(), 
+            new AdminBase(), new BookRegistry(),
         };
         for (JFrame jframe1 : jframe) {
             if (jframe1.getClass().equals(sig.getClass())) {

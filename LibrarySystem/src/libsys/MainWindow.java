@@ -28,6 +28,11 @@ public class MainWindow extends javax.swing.JFrame {
         });
 
         btnLibrarian.setText("Librarian");
+        btnLibrarian.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLibrarianActionPerformed(evt);
+            }
+        });
 
         btnAdmin.setText("Admin");
         btnAdmin.addActionListener(new java.awt.event.ActionListener() {
@@ -81,7 +86,7 @@ public class MainWindow extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnReaderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReaderActionPerformed
-        this.setVisible(false);
+        this.dispose();
         main.sendDisplaySignal(new ReaderSignIn()); // <--- It goes to
     }//GEN-LAST:event_btnReaderActionPerformed
 
@@ -89,6 +94,11 @@ public class MainWindow extends javax.swing.JFrame {
         this.dispose();
         main.sendDisplaySignal(new AdminSignIn()); // <--- It goes to
     }//GEN-LAST:event_btnAdminActionPerformed
+
+    private void btnLibrarianActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLibrarianActionPerformed
+        this.dispose();
+        main.sendDisplaySignal(new LibrarianSignIn()); // <--- It goes to
+    }//GEN-LAST:event_btnLibrarianActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAdmin;

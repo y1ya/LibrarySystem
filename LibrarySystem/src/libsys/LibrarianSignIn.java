@@ -1,15 +1,13 @@
 
 package libsys;
 
-import java.sql.*;
-import javax.swing.JOptionPane;
 import libsys.MainWindow;
 import libsys.ReaderSignUp;
 import libsys.main;
 
-public class ReaderSignIn extends main {
+public class LibrarianSignIn extends main {
 
-    public ReaderSignIn() {
+    public LibrarianSignIn() {
         initComponents();
     }
     
@@ -151,7 +149,7 @@ public class ReaderSignIn extends main {
         usiFullName = txtLogName.getText();
         usiPass = String.valueOf(txtLogPass.getPassword());
         
-        signIn(usiFullName, usiPass, "READER", txtLogName, txtLogPass);
+        signIn(usiFullName, usiPass, "LIBRARIAN", txtLogName, txtLogPass);
     }//GEN-LAST:event_btnConfirmActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

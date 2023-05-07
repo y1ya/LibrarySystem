@@ -129,7 +129,7 @@ public class AdminSignIn extends main {
     }//GEN-LAST:event_btnConfirmActionPerformed
 
     private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed
-        this.setVisible(false);
+        this.dispose();
         main.sendDisplaySignal(new MainWindow()); // <--- It goes back to
     }//GEN-LAST:event_btnBackActionPerformed
 
