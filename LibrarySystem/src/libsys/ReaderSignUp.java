@@ -147,10 +147,9 @@ public class ReaderSignUp extends main {
         
         usuFullName = txtNewName.getText();
         usuPass = String.valueOf(txtNewPass.getPassword());
-        //int id = randNumGen();
+        id = randNumGen("accounts", "userid");
         
-        //ID still lacking
-        signUp(usuFullName, usuPass, "READER", txtNewName, txtNewPass, txtNewPassConf, lblPassNotAligned);
+        signUp(usuFullName, usuPass, "READER", txtNewName, txtNewPass, txtNewPassConf, lblPassNotAligned, id);
     }//GEN-LAST:event_btnConfirmActionPerformed
     
     private void btnClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearActionPerformed

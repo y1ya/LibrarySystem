@@ -17,15 +17,19 @@ public class main extends javax.swing.JFrame {
     Connection con;
     Statement stmt;
     ResultSet rs;
+    
     // displaying the database table
     DefaultTableModel LoginModel = new DefaultTableModel();
-    // universal variables for accounts database
+    
+    // universal variables for accounts database 
     String usiFullName, usiPass, usicPass, usiUsertype, 
            usuFullName, usuPass, usucPass, usuUserType;
-    int usiId, usuID;
+    int id;
     boolean matchAcc = false, matchPass = false, matchType = false;
+    
     // variables for books databases
     String t;
+    
     // personalization variables
     public static String currFullName;
 
@@ -83,29 +87,34 @@ public class main extends javax.swing.JFrame {
         int randNum = random.nextInt(9999); // generates a random integer between 1 and 99999 which is the limit
 
         try {
-            stmt = con.createStatement();
+            stmt = con.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
+                    ResultSet.CONCUR_UPDATABLE);
             rs = stmt.executeQuery("SELECT " + dbId.toUpperCase() + " FROM " + dbName.toUpperCase() + " WHERE USERID=" + randNum);
             // check if the generated random number recursively if it already exists in the database
             while (rs.next()) {
                 randNum = random.nextInt(9999);
                 rs = stmt.executeQuery("SELECT " + dbId.toUpperCase() + " FROM " + dbName.toUpperCase() + " WHERE USERID=" + randNum);
             }
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            refreshRsStmt("accounts");
+        } 
+        catch (SQLException err) 
+        {
+            System.out.println(err.getMessage());
         }
         return randNum;
     }
 
     // Gets called after signing up or signing in
     // Sends the full name of the current user to display name
-    public void readerUpInComplete() {
+    public void readerUpInComplete() 
+    {
         ReaderBase readerBase = new ReaderBase(currFullName);
         readerBase.initialSearch(); // Readying the Search Engine
         readerBase.setVisible(true); // <--- It goes to
     }
     
-    //[POSSIBLE BUG] Did not yet account for where the librarian goes once registered
-    public void signUp(String usuFullName, String usuPass, String userType, JTextField txtNewName, JPasswordField txtNewPass, JPasswordField txtNewPassConf, JLabel lblPassNotAligned)
+    public void signUp(String usuFullName, String usuPass, String userType, JTextField txtNewName, 
+            JPasswordField txtNewPass, JPasswordField txtNewPassConf, JLabel lblPassNotAligned, int id) 
     {
         try 
         {  
@@ -116,7 +125,7 @@ public class main extends javax.swing.JFrame {
                 rs.moveToInsertRow();
                 rs.updateString("PASSWORD", usuPass);
                 rs.updateString("FULLNAME", usuFullName);
-                rs.updateInt("USERID", 1235); // <--- Still needs the auto-increment function
+                rs.updateInt("USERID", id); // <--- temporary changes
                 rs.updateString("USERTYPE", "READER");
                 rs.insertRow();
                 refreshRsStmt("accounts");
@@ -135,8 +144,8 @@ public class main extends javax.swing.JFrame {
         }
     }
 
-    //[POSSIBLE BUG] Did not yet consider for where the the librarian go once signed in
-    public void signIn(String usiFullName, String usiPass, String userType, JTextField txtLogName, JPasswordField txtLogPass)
+    public void signIn(String usiFullName, String usiPass, String userType, 
+            JTextField txtLogName, JPasswordField txtLogPass) 
     {
         try {
             stmt = con.createStatement();
@@ -185,7 +194,7 @@ public class main extends javax.swing.JFrame {
         }
         else if (matchAcc && matchPass && !matchType)
         {
-            JOptionPane.showMessageDialog(null, "Wrong Sign up form.");
+            JOptionPane.showMessageDialog(null, "Wrong Sign in form.");
             // add redirection feature
         }
         else if (matchAcc && !matchPass)
@@ -204,15 +213,18 @@ public class main extends javax.swing.JFrame {
     
     public void toUsertypeBases(String userType)
     {
-        switch (userType)
-            {
-                case "ADMIN":
-                    sendDisplaySignal(new AdminBase()); break;
-                case "LIBRARIAN":
-                    sendDisplaySignal(new BookRegistry()); break;
-                case "READER":
-                    readerUpInComplete(); break;
-            }
+        switch (userType) 
+        {
+            case "ADMIN":
+                sendDisplaySignal(new AdminBase()); 
+                break;
+            case "LIBRARIAN":
+                sendDisplaySignal(new BookRegistry()); 
+                break;
+            case "READER":
+                readerUpInComplete();
+                break;
+        }
     }
     
     // The first statement/s to be called
