@@ -13,17 +13,16 @@ import java.util.logging.Logger;
 import javax.swing.table.DefaultTableModel;
 
 public class ReaderBase extends main {
-            
+
     public ReaderBase(String currFullName) {
         initComponents();
         setGuiBase();
         setPersonalization();
     }
-    
+
     private DefaultTableModel bookTableModel;
     private final String[] DEFAULT_COLUMNS = {"TITLE", "AUTHOR", "GENRE", "DATE"};
-    private String[] genre = {"All Genre", "Science Fiction", "Horror", "Fantasy", "Dystopian"};
-    
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -48,12 +47,6 @@ public class ReaderBase extends main {
 
         jPanel1.setPreferredSize(new java.awt.Dimension(1280, 720));
 
-        searchField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                searchFieldActionPerformed(evt);
-            }
-        });
-
         btnSearch.setText("Search!");
         btnSearch.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -64,22 +57,12 @@ public class ReaderBase extends main {
         lblGreetName.setText("Welcome");
 
         rbTitle.setText("Title");
-        rbTitle.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                rbTitleActionPerformed(evt);
-            }
-        });
 
         rbAuthor.setText("Author");
 
         rbDate.setText("Publication Date");
 
         cbGenre.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "All Genre", " " }));
-        cbGenre.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cbGenreActionPerformed(evt);
-            }
-        });
 
         cbAvail.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Unavailable / Available", " " }));
 
@@ -171,27 +154,11 @@ public class ReaderBase extends main {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-        
+
     private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
         databaseConnect("books");
         bookFinder();
     }//GEN-LAST:event_btnSearchActionPerformed
-
-    private void cbGenreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbGenreActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_cbGenreActionPerformed
-
-    private void searchFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchFieldActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_searchFieldActionPerformed
-
-    private void rbTitleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbTitleActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_rbTitleActionPerformed
-
-    public void allClear() {
-        bookTableModel.setRowCount(0);
-    }
 
     public void allSetModel() {
         String[] columnNames = {"Title", "Author", "Genre", "Date"};
@@ -200,22 +167,24 @@ public class ReaderBase extends main {
         mainTable.setModel(bookTableModel);
     }
 
+    public void allClear() {
+        bookTableModel.setRowCount(0);
+    }
+
     public void allAddBook(String[] bookData) throws Exception {
-        if (bookTableModel == null) 
-        {
+        if (bookTableModel == null) {
             bookTableModel = new DefaultTableModel(DEFAULT_COLUMNS, 0);
             mainTable.setModel(bookTableModel);
         }
-        
+
         String selectedGenre = (String) cbGenre.getSelectedItem();
-        if (!selectedGenre.equals("All Genres") && !selectedGenre.equals(bookData[2]))
+        if (!selectedGenre.equals("All Genres") && !selectedGenre.equals(bookData[2])) {
             return;
-      
+        }
 
         Vector<String> reorderedData = new Vector<>();
         for (String column : DEFAULT_COLUMNS) {
-            switch (column) 
-            {
+            switch (column) {
                 case "TITLE":
                     reorderedData.add(bookData[0]);
                     break;
@@ -233,28 +202,27 @@ public class ReaderBase extends main {
         bookTableModel.addRow(reorderedData);
     }
 
-    public void queryNull(String category) throws SQLException
-    {
+    public void queryNull(String category) throws SQLException {
         String query = "SELECT * FROM BOOKS";
         PreparedStatement stmt = con.prepareStatement(query);
         rs = stmt.executeQuery();
     }
-    public void queryNullAvail(String category) throws SQLException
-    {
+
+    public void queryNullAvail(String category) throws SQLException {
         String selectedAvail = (String) cbAvail.getSelectedItem();
         String query = "SELECT * FROM BOOKS WHERE AVAILABILITY ='" + selectedAvail.toUpperCase() + "'";
         PreparedStatement stmt = con.prepareStatement(query);
         rs = stmt.executeQuery();
     }
-    public void queryTermAll(String category) throws SQLException
-    {
+
+    public void queryTermAll(String category) throws SQLException {
         String query = "SELECT * FROM BOOKS WHERE " + category + " LIKE ? ";
         PreparedStatement stmt = con.prepareStatement(query);
         stmt.setString(1, searchField.getText().toUpperCase() + "%");
         rs = stmt.executeQuery();
     }
-    public void queryTermAvail(String category) throws SQLException
-    {
+
+    public void queryTermAvail(String category) throws SQLException {
         String selectedAvail = (String) cbAvail.getSelectedItem();
         String query = "SELECT * FROM BOOKS WHERE AVAILABILITY = ? AND " + category + " LIKE ? ";
         PreparedStatement stmt = con.prepareStatement(query);
@@ -262,10 +230,35 @@ public class ReaderBase extends main {
         stmt.setString(2, "%" + searchField.getText().toUpperCase() + "%");
         rs = stmt.executeQuery();
     }
-    
-    public void sortByTerm(String category, String avail) {
+
+    public void initialSearch() {
+        databaseConnect("books");
+        rbTitle.setSelected(true);
+        cbAvail.setSelectedIndex(0);
+        cbGenre.setSelectedIndex(0);
         try {
-            ArrayList<String[]> tempData = new ArrayList<>(); 
+            allSetModel();
+            allClear();
+            sortBy(decideCat(), decideAvail());
+        } catch (Exception ex) {
+            Logger.getLogger(ReaderBase.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public void bookFinder() {
+        try {
+            allSetModel();
+            allClear();
+            sortBy(decideCat(), decideAvail());
+        } catch (Exception ex) {
+            Logger.getLogger(ReaderBase.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public void sortBy(String category, String avail) {
+        try {
+            
+            ArrayList<String[]> tempData = new ArrayList<>();
             if (searchField.getText().isEmpty() && (cbAvail.getSelectedIndex() == 0)) 
                 queryNull(category);
             else if (searchField.getText().isEmpty() && (cbAvail.getSelectedIndex() == 1 || cbAvail.getSelectedIndex() == 2)) 
@@ -274,51 +267,53 @@ public class ReaderBase extends main {
                 queryTermAll(category);
             else if (!searchField.getText().isEmpty() && (cbAvail.getSelectedIndex() == 1 || cbAvail.getSelectedIndex() == 2)) 
                 queryTermAvail(category);
-            
+      
             if (bookTableModel != null) 
-            {
                 bookTableModel.setRowCount(0);
-            }
-            while (rs.next()) {
+            
+            while (rs.next()) 
+            {
                 String[] bookData = null;
                 if (category.equals("TITLE")) 
                 {
                     bookData = new String[]{
-                    rs.getString("TITLE"),
-                    rs.getString("AUTHOR"),
-                    rs.getString("GENRE"),
-                    rs.getString("DATE")
+                        rs.getString("TITLE"),
+                        rs.getString("AUTHOR"),
+                        rs.getString("GENRE"),
+                        rs.getString("DATE")
                     };
                 } 
                 else if (category.equals("AUTHOR")) 
                 {
                     bookData = new String[]{
-                    rs.getString("TITLE"),
-                    rs.getString("AUTHOR"),
-                    rs.getString("GENRE"),
-                    rs.getString("DATE")
+                        rs.getString("TITLE"),
+                        rs.getString("AUTHOR"),
+                        rs.getString("GENRE"),
+                        rs.getString("DATE")
                     };
-                }
+                } 
                 else if (category.equals("DATE")) 
                 {
                     bookData = new String[]{
-                    rs.getString("TITLE"),
-                    rs.getString("AUTHOR"),
-                    rs.getString("GENRE"),
-                    rs.getString("DATE")
+                        rs.getString("TITLE"),
+                        rs.getString("AUTHOR"),
+                        rs.getString("GENRE"),
+                        rs.getString("DATE")
                     };
                 }
-                tempData.add(bookData); 
+                tempData.add(bookData);
             }
             int sortColumn = Arrays.asList(DEFAULT_COLUMNS).indexOf(category);
-            Collections.sort(tempData, new Comparator<String[]>() {
+            Collections.sort(tempData, new Comparator<String[]>() 
+            {
                 @Override
                 public int compare(String[] o1, String[] o2) {
                     return o1[sortColumn].compareTo(o2[sortColumn]);
                 }
             });
-            for (String[] bookData : tempData) {
-                allAddBook(bookData); 
+            for (String[] bookData : tempData) 
+            {
+                allAddBook(bookData);
             }
             refreshRsStmt("books");
         } 
@@ -332,69 +327,43 @@ public class ReaderBase extends main {
         }
     }
 
-    public void initialSearch() {
-        databaseConnect("books");
-        rbTitle.setSelected(true);
-        cbAvail.setSelectedIndex(0);
-        cbGenre.setSelectedIndex(0);
-        try {
-            allSetModel();
-            allClear();
-            sortByTerm("TITLE", "Unavailable/Available");
-        } catch (Exception ex) {
-            Logger.getLogger(ReaderBase.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-    
-    public void bookFinder() {
-        try {
-            databaseConnect("books");
-            allSetModel();
-            allClear();
-            sortByTerm(decideRB(), decideCB());
-        } catch (Exception ex) {
-            Logger.getLogger(ReaderBase.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-
-    public String decideRB()
+    public String decideCat() 
     {
-        if (rbTitle.isSelected())
+        if (rbTitle.isSelected()) 
             return "TITLE";
-        if (rbAuthor.isSelected())
+        if (rbAuthor.isSelected()) 
             return "AUTHOR";
-        if (rbDate.isSelected())
+        if (rbDate.isSelected()) 
             return "DATE";
         return "ERROR";
     }
-    
-    public String decideCB()
+
+    public String decideAvail() 
     {
         String item = (String) cbAvail.getSelectedItem();;
         return item;
     }
-            
-    
-    public void setPersonalization()
+
+    public void setPersonalization() 
     {
         ReaderBase.currFullName = currFullName;
         lblGreetName.setText("Welcome " + currFullName + "!!!");
     }
-    
-    public void setGuiBase()
-    {   
+
+    public void setGuiBase() 
+    {
         cbAvail.removeAllItems();
         cbAvail.addItem("Unavailable/Available");
         cbAvail.addItem("Available");
         cbAvail.addItem("Unavailable");
-        
+
         cbGenre.removeAllItems();
         cbGenre.addItem("All Genres");
         cbGenre.addItem("Science Fiction");
         cbGenre.addItem("Horror");
         cbGenre.addItem("Fantasy");
         cbGenre.addItem("Dystopian");
-        
+
         bgCategories.add(rbTitle);
         bgCategories.add(rbAuthor);
         bgCategories.add(rbDate);
