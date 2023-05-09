@@ -147,7 +147,8 @@ public class main extends javax.swing.JFrame {
     public void signIn(String usiFullName, String usiPass, String userType, 
             JTextField txtLogName, JPasswordField txtLogPass) 
     {
-        try {
+        try 
+        {
             stmt = con.createStatement();
             rs = stmt.executeQuery("SELECT PASSWORD FROM ACCOUNTS WHERE FULLNAME='" + usiFullName + "'");
             if (rs.next()) 
@@ -207,7 +208,7 @@ public class main extends javax.swing.JFrame {
         {
             txtLogName.setText(null);
             txtLogPass.setText(null);
-            JOptionPane.showMessageDialog(null, "Account not found!", "",JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Account not found!", "", JOptionPane.ERROR_MESSAGE);
         }
     }
     
