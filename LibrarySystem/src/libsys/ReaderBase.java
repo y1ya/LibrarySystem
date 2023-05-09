@@ -214,7 +214,7 @@ public class ReaderBase extends main {
         databaseConnect("books");
         
         String searchTerm = searchField.getText().toLowerCase();
-        String[] catStrArr = {"TITLE", "AUTHOR", "VDATE"};
+        String[] catStrArr = {"TITLE", "AUTHOR", "DATE"};
         JRadioButton[] catRbArr = {rbTitle, rbAuthor, rbDate};
         
         for (int i = 0; i<catStrArr.length; i++)
@@ -269,7 +269,7 @@ public class ReaderBase extends main {
         booksTitle.addElement(rs.getString("TITLE"));
         booksAuthor.addElement(rs.getString("AUTHOR"));
         booksGenre.addElement(rs.getString("GENRE"));
-        booksDate.addElement(rs.getString("VDATE"));
+        booksDate.addElement(rs.getString("DATE"));
     }
     
     public void sortByTerm(String category, String searchTerm) {
