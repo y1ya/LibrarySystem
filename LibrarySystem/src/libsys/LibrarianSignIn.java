@@ -15,8 +15,6 @@ public class LibrarianSignIn extends main {
         txtLogName = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         txtLogPass = new javax.swing.JPasswordField();
-        jLabel3 = new javax.swing.JLabel();
-        btnCreateAcc = new javax.swing.JButton();
         btnConfirm = new javax.swing.JButton();
         btnClear = new javax.swing.JButton();
         btnBack = new javax.swing.JButton();
@@ -28,15 +26,6 @@ public class LibrarianSignIn extends main {
         jLabel1.setText("Enter Username:");
 
         jLabel2.setText("Enter Password:");
-
-        jLabel3.setText("Not signed in?");
-
-        btnCreateAcc.setText("Create account");
-        btnCreateAcc.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnCreateAccActionPerformed(evt);
-            }
-        });
 
         btnConfirm.setText("Confirm");
         btnConfirm.addActionListener(new java.awt.event.ActionListener() {
@@ -76,11 +65,7 @@ public class LibrarianSignIn extends main {
                         .addComponent(btnClear)))
                 .addContainerGap(510, Short.MAX_VALUE))
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(240, 240, 240)
-                .addComponent(jLabel3)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnCreateAcc)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(240, 1126, Short.MAX_VALUE)
                 .addComponent(btnBack)
                 .addGap(95, 95, 95))
         );
@@ -100,10 +85,7 @@ public class LibrarianSignIn extends main {
                     .addComponent(btnConfirm)
                     .addComponent(btnClear))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 325, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
-                    .addComponent(btnCreateAcc)
-                    .addComponent(btnBack))
+                .addComponent(btnBack)
                 .addGap(37, 37, 37))
         );
 
@@ -126,11 +108,6 @@ public class LibrarianSignIn extends main {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void btnCreateAccActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCreateAccActionPerformed
-        this.dispose();
-        main.sendDisplaySignal(new ReaderSignUp()); // <--- It goes to
-    }//GEN-LAST:event_btnCreateAccActionPerformed
  
     private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed
         this.dispose();
@@ -151,10 +128,8 @@ public class LibrarianSignIn extends main {
     private javax.swing.JButton btnBack;
     private javax.swing.JButton btnClear;
     private javax.swing.JButton btnConfirm;
-    private javax.swing.JButton btnCreateAcc;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JTextField txtLogName;
     private javax.swing.JPasswordField txtLogPass;

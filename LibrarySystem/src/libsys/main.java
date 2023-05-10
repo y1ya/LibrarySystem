@@ -68,11 +68,13 @@ public class main extends javax.swing.JFrame {
     public static void sendDisplaySignal(JFrame sig) {
         JFrame[] jframe = {
             new MainWindow(), new AdminSignIn(), new LibrarianSignIn(), 
-            new LibrarianSignUp(), new ReaderSignIn(), new ReaderSignUp(), 
-            new AdminBase(), new BookRegistry(),
+            new ReaderSignIn(), new ReaderSignUp(), new AdminBase(), 
+            new BookRegistry(),
         };
         for (JFrame jframe1 : jframe) {
             if (jframe1.getClass().equals(sig.getClass())) {
+                jframe1.setSize(new java.awt.Dimension(1280, 720));
+                jframe1.setLocationRelativeTo(null);
                 //Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();  // adapt to machinee's screen size
                 //jframe1.setSize(screenSize.width, screenSize.height); // set size to screen size
                 jframe1.setVisible(true);
@@ -80,7 +82,6 @@ public class main extends javax.swing.JFrame {
         }
     }
     
-    // [DEPRECATED]
     // When called, it provides a random number for the unique ID of databases
     public int randNumGen(String dbName, String dbId) {
         Random random = new Random();
@@ -196,7 +197,6 @@ public class main extends javax.swing.JFrame {
         else if (matchAcc && matchPass && !matchType)
         {
             JOptionPane.showMessageDialog(null, "Wrong Sign in form.");
-            // add redirection feature
         }
         else if (matchAcc && !matchPass)
         {
@@ -227,6 +227,13 @@ public class main extends javax.swing.JFrame {
                 break;
         }
     }
+        
+    public void logOut()
+    {
+        this.dispose();
+        sendDisplaySignal(new MainWindow());
+    }
+
     
     // The first statement/s to be called
     public static void main(String[] args) {
