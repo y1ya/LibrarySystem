@@ -7,6 +7,7 @@ import javax.swing.table.DefaultTableModel;
 import java.util.Random;
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.time.LocalDate;
 import javax.swing.JFrame;
 import javax.swing.JTextField;
 import javax.swing.JPasswordField;
@@ -197,7 +198,28 @@ public class main extends javax.swing.JFrame {
         else if (matchAcc && matchPass && !matchType)
         {
             JOptionPane.showMessageDialog(null, "Wrong Sign in form.");
-        }
+            try{
+                rs = stmt.executeQuery("SELECT USERTYPE FROM ACCOUNTS WHERE FULLNAME='" + usiFullName + "'");
+                if(rs.next()){
+                    usiUsertype = rs.getString("USERTYPE");
+                    switch(usiUsertype){
+                        case("READER"):
+                            this.dispose();
+                            main.sendDisplaySignal(new ReaderSignIn());
+                            break;
+                        case("LIBRARIAN"):
+                            this.dispose();
+                            main.sendDisplaySignal(new LibrarianSignIn());
+                            break;
+                        case("ADMIN"):
+                            this.dispose();
+                            main.sendDisplaySignal(new AdminSignIn());                     
+                    }
+                }
+            }catch (SQLException e){
+                System.out.println(e);
+            }        
+        }        
         else if (matchAcc && !matchPass)
         {
             txtLogName.setText(null);
@@ -234,7 +256,24 @@ public class main extends javax.swing.JFrame {
         sendDisplaySignal(new MainWindow());
     }
 
-    
+    //Insert Borrow Date(today) and ReturnDate to Database
+    public void Dates_to_Database(int add_days){
+        databaseConnect("books");
+        Date borrowDate = Date.valueOf(LocalDate.now());
+        Date returnDate = Date.valueOf(LocalDate.now().plusDays(add_days));
+        try{
+            stmt = con.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
+                    ResultSet.CONCUR_UPDATABLE);
+            rs = stmt.executeQuery("SELECT * FROM USERDB.DATETEST");
+            rs.moveToInsertRow();
+            rs.updateDate("DATEBORROWED", borrowDate);
+            rs.updateDate("RETURNDATE", returnDate);
+            rs.insertRow();
+            refreshRsStmt("books");
+        }catch(SQLException e){
+            System.out.print(e);
+        }
+    }
     // The first statement/s to be called
     public static void main(String[] args) {
         sendDisplaySignal(new MainWindow());
