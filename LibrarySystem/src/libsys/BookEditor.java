@@ -9,14 +9,14 @@ import java.io.*;
 import java.nio.file.*;
 import java.util.logging.*;
 import libsys.ImageInsert;
-import libsys.LibrarianBase;
 import libsys.main;
 
 
 
-public class BookRegistry extends main {
+public class BookEditor extends main {
     ImageInsert imageInsert= new ImageInsert();
-    public BookRegistry() {
+    
+    public BookEditor() {
         initComponents();
     }
             
@@ -54,7 +54,7 @@ public class BookRegistry extends main {
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("Book Registry");
+        jLabel1.setText("Book Editor");
         jLabel1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
         jLabel2.setText("Cover");
@@ -92,7 +92,6 @@ public class BookRegistry extends main {
         jScrollPane1.setViewportView(Synopsis_ta);
 
         Btn_Register.setText("REGISTER");
-        Btn_Register.setEnabled(false);
         Btn_Register.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 Btn_RegisterActionPerformed(evt);
@@ -190,12 +189,12 @@ public class BookRegistry extends main {
 
     private void ImageLabelMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ImageLabelMouseExited
         if(imageInsert.ImagePath!=null){
-        //Show the image in the current panel
+        //Show the image in teh current panel
         BufferedImage img = null;
         try {
             img = ImageIO.read(new File(imageInsert.ImagePath));
         } catch (IOException ex) {
-            Logger.getLogger(BookRegistry.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(BookEditor.class.getName()).log(Level.SEVERE, null, ex);
         }
         Image dimg = img.getScaledInstance(ImageLabel.getWidth(), ImageLabel.getHeight(),
         Image.SCALE_SMOOTH);
@@ -203,16 +202,13 @@ public class BookRegistry extends main {
         ImageIcon icon=new ImageIcon(dimg);
         ImageLabel.setText(null);
         ImageLabel.setIcon(icon);
-        Btn_Register.setEnabled(true);
         }
     }//GEN-LAST:event_ImageLabelMouseExited
 
     private void Btn_RegisterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Btn_RegisterActionPerformed
         databaseConnect("books");
         String destinationpath="src/libsys_images/"+Title_tf.getText()+".jpg";
-        
         try{
-            int newBookID=randNumGen("books","bookid");
             //The columns that are easiest to enter
             rs.moveToInsertRow();
             rs.updateString("TITLE", Title_tf.getText());
@@ -223,7 +219,7 @@ public class BookRegistry extends main {
             rs.updateString("IMAGE",destinationpath);
             //The columns which require random generated values
             //THESE ARE PLACEHOLDERS -WATSON
-            rs.updateInt("BOOKID", newBookID);
+            rs.updateInt("BOOKID", 300);
             rs.updateString("LOCATION","A4S3");
             rs.insertRow();
             refreshRsStmt("books");
@@ -232,11 +228,10 @@ public class BookRegistry extends main {
             try {
                 CopyImage(destinationpath);
             } catch (IOException ex) {
-                Logger.getLogger(BookRegistry.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(BookEditor.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
         catch(SQLException err){
-            JOptionPane.showMessageDialog(null, err);
             System.out.println(err);
         }
     }//GEN-LAST:event_Btn_RegisterActionPerformed
@@ -280,7 +275,7 @@ public class BookRegistry extends main {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new BookRegistry().setVisible(true);
+                new BookEditor().setVisible(true);
             }
         });
     }

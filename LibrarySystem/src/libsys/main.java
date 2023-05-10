@@ -7,6 +7,7 @@ import javax.swing.table.DefaultTableModel;
 import java.util.Random;
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.time.LocalDate;
 import javax.swing.JFrame;
 import javax.swing.JTextField;
 import javax.swing.JPasswordField;
@@ -29,6 +30,7 @@ public class main extends javax.swing.JFrame {
     
     // variables for books databases
     String t;
+    int currentBookID;
     
     // personalization variables
     public static String currFullName;
@@ -69,7 +71,8 @@ public class main extends javax.swing.JFrame {
         JFrame[] jframe = {
             new MainWindow(), new AdminSignIn(), new LibrarianSignIn(), 
             new ReaderSignIn(), new ReaderSignUp(), new AdminBase(), 
-            new BookRegistry(),
+            new BookRegistry(), new LibrarianBase(), new BookBorrowMan(),
+            new BookEditor(), new BookViewer(),
         };
         for (JFrame jframe1 : jframe) {
             if (jframe1.getClass().equals(sig.getClass())) {
@@ -220,7 +223,7 @@ public class main extends javax.swing.JFrame {
                 sendDisplaySignal(new AdminBase()); 
                 break;
             case "LIBRARIAN":
-                sendDisplaySignal(new BookRegistry()); 
+                sendDisplaySignal(new LibrarianBase()); 
                 break;
             case "READER":
                 readerUpInComplete();
@@ -233,8 +236,27 @@ public class main extends javax.swing.JFrame {
         this.dispose();
         sendDisplaySignal(new MainWindow());
     }
-
     
+    //Insert BorrowDate(today) and ReturnDate(after 7 days) to DataBase
+    public void Dates_to_Database(int daysadded){
+        databaseConnect("books");
+        Date borrowdate = Date.valueOf(LocalDate.now());
+        Date returndate = Date.valueOf(LocalDate.now().plusDays(daysadded));
+        System.out.print(borrowdate);        
+        try{
+            stmt = con.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
+                    ResultSet.CONCUR_UPDATABLE);            
+            rs = stmt.executeQuery("SELECT * FROM USERDB.DATETEST");
+            rs.moveToInsertRow();
+            rs.updateDate("DATEBORROWED", borrowdate);
+            rs.updateDate("RETURNDATE", returndate);
+            rs.insertRow();
+            refreshRsStmt("books");            
+        }catch(SQLException e){
+            System.out.print(e);
+        }
+    }
+
     // The first statement/s to be called
     public static void main(String[] args) {
         sendDisplaySignal(new MainWindow());
