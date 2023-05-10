@@ -252,8 +252,12 @@ public class main extends javax.swing.JFrame {
         
     public void logOut()
     {
-        this.dispose();
-        sendDisplaySignal(new MainWindow());
+        int logoutoption = JOptionPane.YES_NO_OPTION;
+        int logoutresult = JOptionPane.showConfirmDialog(null, "Log Out?", "Log Out Confirmation", logoutoption);
+        if(logoutresult == 0){
+            this.dispose();
+            sendDisplaySignal(new MainWindow());
+        }
     }
 
     //Insert Borrow Date(today) and ReturnDate to Database
