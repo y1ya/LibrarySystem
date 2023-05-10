@@ -40,6 +40,7 @@ public class ReaderBase extends main {
         cbAvail = new javax.swing.JComboBox<>();
         jScrollPane1 = new javax.swing.JScrollPane();
         mainTable = new javax.swing.JTable();
+        cbCending = new javax.swing.JComboBox<>();
 
         jToggleButton1.setText("jToggleButton1");
 
@@ -76,6 +77,8 @@ public class ReaderBase extends main {
         ));
         jScrollPane1.setViewportView(mainTable);
 
+        cbCending.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Ascending", " " }));
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -102,35 +105,46 @@ public class ReaderBase extends main {
                                     .addComponent(rbDate)
                                     .addGap(9, 9, 9)))
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 850, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(cbAvail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(cbGenre, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 224, Short.MAX_VALUE))))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(64, 64, 64)
+                                .addComponent(cbGenre, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 65, Short.MAX_VALUE)
+                                .addComponent(cbCending, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(88, 88, 88))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(111, 111, 111)
+                                .addComponent(cbAvail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addGap(15, 15, 15)
                 .addComponent(lblGreetName)
-                .addGap(36, 36, 36)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(searchField, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cbAvail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(rbAuthor)
-                        .addComponent(rbDate)
-                        .addComponent(rbTitle))
-                    .addComponent(btnSearch))
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(18, 18, 18)
-                        .addComponent(cbGenre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(36, 36, 36)
+                        .addComponent(searchField, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(rbAuthor)
+                                .addComponent(rbDate)
+                                .addComponent(rbTitle))
+                            .addComponent(btnSearch))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(28, 28, 28)
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 286, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(128, 128, 128)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(cbGenre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(cbCending, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(28, 28, 28)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 286, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(64, 64, 64)
+                        .addComponent(cbAvail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(281, Short.MAX_VALUE))
         );
 
@@ -160,27 +174,31 @@ public class ReaderBase extends main {
         bookFinder();
     }//GEN-LAST:event_btnSearchActionPerformed
 
-    public void allSetModel() {
+    public void allSetModel() 
+    {
         String[] columnNames = {"Title", "Author", "Genre", "Date"};
         bookTableModel = new DefaultTableModel(columnNames, 0);
         bookTableModel.setColumnIdentifiers(DEFAULT_COLUMNS);
         mainTable.setModel(bookTableModel);
     }
 
-    public void allClear() {
+    public void allClear() 
+    {
         bookTableModel.setRowCount(0);
     }
 
-    public void allAddBook(String[] bookData) throws Exception {
-        if (bookTableModel == null) {
+    public void allAddBook(String[] bookData) throws Exception 
+    {
+        if (bookTableModel == null) 
+        {
             bookTableModel = new DefaultTableModel(DEFAULT_COLUMNS, 0);
             mainTable.setModel(bookTableModel);
         }
 
         String selectedGenre = (String) cbGenre.getSelectedItem();
-        if (!selectedGenre.equals("All Genres") && !selectedGenre.equals(bookData[2])) {
+        if (!selectedGenre.equals("All Genres") && !selectedGenre.equals(bookData[2])) 
             return;
-        }
+        
 
         Vector<String> reorderedData = new Vector<>();
         for (String column : DEFAULT_COLUMNS) {
@@ -202,27 +220,31 @@ public class ReaderBase extends main {
         bookTableModel.addRow(reorderedData);
     }
 
-    public void queryNull(String category) throws SQLException {
+    public void queryNull(String category) throws SQLException 
+    {
         String query = "SELECT * FROM BOOKS";
         PreparedStatement stmt = con.prepareStatement(query);
         rs = stmt.executeQuery();
     }
 
-    public void queryNullAvail(String category) throws SQLException {
+    public void queryNullAvail(String category) throws SQLException 
+    {
         String selectedAvail = (String) cbAvail.getSelectedItem();
         String query = "SELECT * FROM BOOKS WHERE AVAILABILITY ='" + selectedAvail.toUpperCase() + "'";
         PreparedStatement stmt = con.prepareStatement(query);
         rs = stmt.executeQuery();
     }
 
-    public void queryTermAll(String category) throws SQLException {
+    public void queryTermAll(String category) throws SQLException 
+    {
         String query = "SELECT * FROM BOOKS WHERE " + category + " LIKE ? ";
         PreparedStatement stmt = con.prepareStatement(query);
         stmt.setString(1, searchField.getText().toUpperCase() + "%");
         rs = stmt.executeQuery();
     }
 
-    public void queryTermAvail(String category) throws SQLException {
+    public void queryTermAvail(String category) throws SQLException 
+    {
         String selectedAvail = (String) cbAvail.getSelectedItem();
         String query = "SELECT * FROM BOOKS WHERE AVAILABILITY = ? AND " + category + " LIKE ? ";
         PreparedStatement stmt = con.prepareStatement(query);
@@ -240,7 +262,9 @@ public class ReaderBase extends main {
             allSetModel();
             allClear();
             sortBy(decideCat(), decideAvail());
-        } catch (Exception ex) {
+        } 
+        catch (Exception ex) 
+        {
             Logger.getLogger(ReaderBase.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
@@ -250,14 +274,16 @@ public class ReaderBase extends main {
             allSetModel();
             allClear();
             sortBy(decideCat(), decideAvail());
-        } catch (Exception ex) {
+        } 
+        catch (Exception ex) 
+        {
             Logger.getLogger(ReaderBase.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
     public void sortBy(String category, String avail) {
-        try {
-            
+        try 
+        {
             ArrayList<String[]> tempData = new ArrayList<>();
             if (searchField.getText().isEmpty() && (cbAvail.getSelectedIndex() == 0)) 
                 queryNull(category);
@@ -274,43 +300,39 @@ public class ReaderBase extends main {
             while (rs.next()) 
             {
                 String[] bookData = null;
-                if (category.equals("TITLE")) 
+                for (String column: DEFAULT_COLUMNS)
                 {
-                    bookData = new String[]{
-                        rs.getString("TITLE"),
-                        rs.getString("AUTHOR"),
-                        rs.getString("GENRE"),
-                        rs.getString("DATE")
-                    };
-                } 
-                else if (category.equals("AUTHOR")) 
-                {
-                    bookData = new String[]{
-                        rs.getString("TITLE"),
-                        rs.getString("AUTHOR"),
-                        rs.getString("GENRE"),
-                        rs.getString("DATE")
-                    };
-                } 
-                else if (category.equals("DATE")) 
-                {
-                    bookData = new String[]{
-                        rs.getString("TITLE"),
-                        rs.getString("AUTHOR"),
-                        rs.getString("GENRE"),
-                        rs.getString("DATE")
-                    };
+                    if (category.equals(column)) 
+                    {
+                        bookData = new String[]{
+                            rs.getString("TITLE"),
+                            rs.getString("AUTHOR"),
+                            rs.getString("GENRE"),
+                            rs.getString("DATE")
+                        };
+                    } 
                 }
                 tempData.add(bookData);
             }
+            
             int sortColumn = Arrays.asList(DEFAULT_COLUMNS).indexOf(category);
-            Collections.sort(tempData, new Comparator<String[]>() 
+            if (cbCending.getSelectedIndex() == 0)
             {
+                Collections.sort(tempData, new Comparator<String[]>() {
                 @Override
                 public int compare(String[] o1, String[] o2) {
                     return o1[sortColumn].compareTo(o2[sortColumn]);
                 }
+                });
+            }
+            else 
+                Collections.sort(tempData, new Comparator<String[]>() {
+                @Override
+                public int compare(String[] o1, String[] o2) {
+                    return -1 * o1[sortColumn].compareTo(o2[sortColumn]);
+                }
             });
+               
             for (String[] bookData : tempData) 
             {
                 allAddBook(bookData);
@@ -363,6 +385,10 @@ public class ReaderBase extends main {
         cbGenre.addItem("Horror");
         cbGenre.addItem("Fantasy");
         cbGenre.addItem("Dystopian");
+        
+        cbCending.removeAllItems();
+        cbCending.addItem("Ascending");
+        cbCending.addItem("Descending");
 
         bgCategories.add(rbTitle);
         bgCategories.add(rbAuthor);
@@ -373,6 +399,7 @@ public class ReaderBase extends main {
     private javax.swing.ButtonGroup bgCategories;
     private javax.swing.JButton btnSearch;
     private javax.swing.JComboBox<String> cbAvail;
+    private javax.swing.JComboBox<String> cbCending;
     private javax.swing.JComboBox<String> cbGenre;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
