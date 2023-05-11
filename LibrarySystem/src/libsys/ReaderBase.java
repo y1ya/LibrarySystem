@@ -22,7 +22,7 @@ public class ReaderBase extends main {
     }
 
     private DefaultTableModel bookTableModel;
-    private final String[] DEFAULT_COLUMNS = {"TITLE", "AUTHOR", "GENRE", "DATE"};
+    private final String[] DEFAULT_COLUMNS = {"BOOKID" ,"TITLE", "AUTHOR", "GENRE", "DATE"};
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -42,6 +42,7 @@ public class ReaderBase extends main {
         jScrollPane1 = new javax.swing.JScrollPane();
         mainTable = new javax.swing.JTable();
         cbCending = new javax.swing.JComboBox<>();
+        btnViewBook = new javax.swing.JButton();
         btnLogOut = new javax.swing.JButton();
 
         jToggleButton1.setText("jToggleButton1");
@@ -77,9 +78,21 @@ public class ReaderBase extends main {
 
             }
         ));
+        mainTable.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                mainTableMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(mainTable);
 
         cbCending.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Ascending", " " }));
+
+        btnViewBook.setText("View");
+        btnViewBook.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnViewBookActionPerformed(evt);
+            }
+        });
 
         btnLogOut.setText("Log out");
         btnLogOut.addActionListener(new java.awt.event.ActionListener() {
@@ -116,31 +129,35 @@ public class ReaderBase extends main {
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 850, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(64, 64, 64)
-                                .addComponent(cbGenre, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 65, Short.MAX_VALUE)
-                                .addComponent(cbCending, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(88, 88, 88))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGap(111, 111, 111)
                                 .addComponent(cbAvail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(btnLogOut)
-                                .addGap(63, 63, 63))))))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(64, 64, 64)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(btnViewBook, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(cbGenre, 0, 90, Short.MAX_VALUE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 65, Short.MAX_VALUE)
+                                .addComponent(cbCending, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(88, 88, 88))))))
+            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                    .addContainerGap(1153, Short.MAX_VALUE)
+                    .addComponent(btnLogOut)
+                    .addGap(53, 53, 53)))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addGap(15, 15, 15)
                 .addComponent(lblGreetName)
+                .addGap(16, 16, 16)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(64, 64, 64)
+                        .addGap(48, 48, 48)
                         .addComponent(cbAvail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(36, 36, 36)
+                        .addGap(20, 20, 20)
                         .addComponent(searchField, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -149,7 +166,7 @@ public class ReaderBase extends main {
                                 .addComponent(rbDate)
                                 .addComponent(rbTitle))
                             .addComponent(btnSearch))
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGap(28, 28, 28)
                                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 286, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -158,9 +175,14 @@ public class ReaderBase extends main {
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(cbGenre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(cbCending, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(btnLogOut)))))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(btnViewBook)))))
                 .addContainerGap(281, Short.MAX_VALUE))
+            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                    .addContainerGap(435, Short.MAX_VALUE)
+                    .addComponent(btnLogOut)
+                    .addGap(271, 271, 271)))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -188,9 +210,20 @@ public class ReaderBase extends main {
         bookFinder();
     }//GEN-LAST:event_btnSearchActionPerformed
 
+    private void btnViewBookActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnViewBookActionPerformed
+        Object val = mainTable.getValueAt(mainTable.getSelectedRow(), 0);
+        currentBookID = Integer.parseInt(val.toString());
+        main.sendDisplaySignal(new BookViewer());
+    }//GEN-LAST:event_btnViewBookActionPerformed
+
     private void btnLogOutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogOutActionPerformed
         logOut();
     }//GEN-LAST:event_btnLogOutActionPerformed
+
+    private void mainTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_mainTableMouseClicked
+        Object val = mainTable.getValueAt(mainTable.getSelectedRow(), 0);
+        currentBookID = Integer.parseInt(val.toString());
+    }//GEN-LAST:event_mainTableMouseClicked
 
     public void allAddBook(String[] bookData) throws Exception 
     {
@@ -204,21 +237,23 @@ public class ReaderBase extends main {
         if (!selectedGenre.equals("All Genres") && !selectedGenre.equals(bookData[2])) 
             return;
         
-
         Vector<String> reorderedData = new Vector<>();
         for (String column : DEFAULT_COLUMNS) {
             switch (column) {
-                case "TITLE":
+                case "BOOKID":
                     reorderedData.add(bookData[0]);
                     break;
-                case "AUTHOR":
+                case "TITLE":
                     reorderedData.add(bookData[1]);
                     break;
-                case "GENRE":
+                case "AUTHOR":
                     reorderedData.add(bookData[2]);
                     break;
-                case "DATE":
+                case "GENRE":
                     reorderedData.add(bookData[3]);
+                    break;
+                case "DATE":
+                    reorderedData.add(bookData[4]);
                     break;
             }
         }
@@ -232,7 +267,7 @@ public class ReaderBase extends main {
     
     public void allSetModel() 
     {
-        String[] columnNames = {"Title", "Author", "Genre", "Date"};
+        String[] columnNames = {"ID" ,"Title", "Author", "Genre", "Date"};
         bookTableModel = new DefaultTableModel(columnNames, 0);
         bookTableModel.setColumnIdentifiers(DEFAULT_COLUMNS);
         mainTable.setModel(bookTableModel);
@@ -371,6 +406,7 @@ public class ReaderBase extends main {
                     if (category.equals(column)) 
                     {
                         bookData = new String[]{
+                            rs.getString("BOOKID"),
                             rs.getString("TITLE"),
                             rs.getString("AUTHOR"),
                             rs.getString("GENRE"),
@@ -425,6 +461,7 @@ public class ReaderBase extends main {
     private javax.swing.ButtonGroup bgCategories;
     private javax.swing.JButton btnLogOut;
     private javax.swing.JButton btnSearch;
+    private javax.swing.JButton btnViewBook;
     private javax.swing.JComboBox<String> cbAvail;
     private javax.swing.JComboBox<String> cbCending;
     private javax.swing.JComboBox<String> cbGenre;

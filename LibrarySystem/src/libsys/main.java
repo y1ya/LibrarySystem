@@ -30,7 +30,7 @@ public class main extends javax.swing.JFrame {
     
     // variables for books databases
     String t;
-    int currentBookID;
+    public static int currentBookID;
     
     // personalization variables
     public static String currFullName;
