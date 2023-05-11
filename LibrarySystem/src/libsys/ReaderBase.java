@@ -22,7 +22,7 @@ public class ReaderBase extends main {
     }
 
     private DefaultTableModel bookTableModel;
-    private final String[] DEFAULT_COLUMNS = {"BOOKID" ,"TITLE", "AUTHOR", "GENRE", "DATE"};
+    private final String[] DEFAULT_COLUMNS = {"TITLE", "AUTHOR", "GENRE", "DATE", "BOOKID"};
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -267,7 +267,7 @@ public class ReaderBase extends main {
     
     public void allSetModel() 
     {
-        String[] columnNames = {"ID" ,"Title", "Author", "Genre", "Date"};
+        String[] columnNames = {"Title", "Author", "Genre", "Date", "ID"};
         bookTableModel = new DefaultTableModel(columnNames, 0);
         bookTableModel.setColumnIdentifiers(DEFAULT_COLUMNS);
         mainTable.setModel(bookTableModel);

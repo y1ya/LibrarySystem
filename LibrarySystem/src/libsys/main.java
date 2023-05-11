@@ -25,7 +25,7 @@ public class main extends javax.swing.JFrame {
     // universal variables for accounts database 
     String usiFullName, usiPass, usicPass, usiUsertype, 
            usuFullName, usuPass, usucPass, usuUserType;
-    int id;
+    int id, userid;
     boolean matchAcc = false, matchPass = false, matchType = false;
     
     // variables for books databases
