@@ -41,6 +41,7 @@ public class AdminBase extends main {
         jTable1 = new javax.swing.JTable();
         btnAdd = new javax.swing.JButton();
         randomNumber = new javax.swing.JButton();
+        btnLogOut = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -78,7 +79,7 @@ public class AdminBase extends main {
         cbUserType.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "READER", "LIBRARIAN", "ADMIN" }));
         cbUserType.setSelectedIndex(-1);
         getContentPane().add(cbUserType, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 420, 293, -1));
-        getContentPane().add(jSeparator1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 277, 630, 10));
+        getContentPane().add(jSeparator1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 277, 740, 10));
 
         btnClear.setText("Clear");
         btnClear.addActionListener(new java.awt.event.ActionListener() {
@@ -128,7 +129,7 @@ public class AdminBase extends main {
         });
         jScrollPane1.setViewportView(jTable1);
 
-        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(12, 65, 610, 188));
+        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(12, 65, 720, 188));
 
         btnAdd.setText("Add");
         btnAdd.addActionListener(new java.awt.event.ActionListener() {
@@ -145,6 +146,14 @@ public class AdminBase extends main {
             }
         });
         getContentPane().add(randomNumber, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 380, 140, 30));
+
+        btnLogOut.setText("Log Out");
+        btnLogOut.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLogOutActionPerformed(evt);
+            }
+        });
+        getContentPane().add(btnLogOut, new org.netbeans.lib.awtextra.AbsoluteConstraints(650, 290, -1, -1));
 
         pack();
         setLocationRelativeTo(null);
@@ -338,6 +347,17 @@ public class AdminBase extends main {
             
             if (!b) {
                 JOptionPane.showMessageDialog(null, "The account has been updated!");
+                
+                txtFullname.setText(null);
+                txtPassword.setText(null);
+                txtUserId.setText(null);
+                cbUserType.setSelectedIndex(-1);
+                
+                btnAdd.setVisible(true);
+                btnSave.setVisible(false);
+                btnEdit.setVisible(false);
+                btnDelete.setVisible(false);
+                
                 refreshRsStmt("accounts");
                 formWindowOpened(null);
             }
@@ -375,6 +395,11 @@ public class AdminBase extends main {
         txtUserId.setText(String.valueOf(ids));
     }//GEN-LAST:event_randomNumberActionPerformed
 
+    private void btnLogOutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogOutActionPerformed
+        // TODO add your handling code here:
+        logOut();
+    }//GEN-LAST:event_btnLogOutActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -384,6 +409,7 @@ public class AdminBase extends main {
     private javax.swing.JButton btnClear;
     private javax.swing.JButton btnDelete;
     private javax.swing.JButton btnEdit;
+    private javax.swing.JButton btnLogOut;
     private javax.swing.JButton btnSave;
     private javax.swing.JButton btnSearch;
     private javax.swing.JComboBox<String> cbUserType;
