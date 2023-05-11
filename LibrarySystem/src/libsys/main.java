@@ -90,16 +90,16 @@ public class main extends javax.swing.JFrame {
         Random random = new Random();
         int randNum = random.nextInt(9999); // generates a random integer between 1 and 99999 which is the limit
 
-        try {
+         try {
             stmt = con.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
                     ResultSet.CONCUR_UPDATABLE);
-            rs = stmt.executeQuery("SELECT " + dbId.toUpperCase() + " FROM " + dbName.toUpperCase() + " WHERE USERID=" + randNum);
+            rs = stmt.executeQuery("SELECT " + dbId.toUpperCase() + " FROM " + dbName.toUpperCase() + " WHERE "+dbId.toUpperCase()+"="+randNum);
             // check if the generated random number recursively if it already exists in the database
             while (rs.next()) {
                 randNum = random.nextInt(9999);
-                rs = stmt.executeQuery("SELECT " + dbId.toUpperCase() + " FROM " + dbName.toUpperCase() + " WHERE USERID=" + randNum);
+                rs = stmt.executeQuery("SELECT " + dbId.toUpperCase() + " FROM " + dbName.toUpperCase() + " WHERE "+dbId.toUpperCase()+"="+ randNum);
             }
-            refreshRsStmt("accounts");
+            refreshRsStmt(dbName);
         } 
         catch (SQLException err) 
         {
@@ -137,8 +137,7 @@ public class main extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(null, "Registration Complete!");
                 this.dispose();
                 currFullName = usuFullName;
-                toUsertypeBases(userType);
-                
+                toUsertypeBases(userType);       
             }
             refreshRsStmt("accounts");
         } 
