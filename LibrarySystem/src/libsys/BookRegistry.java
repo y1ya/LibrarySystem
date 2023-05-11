@@ -187,20 +187,20 @@ public class BookRegistry extends main {
 
     private void ImageLabelMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ImageLabelMouseExited
         if(imageInsert.ImagePath!=null){
-        //Show the image in the current panel
-        BufferedImage img = null;
-        try {
-            img = ImageIO.read(new File(imageInsert.ImagePath));
-        } catch (IOException ex) {
-            Logger.getLogger(BookRegistry.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        Image dimg = img.getScaledInstance(ImageLabel.getWidth(), ImageLabel.getHeight(),
-        Image.SCALE_SMOOTH);
-        
-        ImageIcon icon=new ImageIcon(dimg);
-        ImageLabel.setText(null);
-        ImageLabel.setIcon(icon);
-        Btn_Register.setEnabled(true);
+            //Show the image in the current panel
+            BufferedImage img = null;
+            try {
+                img = ImageIO.read(new File(imageInsert.ImagePath));
+            } catch (IOException ex) {
+                Logger.getLogger(BookRegistry.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            Image dimg = img.getScaledInstance(ImageLabel.getWidth(), ImageLabel.getHeight(),
+            Image.SCALE_SMOOTH);
+
+            ImageIcon icon=new ImageIcon(dimg);
+            ImageLabel.setText(null);
+            ImageLabel.setIcon(icon);
+            Btn_Register.setEnabled(true);
         }
     }//GEN-LAST:event_ImageLabelMouseExited
 
@@ -221,7 +221,6 @@ public class BookRegistry extends main {
             //The columns which require random generated values
             //THESE ARE PLACEHOLDERS -WATSON
             rs.updateInt("BOOKID", newBookID);
-            rs.updateString("LOCATION","A4S3");
             rs.insertRow();
             refreshRsStmt("books");
             

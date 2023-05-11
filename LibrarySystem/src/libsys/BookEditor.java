@@ -218,7 +218,6 @@ public class BookEditor extends main {
             //The columns which require random generated values
             //THESE ARE PLACEHOLDERS -WATSON
             rs.updateInt("BOOKID", 300);
-            rs.updateString("LOCATION","A4S3");
             rs.insertRow();
             refreshRsStmt("books");
             

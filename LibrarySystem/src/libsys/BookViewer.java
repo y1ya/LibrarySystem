@@ -6,13 +6,11 @@ import java.sql.*;
 import java.awt.image.*;
 import java.io.*;
 
-
-
 public class BookViewer extends main {
     public BookViewer() {
         initComponents();
     }
-    String title,author,genre,date,synopsis, imagesrc, availability;
+    String title,author,genre,date,synopsis, imagesrc, availability, borrower;
     
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -34,7 +32,7 @@ public class BookViewer extends main {
         Author_label = new javax.swing.JLabel();
         Genre_label = new javax.swing.JLabel();
         Date_label = new javax.swing.JLabel();
-        jButton3 = new javax.swing.JButton();
+        btnBorrow = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
         jButton5 = new javax.swing.JButton();
 
@@ -130,7 +128,12 @@ public class BookViewer extends main {
                 .addContainerGap())
         );
 
-        jButton3.setText("Borrow");
+        btnBorrow.setText("Borrow");
+        btnBorrow.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBorrowActionPerformed(evt);
+            }
+        });
 
         jButton4.setText("Edit");
         jButton4.addActionListener(new java.awt.event.ActionListener() {
@@ -161,7 +164,7 @@ public class BookViewer extends main {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(5, 5, 5)
                         .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnBorrow, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(32, 32, 32))
         );
         jPanel1Layout.setVerticalGroup(
@@ -179,7 +182,7 @@ public class BookViewer extends main {
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(33, 33, 33)
-                        .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnBorrow, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -226,11 +229,10 @@ public class BookViewer extends main {
 
     private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated
         databaseConnect("books");
-        currentBookID=4407;
+        
         try{
             rs=stmt.executeQuery("SELECT * FROM BOOKS WHERE BOOKID = "+currentBookID);
             while(rs.next()){
-                
                 title=rs.getString("TITLE");
                 author=rs.getString("AUTHOR");
                 genre=rs.getString("GENRE");
@@ -265,33 +267,64 @@ public class BookViewer extends main {
         }
     }//GEN-LAST:event_formWindowActivated
 
-    
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
+    private void btnBorrowActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBorrowActionPerformed
+        databaseConnect("books");
+        try{
+            rs=stmt.executeQuery("SELECT * FROM BOOKS WHERE BOOKID = "+currentBookID);
+            while(rs.next()){
+                availability=rs.getString("AVAILABILITY");
+                borrower=rs.getString("BORROWER");
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(BookViewer.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(BookViewer.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(BookViewer.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(BookViewer.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-        //</editor-fold>
-        //</editor-fold>
+        catch(SQLException err){
+            System.out.println(err.getMessage());
+        }
+        
+        System.out.println(availability);
+        System.out.println(borrower);
+        
+        if (availability.equals("AVAILABLE")){
+            try{
+                rs=stmt.executeQuery("SELECT * FROM BOOKS WHERE BOOKID = "+currentBookID);
+                rs.next();
+                rs.updateString("AVAILABILITY", "UNAVAILABLE");
+                rs.updateString("BORROWER", currFullName);
+                rs.updateRow();
+                refreshRsStmt("books");
+            }
+            catch(SQLException err){
+                System.out.println(err);
+            }
+            JOptionPane.showMessageDialog(null, "Borrowed the book.");
+        }
+        else
+        {
+            if ("RETURNING".equals(availability)){
+                JOptionPane.showMessageDialog(null, "Someone is returning this book, try again later.");
+                return;
+            }
+            
+            if ("UNAVAILABLE".equals(availability) && borrower.equals(currFullName))
+            {
+                int option = JOptionPane.showOptionDialog(null, "You have already borrowed this book. Do you want to return it?", "Return book", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
+                if (option == JOptionPane.YES_OPTION) {
+                    try{
+                        rs=stmt.executeQuery("SELECT * FROM BOOKS WHERE BOOKID = "+currentBookID);
+                        rs.next();
+                        rs.updateString("AVAILABILITY", "RETURNING");
+                        rs.updateRow();
+                        refreshRsStmt("books");
+                    }
+                    catch(SQLException err){
+                        System.out.println(err);
+                    }
+                } else if (option == JOptionPane.NO_OPTION) 
+                    JOptionPane.showMessageDialog(null, "Okay.");
+            }
+        }
+    }//GEN-LAST:event_btnBorrowActionPerformed
 
-        /* Create and display the form */
+    public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new BookViewer().setVisible(true);
@@ -307,9 +340,9 @@ public class BookViewer extends main {
     private javax.swing.JLabel ImageLabel;
     private javax.swing.JTextArea Synopsis_label;
     private javax.swing.JLabel Title_label;
+    private javax.swing.JButton btnBorrow;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
     private javax.swing.JLabel jLabel2;
