@@ -67,7 +67,8 @@ public class main extends javax.swing.JFrame {
 
     // Gets called in every end of a JFrame so everything goes through the main
     // rather than being thrown and adjusted from JFrame to JFrame
-    public static void sendDisplaySignal(JFrame sig) {
+    public static void sendDisplaySignal(JFrame sig) 
+    {
         JFrame[] jframe = {
             new MainWindow(), new AdminSignIn(), new LibrarianSignIn(), 
             new ReaderSignIn(), new ReaderSignUp(), new AdminBase(), 
@@ -93,11 +94,11 @@ public class main extends javax.swing.JFrame {
          try {
             stmt = con.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
                     ResultSet.CONCUR_UPDATABLE);
-            rs = stmt.executeQuery("SELECT " + dbId.toUpperCase() + " FROM " + dbName.toUpperCase() + " WHERE "+dbId.toUpperCase()+"="+randNum);
+            rs = stmt.executeQuery("SELECT " + dbId.toUpperCase() + " FROM " + dbName.toUpperCase() + " WHERE " + dbId.toUpperCase() + "="+randNum);
             // check if the generated random number recursively if it already exists in the database
             while (rs.next()) {
                 randNum = random.nextInt(9999);
-                rs = stmt.executeQuery("SELECT " + dbId.toUpperCase() + " FROM " + dbName.toUpperCase() + " WHERE "+dbId.toUpperCase()+"="+ randNum);
+                rs = stmt.executeQuery("SELECT " + dbId.toUpperCase() + " FROM " + dbName.toUpperCase() + " WHERE " + dbId.toUpperCase() + "="+ randNum);
             }
             refreshRsStmt(dbName);
         } 

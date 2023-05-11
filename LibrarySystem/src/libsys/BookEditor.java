@@ -8,8 +8,6 @@ import java.awt.image.*;
 import java.io.*;
 import java.nio.file.*;
 import java.util.logging.*;
-import libsys.ImageInsert;
-import libsys.main;
 
 
 

@@ -14,7 +14,8 @@ import javax.swing.table.DefaultTableModel;
 
 public class ReaderBase extends main {
 
-    public ReaderBase(String currFullName) {
+    public ReaderBase(String currFullName) 
+    {
         initComponents();
         setGuiBase();
         setPersonalization();
@@ -191,19 +192,6 @@ public class ReaderBase extends main {
         logOut();
     }//GEN-LAST:event_btnLogOutActionPerformed
 
-    public void allSetModel() 
-    {
-        String[] columnNames = {"Title", "Author", "Genre", "Date"};
-        bookTableModel = new DefaultTableModel(columnNames, 0);
-        bookTableModel.setColumnIdentifiers(DEFAULT_COLUMNS);
-        mainTable.setModel(bookTableModel);
-    }
-
-    public void allClear() 
-    {
-        bookTableModel.setRowCount(0);
-    }
-
     public void allAddBook(String[] bookData) throws Exception 
     {
         if (bookTableModel == null) 
@@ -235,6 +223,65 @@ public class ReaderBase extends main {
             }
         }
         bookTableModel.addRow(reorderedData);
+    }
+    
+    public void allClear() 
+    {
+        bookTableModel.setRowCount(0);
+    }
+    
+    public void allSetModel() 
+    {
+        String[] columnNames = {"Title", "Author", "Genre", "Date"};
+        bookTableModel = new DefaultTableModel(columnNames, 0);
+        bookTableModel.setColumnIdentifiers(DEFAULT_COLUMNS);
+        mainTable.setModel(bookTableModel);
+    }
+
+    public void bookFinder() {
+        try {
+            allSetModel();
+            allClear();
+            sortBy(decideCat(), decideAvail());
+        } 
+        catch (Exception ex) 
+        {
+            Logger.getLogger(ReaderBase.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+   public String decideCat() 
+    {
+        if (rbTitle.isSelected()) 
+            return "TITLE";
+        if (rbAuthor.isSelected()) 
+            return "AUTHOR";
+        if (rbDate.isSelected()) 
+            return "DATE";
+        return "ERROR";
+    }
+
+    public String decideAvail() 
+    {
+        String item = (String) cbAvail.getSelectedItem();;
+        return item;
+    }
+    
+    public void initialSearch() 
+    {
+        databaseConnect("books");
+        rbTitle.setSelected(true);
+        cbAvail.setSelectedIndex(0);
+        cbGenre.setSelectedIndex(0);
+        try {
+            allSetModel();
+            allClear();
+            sortBy(decideCat(), decideAvail());
+        } 
+        catch (Exception ex) 
+        {
+            Logger.getLogger(ReaderBase.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     public void queryNull(String category) throws SQLException 
@@ -270,35 +317,37 @@ public class ReaderBase extends main {
         rs = stmt.executeQuery();
     }
 
-    public void initialSearch() {
-        databaseConnect("books");
-        rbTitle.setSelected(true);
-        cbAvail.setSelectedIndex(0);
-        cbGenre.setSelectedIndex(0);
-        try {
-            allSetModel();
-            allClear();
-            sortBy(decideCat(), decideAvail());
-        } 
-        catch (Exception ex) 
-        {
-            Logger.getLogger(ReaderBase.class.getName()).log(Level.SEVERE, null, ex);
-        }
+    public void setGuiBase() 
+    {          
+        cbAvail.removeAllItems();
+        cbAvail.addItem("Unavailable/Available");
+        cbAvail.addItem("Available");
+        cbAvail.addItem("Unavailable");
+
+        cbGenre.removeAllItems();
+        cbGenre.addItem("All Genres");
+        cbGenre.addItem("Science Fiction");
+        cbGenre.addItem("Horror");
+        cbGenre.addItem("Fantasy");
+        cbGenre.addItem("Dystopian");
+        
+        cbCending.removeAllItems();
+        cbCending.addItem("Ascending");
+        cbCending.addItem("Descending");
+
+        bgCategories.add(rbTitle);
+        bgCategories.add(rbAuthor);
+        bgCategories.add(rbDate);
+    }
+    
+    public void setPersonalization() 
+    {
+        ReaderBase.currFullName = currFullName;
+        lblGreetName.setText("Welcome " + currFullName + "!!!");
     }
 
-    public void bookFinder() {
-        try {
-            allSetModel();
-            allClear();
-            sortBy(decideCat(), decideAvail());
-        } 
-        catch (Exception ex) 
-        {
-            Logger.getLogger(ReaderBase.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-
-    public void sortBy(String category, String avail) {
+    public void sortBy(String category, String avail) 
+    {
         try 
         {
             ArrayList<String[]> tempData = new ArrayList<>();
@@ -366,54 +415,11 @@ public class ReaderBase extends main {
         }
     }
 
-    public String decideCat() 
-    {
-        if (rbTitle.isSelected()) 
-            return "TITLE";
-        if (rbAuthor.isSelected()) 
-            return "AUTHOR";
-        if (rbDate.isSelected()) 
-            return "DATE";
-        return "ERROR";
-    }
+ 
 
-    public String decideAvail() 
-    {
-        String item = (String) cbAvail.getSelectedItem();;
-        return item;
-    }
 
-    public void setPersonalization() 
-    {
-        ReaderBase.currFullName = currFullName;
-        lblGreetName.setText("Welcome " + currFullName + "!!!");
-    }
 
-    public void setGuiBase() 
-    {
-        setSize(new java.awt.Dimension(1280, 720));
-        setLocationRelativeTo(null);
-                
-        cbAvail.removeAllItems();
-        cbAvail.addItem("Unavailable/Available");
-        cbAvail.addItem("Available");
-        cbAvail.addItem("Unavailable");
 
-        cbGenre.removeAllItems();
-        cbGenre.addItem("All Genres");
-        cbGenre.addItem("Science Fiction");
-        cbGenre.addItem("Horror");
-        cbGenre.addItem("Fantasy");
-        cbGenre.addItem("Dystopian");
-        
-        cbCending.removeAllItems();
-        cbCending.addItem("Ascending");
-        cbCending.addItem("Descending");
-
-        bgCategories.add(rbTitle);
-        bgCategories.add(rbAuthor);
-        bgCategories.add(rbDate);
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup bgCategories;

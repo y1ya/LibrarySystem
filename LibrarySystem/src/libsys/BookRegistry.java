@@ -8,9 +8,6 @@ import java.awt.image.*;
 import java.io.*;
 import java.nio.file.*;
 import java.util.logging.*;
-import libsys.ImageInsert;
-import libsys.LibrarianBase;
-import libsys.main;
 
 
 
@@ -209,7 +206,7 @@ public class BookRegistry extends main {
 
     private void Btn_RegisterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Btn_RegisterActionPerformed
         databaseConnect("books");
-        String destinationpath="src/libsys_images/"+Title_tf.getText()+".jpg";
+        String destinationpath="src/libsys_images/"+Title_tf.getText()+".jpeg";
         
         try{
             int newBookID=randNumGen("books","bookid");
