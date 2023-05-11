@@ -200,6 +200,30 @@ public class main extends javax.swing.JFrame {
         else if (matchAcc && matchPass && !matchType)
         {
             JOptionPane.showMessageDialog(null, "Wrong Sign in form.");
+            try{
+                rs = stmt.executeQuery("SELECT USERTYPE FROM ACCOUNTS WHERE FULLNAME='" + usiFullName + "'");
+                if(rs.next())
+                {
+                    usiUsertype = rs.getString("USERTYPE");
+                    switch(usiUsertype)
+                    {
+                        case("READER"):
+                            this.dispose();
+                            main.sendDisplaySignal(new ReaderSignIn());
+                            break;
+                        case("LIBRARIAN"):
+                            this.dispose();
+                            main.sendDisplaySignal(new LibrarianSignIn());
+                            break;
+                        case("ADMIN"):
+                            this.dispose();
+                            main.sendDisplaySignal(new AdminSignIn());                     
+                    }
+                }
+            }
+            catch (SQLException e){
+                System.out.println(e);
+            }        
         }
         else if (matchAcc && !matchPass)
         {
@@ -233,25 +257,29 @@ public class main extends javax.swing.JFrame {
         
     public void logOut()
     {
-        this.dispose();
-        sendDisplaySignal(new MainWindow());
+        int logoutoption = JOptionPane.YES_NO_OPTION;
+        int logoutresult = JOptionPane.showConfirmDialog(null, "Log Out?", "Log Out Confirmation", logoutoption);
+        if(logoutresult == 0)
+        {
+            this.dispose();
+            sendDisplaySignal(new MainWindow());
+        }
     }
     
-    //Insert BorrowDate(today) and ReturnDate(after 7 days) to DataBase
-    public void Dates_to_Database(int daysadded){
+    //Insert Borrow Date(today) and ReturnDate to Database
+    public void Dates_to_Database(int add_days){
         databaseConnect("books");
-        Date borrowdate = Date.valueOf(LocalDate.now());
-        Date returndate = Date.valueOf(LocalDate.now().plusDays(daysadded));
-        System.out.print(borrowdate);        
+        Date borrowDate = Date.valueOf(LocalDate.now());
+        Date returnDate = Date.valueOf(LocalDate.now().plusDays(add_days));
         try{
             stmt = con.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
-                    ResultSet.CONCUR_UPDATABLE);            
+                    ResultSet.CONCUR_UPDATABLE);
             rs = stmt.executeQuery("SELECT * FROM USERDB.DATETEST");
             rs.moveToInsertRow();
-            rs.updateDate("DATEBORROWED", borrowdate);
-            rs.updateDate("RETURNDATE", returndate);
+            rs.updateDate("DATEBORROWED", borrowDate);
+            rs.updateDate("RETURNDATE", returnDate);
             rs.insertRow();
-            refreshRsStmt("books");            
+            refreshRsStmt("books");
         }catch(SQLException e){
             System.out.print(e);
         }
