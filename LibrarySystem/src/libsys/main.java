@@ -191,34 +191,6 @@ public class main extends javax.swing.JFrame {
             currFullName = usiFullName;
             toUsertypeBases(userType);
         }
-        else if (matchAcc && matchPass && !matchType)
-        {
-            JOptionPane.showMessageDialog(null, "Wrong Sign in form.");
-            try{
-                rs = stmt.executeQuery("SELECT USERTYPE FROM ACCOUNTS WHERE FULLNAME='" + usiFullName + "'");
-                if(rs.next())
-                {
-                    usiUsertype = rs.getString("USERTYPE");
-                    switch(usiUsertype)
-                    {
-                        case("READER"):
-                            this.dispose();
-                            main.sendDisplaySignal(new ReaderSignIn());
-                            break;
-                        case("LIBRARIAN"):
-                            this.dispose();
-                            main.sendDisplaySignal(new LibrarianSignIn());
-                            break;
-                        case("ADMIN"):
-                            this.dispose();
-                            main.sendDisplaySignal(new AdminSignIn());                     
-                    }
-                }
-            }
-            catch (SQLException e){
-                System.out.println(e);
-            }        
-        }
         else if (matchAcc && !matchPass)
         {
             txtLogName.setText(null);
@@ -268,9 +240,9 @@ public class main extends javax.swing.JFrame {
         try{
             stmt = con.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
                     ResultSet.CONCUR_UPDATABLE);
-            rs = stmt.executeQuery("SELECT * FROM USERDB.DATETEST");
+            rs = stmt.executeQuery("SELECT * FROM USERDB.BOOKS");
             rs.moveToInsertRow();
-            rs.updateDate("DATEBORROWED", borrowDate);
+            rs.updateDate("BORROWDATE", borrowDate);
             rs.updateDate("RETURNDATE", returnDate);
             rs.insertRow();
             refreshRsStmt("books");

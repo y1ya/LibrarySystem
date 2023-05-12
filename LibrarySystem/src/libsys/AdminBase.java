@@ -106,6 +106,7 @@ public class AdminBase extends main {
         getContentPane().add(btnDelete, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 460, -1, -1));
 
         btnSave.setText("Save");
+        btnSave.setEnabled(false);
         btnSave.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnSaveActionPerformed(evt);
@@ -373,7 +374,7 @@ public class AdminBase extends main {
         txtUserId.setEditable(true);
         
         cbUserType.setEnabled(true);
-        btnSave.setEnabled(false);
+        btnSave.setEnabled(true);
         
         randomNumber.setEnabled(true);
         refreshRsStmt("accounts");
