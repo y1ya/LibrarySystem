@@ -212,9 +212,8 @@ public class ReaderBase extends main {
     }//GEN-LAST:event_btnSearchActionPerformed
 
     private void btnViewBookActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnViewBookActionPerformed
-        Object val = mainTable.getValueAt(mainTable.getSelectedRow(), 3);
-        currentBookID = Integer.parseInt(val.toString());
-        main.sendDisplaySignal(new BookViewer());
+        if (mainTable.getSelectedRow() != -1)
+            main.sendDisplaySignal(new BookViewer());
     }//GEN-LAST:event_btnViewBookActionPerformed
 
     private void btnLogOutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogOutActionPerformed
@@ -222,7 +221,7 @@ public class ReaderBase extends main {
     }//GEN-LAST:event_btnLogOutActionPerformed
 
     private void mainTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_mainTableMouseClicked
-        Object val = mainTable.getValueAt(mainTable.getSelectedRow(), 3);
+        Object val = mainTable.getValueAt(mainTable.getSelectedRow(), 4);
         currentBookID = Integer.parseInt(val.toString());
     }//GEN-LAST:event_mainTableMouseClicked
 
