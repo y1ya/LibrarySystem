@@ -208,7 +208,7 @@ public class BookViewer extends main {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        
+        sendDisplaySignal(new BookEditor());
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated
