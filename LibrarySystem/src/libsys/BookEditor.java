@@ -13,7 +13,7 @@ import java.util.logging.*;
 
 public class BookEditor extends main {
     ImageInsert imageInsert= new ImageInsert();
-    String title,author,genre,date,synopsis, imagesrc, availability;
+    String title,author,genre,date,synopsis, imagesrc, availability,destinationpath;
     
     public BookEditor() {
         initComponents();
@@ -38,7 +38,7 @@ public class BookEditor extends main {
         jScrollPane1 = new javax.swing.JScrollPane();
         Synopsis_ta = new javax.swing.JTextArea();
         Btn_Register = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
+        Btn_back = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -87,6 +87,7 @@ public class BookEditor extends main {
         Synopsis_ta.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         Synopsis_ta.setLineWrap(true);
         Synopsis_ta.setRows(5);
+        Synopsis_ta.setWrapStyleWord(true);
         jScrollPane1.setViewportView(Synopsis_ta);
 
         Btn_Register.setText("EDIT");
@@ -96,7 +97,12 @@ public class BookEditor extends main {
             }
         });
 
-        jButton1.setText("BACK");
+        Btn_back.setText("BACK");
+        Btn_back.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Btn_backActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -142,7 +148,7 @@ public class BookEditor extends main {
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                             .addComponent(Btn_Register, javax.swing.GroupLayout.DEFAULT_SIZE, 83, Short.MAX_VALUE)
-                                            .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                            .addComponent(Btn_back, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                         .addGap(46, 46, 46)))))))
                 .addContainerGap())
         );
@@ -163,7 +169,7 @@ public class BookEditor extends main {
                             .addComponent(Title_tf, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(Btn_back, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, 37, Short.MAX_VALUE)
                             .addComponent(Author_tf, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -187,25 +193,32 @@ public class BookEditor extends main {
 
     private void ImageLabelMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ImageLabelMouseExited
         if(imageInsert.ImagePath!=null){
-        try{
-            String destinationpath="src/libsys_images/"+Title_tf.getText()+".jpg";
-            rs.updateString("IMAGE",destinationpath);
-        }catch(SQLException err){
-            System.out.println(err.getMessage());
-        }
-        //Show the image in the current panel
-        BufferedImage img = null;
-        try {
-            img = ImageIO.read(new File(imageInsert.ImagePath));
-        } catch (IOException ex) {
-            Logger.getLogger(BookEditor.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        Image dimg = img.getScaledInstance(ImageLabel.getWidth(), ImageLabel.getHeight(),
-        Image.SCALE_SMOOTH);
+            destinationpath="src/libsys_images/"+Title_tf.getText()+".jpg";
+            try{
+                Files.delete(Paths.get(imagesrc));
+            }catch(IOException err){
+                System.out.println(err);
+            }  
+            
+            //Show the image in the current panel
+            BufferedImage img = null;
+            try {
+                img = ImageIO.read(new File(imageInsert.ImagePath));
+            } catch (IOException ex) {
+                Logger.getLogger(BookEditor.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            Image dimg = img.getScaledInstance(ImageLabel.getWidth(), ImageLabel.getHeight(),
+            Image.SCALE_SMOOTH);
         
-        ImageIcon icon=new ImageIcon(dimg);
-        ImageLabel.setText(null);
-        ImageLabel.setIcon(icon);
+            ImageIcon icon=new ImageIcon(dimg);
+            ImageLabel.setText(null);
+            ImageLabel.setIcon(icon);
+            
+            try {
+                CopyImage(destinationpath);
+            }catch (IOException ex) {
+                System.out.println(ex);
+            }
         }
     }//GEN-LAST:event_ImageLabelMouseExited
 
@@ -216,14 +229,19 @@ public class BookEditor extends main {
             rs.next();
             rs.updateString("TITLE", Title_tf.getText());
             rs.updateString("AUTHOR", Author_tf.getText());
-            rs.updateInt("DATE",Integer.parseInt(Year_tf.getText()));
+            rs.updateString("DATE", Year_tf.getText());
             rs.updateString("GENRE", Genre_tf.getText());
             rs.updateString("SYNOPSIS",Synopsis_ta.getText());
+            rs.updateString("IMAGE",destinationpath);
             rs.updateRow();
             refreshRsStmt("books");
         } catch(SQLException err){
             System.out.println(err);
         }
+        Btn_Register.setEnabled(false);
+        JOptionPane.showMessageDialog(null, "Editing is successful!");
+        this.dispose();
+        sendDisplaySignal(new LibrarianBase());
     }//GEN-LAST:event_Btn_RegisterActionPerformed
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
@@ -237,6 +255,7 @@ public class BookEditor extends main {
                 Genre_tf.setText(rs.getString("GENRE"));
                 Year_tf.setText(rs.getString("DATE"));
                 imagesrc=rs.getString("IMAGE");
+                destinationpath=imagesrc;
                 Synopsis_ta.setText(rs.getString("SYNOPSIS"));
                 
                 BufferedImage img = null;
@@ -257,6 +276,11 @@ public class BookEditor extends main {
             System.out.println(err.getMessage());
         }
     }//GEN-LAST:event_formWindowOpened
+
+    private void Btn_backActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Btn_backActionPerformed
+        this.dispose();
+        sendDisplaySignal(new LibrarianBase());
+    }//GEN-LAST:event_Btn_backActionPerformed
   
     private void CopyImage(String destinationpath) throws IOException{
         Path source=Paths.get(imageInsert.ImagePath);
@@ -298,12 +322,12 @@ public class BookEditor extends main {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField Author_tf;
     private javax.swing.JButton Btn_Register;
+    private javax.swing.JButton Btn_back;
     private javax.swing.JTextField Genre_tf;
     private javax.swing.JLabel ImageLabel;
     private javax.swing.JTextArea Synopsis_ta;
     private javax.swing.JTextField Title_tf;
     private javax.swing.JTextField Year_tf;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

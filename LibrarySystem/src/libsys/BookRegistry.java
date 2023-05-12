@@ -246,7 +246,7 @@ public class BookRegistry extends main {
     }//GEN-LAST:event_Title_tfKeyPressed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
+        this.dispose();
         sendDisplaySignal(new LibrarianBase());
     }//GEN-LAST:event_jButton1ActionPerformed
   

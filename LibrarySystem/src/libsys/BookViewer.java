@@ -6,6 +6,10 @@ import java.awt.Image;
 import java.sql.*;
 import java.awt.image.*;
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import static libsys.main.currentBookID;
+import static libsys.main.sendDisplaySignal;
 
 public class BookViewer extends main {
 
@@ -34,7 +38,7 @@ public class BookViewer extends main {
         Date_label = new javax.swing.JLabel();
         btnBorrow = new javax.swing.JButton();
         btnBack = new javax.swing.JButton();
-        jButton5 = new javax.swing.JButton();
+        btnRemove = new javax.swing.JButton();
 
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowOpened(java.awt.event.WindowEvent evt) {
@@ -137,7 +141,12 @@ public class BookViewer extends main {
             }
         });
 
-        jButton5.setText("Remove");
+        btnRemove.setText("Remove");
+        btnRemove.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRemoveActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -157,7 +166,7 @@ public class BookViewer extends main {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(btnBack, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnBorrow, javax.swing.GroupLayout.DEFAULT_SIZE, 93, Short.MAX_VALUE)
-                    .addComponent(jButton5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(btnRemove, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(21, 21, 21))
         );
         jPanel1Layout.setVerticalGroup(
@@ -179,7 +188,7 @@ public class BookViewer extends main {
                         .addGap(18, 18, 18)
                         .addComponent(btnBack, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnRemove, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(21, 21, 21))))
         );
 
@@ -263,19 +272,12 @@ public class BookViewer extends main {
         try {
             rs = stmt.executeQuery("SELECT * FROM BOOKS WHERE BOOKID = " + currentBookID);
             while (rs.next()) {
-                title = rs.getString("TITLE");
-                author = rs.getString("AUTHOR");
-                genre = rs.getString("GENRE");
-                date = rs.getString("DATE");
-                synopsis = rs.getString("SYNOPSIS");
-                imagesrc = rs.getString("IMAGE");
-                availability = rs.getString("AVAILABILITY");
-                Title_label.setText(title);
-                Author_label.setText(author);
-                Genre_label.setText(genre);
-                Date_label.setText(date);
-                Synopsis_label.setText(synopsis);
-                Availability_label.setText(availability);
+                Title_label.setText(rs.getString("TITLE"));
+                Author_label.setText(rs.getString("AUTHOR"));
+                Genre_label.setText(rs.getString("GENRE"));
+                Date_label.setText(rs.getString("DATE"));
+                Synopsis_label.setText(rs.getString("SYNOPSIS"));
+                Availability_label.setText(rs.getString("AVAILABILITY"));
 
                 BufferedImage img = null;
                 try {
@@ -295,6 +297,39 @@ public class BookViewer extends main {
         }
     }//GEN-LAST:event_formWindowOpened
 
+    private void btnRemoveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoveActionPerformed
+        int response;
+        response=JOptionPane.showConfirmDialog(null, "This will completely wipe the book from the System, Are you sure?", "Confirmation?", 0);
+        System.out.println(response);
+        //0=yes 1=no 
+        switch(response){
+            case 0:
+                RemoveAction();
+                break;
+            case 1:
+                break;
+        }
+    }//GEN-LAST:event_btnRemoveActionPerformed
+
+    private void RemoveAction(){
+        databaseConnect("books");
+        try {
+            rs = stmt.executeQuery("SELECT * FROM BOOKS WHERE BOOKID = " + currentBookID);
+            rs.next();
+            rs.deleteRow();
+            refreshRsStmt("books");
+        } catch (SQLException err) {
+            System.out.println(err.getMessage());
+        }
+        try{
+                Files.delete(Paths.get(imagesrc));
+        }catch(IOException err){
+                System.out.println(err);
+        }
+        this.dispose();
+        sendDisplaySignal(new LibrarianBase());
+    }
+        
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
@@ -313,7 +348,7 @@ public class BookViewer extends main {
     private javax.swing.JLabel Title_label;
     private javax.swing.JButton btnBack;
     private javax.swing.JButton btnBorrow;
-    private javax.swing.JButton jButton5;
+    private javax.swing.JButton btnRemove;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
