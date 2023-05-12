@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.List;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -211,7 +212,7 @@ public class ReaderBase extends main {
     }//GEN-LAST:event_btnSearchActionPerformed
 
     private void btnViewBookActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnViewBookActionPerformed
-        Object val = mainTable.getValueAt(mainTable.getSelectedRow(), 0);
+        Object val = mainTable.getValueAt(mainTable.getSelectedRow(), 3);
         currentBookID = Integer.parseInt(val.toString());
         main.sendDisplaySignal(new BookViewer());
     }//GEN-LAST:event_btnViewBookActionPerformed
@@ -221,7 +222,7 @@ public class ReaderBase extends main {
     }//GEN-LAST:event_btnLogOutActionPerformed
 
     private void mainTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_mainTableMouseClicked
-        Object val = mainTable.getValueAt(mainTable.getSelectedRow(), 0);
+        Object val = mainTable.getValueAt(mainTable.getSelectedRow(), 3);
         currentBookID = Integer.parseInt(val.toString());
     }//GEN-LAST:event_mainTableMouseClicked
 
@@ -240,19 +241,19 @@ public class ReaderBase extends main {
         Vector<String> reorderedData = new Vector<>();
         for (String column : DEFAULT_COLUMNS) {
             switch (column) {
-                case "BOOKID":
+                case "TITLE":
                     reorderedData.add(bookData[0]);
                     break;
-                case "TITLE":
+                case "AUTHOR":
                     reorderedData.add(bookData[1]);
                     break;
-                case "AUTHOR":
+                case "GENRE":
                     reorderedData.add(bookData[2]);
                     break;
-                case "GENRE":
+                case "DATE":
                     reorderedData.add(bookData[3]);
                     break;
-                case "DATE":
+                case "BOOKID":
                     reorderedData.add(bookData[4]);
                     break;
             }
@@ -267,7 +268,7 @@ public class ReaderBase extends main {
     
     public void allSetModel() 
     {
-        String[] columnNames = {"Title", "Author", "Genre", "Date", "ID"};
+        String[] columnNames = {"Title", "Author", "Genre", "Date", "BookID"};
         bookTableModel = new DefaultTableModel(columnNames, 0);
         bookTableModel.setColumnIdentifiers(DEFAULT_COLUMNS);
         mainTable.setModel(bookTableModel);
@@ -336,19 +337,17 @@ public class ReaderBase extends main {
 
     public void queryTermAll(String category) throws SQLException 
     {
-        String query = "SELECT * FROM BOOKS WHERE " + category + " LIKE ? ";
+        String query = "SELECT * FROM BOOKS WHERE " + category + " IS NOT NULL";
         PreparedStatement stmt = con.prepareStatement(query);
-        stmt.setString(1, searchField.getText().toUpperCase() + "%");
         rs = stmt.executeQuery();
     }
 
     public void queryTermAvail(String category) throws SQLException 
     {
         String selectedAvail = (String) cbAvail.getSelectedItem();
-        String query = "SELECT * FROM BOOKS WHERE AVAILABILITY = ? AND " + category + " LIKE ? ";
+        String query = "SELECT * FROM BOOKS WHERE AVAILABILITY = ? AND " + category + " IS NOT NULL"; // why?
         PreparedStatement stmt = con.prepareStatement(query);
         stmt.setString(1, selectedAvail.toUpperCase());
-        stmt.setString(2, "%" + searchField.getText().toUpperCase() + "%");
         rs = stmt.executeQuery();
     }
 
@@ -385,7 +384,8 @@ public class ReaderBase extends main {
     {
         try 
         {
-            ArrayList<String[]> tempData = new ArrayList<>();
+            List<String[]> tempData1 = new ArrayList<>();
+
             if (searchField.getText().isEmpty() && (cbAvail.getSelectedIndex() == 0)) 
                 queryNull(category);
             else if (searchField.getText().isEmpty() && (cbAvail.getSelectedIndex() == 1 || cbAvail.getSelectedIndex() == 2)) 
@@ -394,51 +394,64 @@ public class ReaderBase extends main {
                 queryTermAll(category);
             else if (!searchField.getText().isEmpty() && (cbAvail.getSelectedIndex() == 1 || cbAvail.getSelectedIndex() == 2)) 
                 queryTermAvail(category);
-      
+
             if (bookTableModel != null) 
                 bookTableModel.setRowCount(0);
-            
+
             while (rs.next()) 
             {
                 String[] bookData = null;
-                for (String column: DEFAULT_COLUMNS)
+                for (String column : DEFAULT_COLUMNS)
                 {
                     if (category.equals(column)) 
                     {
                         bookData = new String[]{
-                            rs.getString("BOOKID"),
                             rs.getString("TITLE"),
                             rs.getString("AUTHOR"),
                             rs.getString("GENRE"),
-                            rs.getString("DATE")
+                            rs.getString("DATE"),
+                            rs.getString("BOOKID")
                         };
+                        break;
                     } 
                 }
-                tempData.add(bookData);
+                if (bookData != null) {
+                    tempData1.add(bookData);
+                }
             }
-            
+
             int sortColumn = Arrays.asList(DEFAULT_COLUMNS).indexOf(category);
-            if (cbCending.getSelectedIndex() == 0)
-            {
-                Collections.sort(tempData, new Comparator<String[]>() {
-                @Override
-                public int compare(String[] o1, String[] o2) {
-                    return o1[sortColumn].compareTo(o2[sortColumn]);
+
+            if (!searchField.getText().isEmpty()) {
+                String searchTerm = searchField.getText().toLowerCase();
+                List<String[]> tempData2 = new ArrayList<>();
+                for (String[] data : tempData1) {
+                    if (data[sortColumn].toLowerCase().startsWith(searchTerm)) {
+                        tempData2.add(data);
+                    }
                 }
-                });
-            }
-            else 
-                Collections.sort(tempData, new Comparator<String[]>() {
-                @Override
-                public int compare(String[] o1, String[] o2) {
-                    return -1 * o1[sortColumn].compareTo(o2[sortColumn]);
+
+                if (cbCending.getSelectedIndex() == 0) {
+                    sortAscending(tempData2, sortColumn);
+                } else {
+                    sortDescending(tempData2, sortColumn);
                 }
-            });
-               
-            for (String[] bookData : tempData) 
-            {
-                allAddBook(bookData);
+
+                for (String[] bookData : tempData2) {
+                    allAddBook(bookData);
+                }
+            } else {
+                if (cbCending.getSelectedIndex() == 0) {
+                    sortAscending(tempData1, sortColumn);
+                } else {
+                    sortDescending(tempData1, sortColumn);
+                }
+
+                for (String[] bookData : tempData1) {
+                    allAddBook(bookData);
+                }
             }
+
             refreshRsStmt("books");
         } 
         catch (SQLException err) 
@@ -451,10 +464,23 @@ public class ReaderBase extends main {
         }
     }
 
- 
+    public void sortAscending(List<String[]> data, int sortColumn) {     
+        Collections.sort(data, new Comparator<String[]>() {
+            @Override
+            public int compare(String[] o1, String[] o2) {
+                return o1[sortColumn].compareToIgnoreCase(o2[sortColumn]);
+            }
+        });
+    }
 
-
-
+    public void sortDescending(List<String[]> data, int sortColumn) {     
+        Collections.sort(data, new Comparator<String[]>() {
+            @Override
+            public int compare(String[] o1, String[] o2) {
+                return o2[sortColumn].compareToIgnoreCase(o1[sortColumn]);
+            }
+        });
+    }
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

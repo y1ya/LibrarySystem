@@ -13,6 +13,7 @@ import java.util.logging.*;
 
 public class BookEditor extends main {
     ImageInsert imageInsert= new ImageInsert();
+    String title,author,genre,date,synopsis, imagesrc, availability;
     
     public BookEditor() {
         initComponents();
@@ -40,6 +41,11 @@ public class BookEditor extends main {
         jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowActivated(java.awt.event.WindowEvent evt) {
+                formWindowActivated(evt);
+            }
+        });
 
         ImageLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         ImageLabel.setText("Enter a Title First");
@@ -77,19 +83,13 @@ public class BookEditor extends main {
         jLabel7.setText("Synopsis/Description:");
         jLabel7.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
-        Title_tf.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                Title_tfKeyPressed(evt);
-            }
-        });
-
         Synopsis_ta.setColumns(20);
         Synopsis_ta.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         Synopsis_ta.setLineWrap(true);
         Synopsis_ta.setRows(5);
         jScrollPane1.setViewportView(Synopsis_ta);
 
-        Btn_Register.setText("REGISTER");
+        Btn_Register.setText("EDIT");
         Btn_Register.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 Btn_RegisterActionPerformed(evt);
@@ -141,7 +141,7 @@ public class BookEditor extends main {
                                                 .addComponent(Year_tf, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                            .addComponent(Btn_Register, javax.swing.GroupLayout.PREFERRED_SIZE, 83, Short.MAX_VALUE)
+                                            .addComponent(Btn_Register, javax.swing.GroupLayout.DEFAULT_SIZE, 83, Short.MAX_VALUE)
                                             .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                         .addGap(46, 46, 46)))))))
                 .addContainerGap())
@@ -187,7 +187,13 @@ public class BookEditor extends main {
 
     private void ImageLabelMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ImageLabelMouseExited
         if(imageInsert.ImagePath!=null){
-        //Show the image in teh current panel
+        try{
+            String destinationpath="src/libsys_images/"+Title_tf.getText()+".jpg";
+            rs.updateString("IMAGE",destinationpath);
+        }catch(SQLException err){
+            System.out.println(err.getMessage());
+        }
+        //Show the image in the current panel
         BufferedImage img = null;
         try {
             img = ImageIO.read(new File(imageInsert.ImagePath));
@@ -205,42 +211,55 @@ public class BookEditor extends main {
 
     private void Btn_RegisterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Btn_RegisterActionPerformed
         databaseConnect("books");
-        String destinationpath="src/libsys_images/"+Title_tf.getText()+".jpg";
         try{
-            //The columns that are easiest to enter
-            rs.moveToInsertRow();
+            rs=stmt.executeQuery("SELECT * FROM BOOKS WHERE BOOKID = "+currentBookID);
+            rs.next();
             rs.updateString("TITLE", Title_tf.getText());
             rs.updateString("AUTHOR", Author_tf.getText());
             rs.updateInt("DATE",Integer.parseInt(Year_tf.getText()));
             rs.updateString("GENRE", Genre_tf.getText());
             rs.updateString("SYNOPSIS",Synopsis_ta.getText());
-            rs.updateString("IMAGE",destinationpath);
-            //The columns which require random generated values
-            //THESE ARE PLACEHOLDERS -WATSON
-            rs.updateInt("BOOKID", 300);
-            rs.insertRow();
+            rs.updateRow();
             refreshRsStmt("books");
-            
-            //The CopyImage method needs to throw an exception to work properly
-            try {
-                CopyImage(destinationpath);
-            } catch (IOException ex) {
-                Logger.getLogger(BookEditor.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-        catch(SQLException err){
+        } catch(SQLException err){
             System.out.println(err);
         }
     }//GEN-LAST:event_Btn_RegisterActionPerformed
 
-    private void Title_tfKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_Title_tfKeyPressed
-        ImageLabel.setText("Drag image file here");
-        new DropTarget(ImageLabel, imageInsert);
-    }//GEN-LAST:event_Title_tfKeyPressed
+    private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated
+       databaseConnect("books");
+       new DropTarget(ImageLabel, imageInsert);
+        try{
+            rs=stmt.executeQuery("SELECT * FROM BOOKS WHERE BOOKID = "+currentBookID);
+            while(rs.next()){
+                Title_tf.setText(rs.getString("TITLE"));
+                Author_tf.setText(rs.getString("AUTHOR"));
+                Genre_tf.setText(rs.getString("GENRE"));
+                Year_tf.setText(rs.getString("DATE"));
+                imagesrc=rs.getString("IMAGE");
+                Synopsis_ta.setText(rs.getString("SYNOPSIS"));
+                
+                BufferedImage img = null;
+                try {
+                    img = ImageIO.read(new File(imagesrc));
+                } catch (IOException ex) {
+                    System.out.println(ex.getMessage());
+                }
+                Image dimg = img.getScaledInstance(ImageLabel.getWidth(), ImageLabel.getHeight(),
+                Image.SCALE_SMOOTH);
+        
+                ImageIcon icon=new ImageIcon(dimg);
+                ImageLabel.setText(null);
+                ImageLabel.setIcon(icon);
+            }
+        }
+        catch(SQLException err){
+            System.out.println(err.getMessage());
+        }
+    }//GEN-LAST:event_formWindowActivated
   
     private void CopyImage(String destinationpath) throws IOException{
         Path source=Paths.get(imageInsert.ImagePath);
-        //The temp.jpg file name will get renamed according to the title of the book
         Path destination=Paths.get(destinationpath);
         Files.copy(source, destination, StandardCopyOption.COPY_ATTRIBUTES);
     }
