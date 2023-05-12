@@ -259,7 +259,6 @@ public class BookViewer extends main {
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
         databaseConnect("books");
-        this.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 
         try {
             rs = stmt.executeQuery("SELECT * FROM BOOKS WHERE BOOKID = " + currentBookID);
