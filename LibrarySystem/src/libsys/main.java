@@ -240,9 +240,9 @@ public class main extends javax.swing.JFrame {
         try{
             stmt = con.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
                     ResultSet.CONCUR_UPDATABLE);
-            rs = stmt.executeQuery("SELECT * FROM USERDB.DATETEST");
+            rs = stmt.executeQuery("SELECT * FROM USERDB.BOOKS");
             rs.moveToInsertRow();
-            rs.updateDate("DATEBORROWED", borrowDate);
+            rs.updateDate("BORROWDATE", borrowDate);
             rs.updateDate("RETURNDATE", returnDate);
             rs.insertRow();
             refreshRsStmt("books");
