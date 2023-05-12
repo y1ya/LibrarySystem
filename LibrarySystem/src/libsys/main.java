@@ -136,6 +136,9 @@ public class main extends javax.swing.JFrame {
                 refreshRsStmt("accounts");
                 
                 JOptionPane.showMessageDialog(null, "Registration Complete!");
+                JOptionPane.showMessageDialog(null, "User ID: " + id + "\nFullname: " + usuFullName + 
+                        "\nPassword: " + usuPass + "\nUser Type: " + userType, "Account Registered Information."
+                        , JOptionPane.INFORMATION_MESSAGE);
                 this.dispose();
                 currFullName = usuFullName;
                 toUsertypeBases(userType);       
