@@ -25,11 +25,12 @@ public class main extends javax.swing.JFrame {
     // universal variables for accounts database 
     String usiFullName, usiPass, usicPass, usiUsertype, 
            usuFullName, usuPass, usucPass, usuUserType;
-    int id;
+    int id, userid;
     boolean matchAcc = false, matchPass = false, matchType = false;
     
     // variables for books databases
     String t;
+    public static int currentBookID;
     
     // personalization variables
     public static String currFullName;
@@ -66,11 +67,13 @@ public class main extends javax.swing.JFrame {
 
     // Gets called in every end of a JFrame so everything goes through the main
     // rather than being thrown and adjusted from JFrame to JFrame
-    public static void sendDisplaySignal(JFrame sig) {
+    public static void sendDisplaySignal(JFrame sig) 
+    {
         JFrame[] jframe = {
             new MainWindow(), new AdminSignIn(), new LibrarianSignIn(), 
             new ReaderSignIn(), new ReaderSignUp(), new AdminBase(), 
-            new BookRegistry(),
+            new BookRegistry(), new LibrarianBase(), new BookBorrowMan(),
+            new BookEditor(), new BookViewer(), new ReaderBase()
         };
         for (JFrame jframe1 : jframe) {
             if (jframe1.getClass().equals(sig.getClass())) {
@@ -88,31 +91,22 @@ public class main extends javax.swing.JFrame {
         Random random = new Random();
         int randNum = random.nextInt(9999); // generates a random integer between 1 and 99999 which is the limit
 
-        try {
+         try {
             stmt = con.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
                     ResultSet.CONCUR_UPDATABLE);
-            rs = stmt.executeQuery("SELECT " + dbId.toUpperCase() + " FROM " + dbName.toUpperCase() + " WHERE USERID=" + randNum);
+            rs = stmt.executeQuery("SELECT " + dbId.toUpperCase() + " FROM " + dbName.toUpperCase() + " WHERE " + dbId.toUpperCase() + "="+randNum);
             // check if the generated random number recursively if it already exists in the database
             while (rs.next()) {
                 randNum = random.nextInt(9999);
-                rs = stmt.executeQuery("SELECT " + dbId.toUpperCase() + " FROM " + dbName.toUpperCase() + " WHERE USERID=" + randNum);
+                rs = stmt.executeQuery("SELECT " + dbId.toUpperCase() + " FROM " + dbName.toUpperCase() + " WHERE " + dbId.toUpperCase() + "="+ randNum);
             }
-            refreshRsStmt("accounts");
+            refreshRsStmt(dbName);
         } 
         catch (SQLException err) 
         {
             System.out.println(err.getMessage());
         }
         return randNum;
-    }
-
-    // Gets called after signing up or signing in
-    // Sends the full name of the current user to display name
-    public void readerUpInComplete() 
-    {
-        ReaderBase readerBase = new ReaderBase(currFullName);
-        readerBase.initialSearch(); // Readying the Search Engine
-        readerBase.setVisible(true); // <--- It goes to
     }
     
     public void signUp(String usuFullName, String usuPass, String userType, JTextField txtNewName, 
@@ -133,10 +127,12 @@ public class main extends javax.swing.JFrame {
                 refreshRsStmt("accounts");
                 
                 JOptionPane.showMessageDialog(null, "Registration Complete!");
+                JOptionPane.showMessageDialog(null, "User ID: " + id + "\nFullname: " + usuFullName + 
+                        "\nPassword: " + usuPass + "\nUser Type: " + userType, "Account Registered Information."
+                        , JOptionPane.INFORMATION_MESSAGE);
                 this.dispose();
                 currFullName = usuFullName;
-                toUsertypeBases(userType);
-                
+                toUsertypeBases(userType);       
             }
             refreshRsStmt("accounts");
         } 
@@ -200,9 +196,11 @@ public class main extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Wrong Sign in form.");
             try{
                 rs = stmt.executeQuery("SELECT USERTYPE FROM ACCOUNTS WHERE FULLNAME='" + usiFullName + "'");
-                if(rs.next()){
+                if(rs.next())
+                {
                     usiUsertype = rs.getString("USERTYPE");
-                    switch(usiUsertype){
+                    switch(usiUsertype)
+                    {
                         case("READER"):
                             this.dispose();
                             main.sendDisplaySignal(new ReaderSignIn());
@@ -216,10 +214,11 @@ public class main extends javax.swing.JFrame {
                             main.sendDisplaySignal(new AdminSignIn());                     
                     }
                 }
-            }catch (SQLException e){
+            }
+            catch (SQLException e){
                 System.out.println(e);
             }        
-        }        
+        }
         else if (matchAcc && !matchPass)
         {
             txtLogName.setText(null);
@@ -242,10 +241,10 @@ public class main extends javax.swing.JFrame {
                 sendDisplaySignal(new AdminBase()); 
                 break;
             case "LIBRARIAN":
-                sendDisplaySignal(new BookRegistry()); 
+                sendDisplaySignal(new LibrarianBase()); 
                 break;
             case "READER":
-                readerUpInComplete();
+                sendDisplaySignal(new ReaderBase());
                 break;
         }
     }
@@ -254,12 +253,13 @@ public class main extends javax.swing.JFrame {
     {
         int logoutoption = JOptionPane.YES_NO_OPTION;
         int logoutresult = JOptionPane.showConfirmDialog(null, "Log Out?", "Log Out Confirmation", logoutoption);
-        if(logoutresult == 0){
+        if(logoutresult == 0)
+        {
             this.dispose();
             sendDisplaySignal(new MainWindow());
         }
     }
-
+    
     //Insert Borrow Date(today) and ReturnDate to Database
     public void Dates_to_Database(int add_days){
         databaseConnect("books");
@@ -278,6 +278,7 @@ public class main extends javax.swing.JFrame {
             System.out.print(e);
         }
     }
+
     // The first statement/s to be called
     public static void main(String[] args) {
         sendDisplaySignal(new MainWindow());
