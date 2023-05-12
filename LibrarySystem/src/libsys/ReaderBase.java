@@ -15,7 +15,7 @@ import javax.swing.table.DefaultTableModel;
 
 public class ReaderBase extends main {
 
-    public ReaderBase(String currFullName) 
+    public ReaderBase() 
     {
         initComponents();
         setGuiBase();
@@ -49,6 +49,11 @@ public class ReaderBase extends main {
         jToggleButton1.setText("jToggleButton1");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                formWindowOpened(evt);
+            }
+        });
 
         jPanel1.setPreferredSize(new java.awt.Dimension(1280, 720));
 
@@ -224,6 +229,10 @@ public class ReaderBase extends main {
         Object val = mainTable.getValueAt(mainTable.getSelectedRow(), 4);
         currentBookID = Integer.parseInt(val.toString());
     }//GEN-LAST:event_mainTableMouseClicked
+
+    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+        initialSearch();
+    }//GEN-LAST:event_formWindowOpened
 
     public void allAddBook(String[] bookData) throws Exception 
     {

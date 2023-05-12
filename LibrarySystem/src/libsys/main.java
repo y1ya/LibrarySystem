@@ -73,7 +73,7 @@ public class main extends javax.swing.JFrame {
             new MainWindow(), new AdminSignIn(), new LibrarianSignIn(), 
             new ReaderSignIn(), new ReaderSignUp(), new AdminBase(), 
             new BookRegistry(), new LibrarianBase(), new BookBorrowMan(),
-            new BookEditor(), new BookViewer(),
+            new BookEditor(), new BookViewer(), new ReaderBase()
         };
         for (JFrame jframe1 : jframe) {
             if (jframe1.getClass().equals(sig.getClass())) {
@@ -107,15 +107,6 @@ public class main extends javax.swing.JFrame {
             System.out.println(err.getMessage());
         }
         return randNum;
-    }
-
-    // Gets called after signing up or signing in
-    // Sends the full name of the current user to display name
-    public void readerUpInComplete() 
-    {
-        ReaderBase readerBase = new ReaderBase(currFullName);
-        readerBase.initialSearch(); // Readying the Search Engine
-        readerBase.setVisible(true); // <--- It goes to
     }
     
     public void signUp(String usuFullName, String usuPass, String userType, JTextField txtNewName, 
@@ -253,7 +244,7 @@ public class main extends javax.swing.JFrame {
                 sendDisplaySignal(new LibrarianBase()); 
                 break;
             case "READER":
-                readerUpInComplete();
+                sendDisplaySignal(new ReaderBase());
                 break;
         }
     }
