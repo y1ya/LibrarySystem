@@ -38,7 +38,7 @@ public class AdminBase extends main {
         btnSave = new javax.swing.JButton();
         btnSearch = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        mainTable = new javax.swing.JTable();
         btnAdd = new javax.swing.JButton();
         randomNumber = new javax.swing.JButton();
         btnLogOut = new javax.swing.JButton();
@@ -121,13 +121,13 @@ public class AdminBase extends main {
         });
         getContentPane().add(btnSearch, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 460, -1, -1));
 
-        jTable1.setModel(tblDataAccounts);
-        jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
+        mainTable.setModel(tblDataAccounts);
+        mainTable.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jTable1MouseClicked(evt);
+                mainTableMouseClicked(evt);
             }
         });
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(mainTable);
 
         getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(12, 65, 720, 188));
 
@@ -202,9 +202,9 @@ public class AdminBase extends main {
         }
     }//GEN-LAST:event_formWindowOpened
 
-    private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
+    private void mainTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_mainTableMouseClicked
 
-        int ids = Integer.parseInt(jTable1.getValueAt(jTable1.getSelectedRow(),0).toString());
+        int ids = Integer.parseInt(mainTable.getValueAt(mainTable.getSelectedRow(),0).toString());
         String[] types = {"ADMIN", "LIBRARIAN", "READER"};
         
         btnAdd.setVisible(false);
@@ -244,7 +244,7 @@ public class AdminBase extends main {
         } catch (SQLException err) {
             JOptionPane.showMessageDialog(AdminBase.this, err.getMessage());
         }
-    }//GEN-LAST:event_jTable1MouseClicked
+    }//GEN-LAST:event_mainTableMouseClicked
 
     private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
         // TODO add your handling code here:
@@ -338,7 +338,7 @@ public class AdminBase extends main {
 
         userid = Integer.parseInt(txtUserId.getText());
    
-        int ids = Integer.parseInt(jTable1.getValueAt(jTable1.getSelectedRow(), 
+        int ids = Integer.parseInt(mainTable.getValueAt(mainTable.getSelectedRow(), 
                 0).toString());
         
         try {
@@ -400,9 +400,6 @@ public class AdminBase extends main {
         logOut();
     }//GEN-LAST:event_btnLogOutActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAdd;
@@ -420,7 +417,7 @@ public class AdminBase extends main {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JTable mainTable;
     private javax.swing.JButton randomNumber;
     private javax.swing.JTextField txtFullname;
     private javax.swing.JTextField txtPassword;

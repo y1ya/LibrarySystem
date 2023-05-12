@@ -38,8 +38,6 @@ public class BookRegistry extends main {
         Btn_Register = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
         ImageLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         ImageLabel.setText("Enter a Title First");
         ImageLabel.setBorder(javax.swing.BorderFactory.createEtchedBorder());
