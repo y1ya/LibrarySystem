@@ -42,8 +42,8 @@ public class BookEditor extends main {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         addWindowListener(new java.awt.event.WindowAdapter() {
-            public void windowActivated(java.awt.event.WindowEvent evt) {
-                formWindowActivated(evt);
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                formWindowOpened(evt);
             }
         });
 
@@ -226,7 +226,7 @@ public class BookEditor extends main {
         }
     }//GEN-LAST:event_Btn_RegisterActionPerformed
 
-    private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated
+    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
        databaseConnect("books");
        new DropTarget(ImageLabel, imageInsert);
         try{
@@ -256,7 +256,7 @@ public class BookEditor extends main {
         catch(SQLException err){
             System.out.println(err.getMessage());
         }
-    }//GEN-LAST:event_formWindowActivated
+    }//GEN-LAST:event_formWindowOpened
   
     private void CopyImage(String destinationpath) throws IOException{
         Path source=Paths.get(imageInsert.ImagePath);

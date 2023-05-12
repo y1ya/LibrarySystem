@@ -1,4 +1,5 @@
 package libsys;
+
 import javax.swing.*;
 import javax.imageio.*;
 import java.awt.Image;
@@ -7,11 +8,12 @@ import java.awt.image.*;
 import java.io.*;
 
 public class BookViewer extends main {
+
     public BookViewer() {
         initComponents();
     }
-    String title,author,genre,date,synopsis, imagesrc, availability, borrower;
-    
+    String title, author, genre, date, synopsis, imagesrc, availability, borrower;
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -36,11 +38,11 @@ public class BookViewer extends main {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         addWindowListener(new java.awt.event.WindowAdapter() {
-            public void windowActivated(java.awt.event.WindowEvent evt) {
-                formWindowActivated(evt);
-            }
             public void windowClosing(java.awt.event.WindowEvent evt) {
                 formWindowClosing(evt);
+            }
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                formWindowOpened(evt);
             }
         });
 
@@ -211,96 +213,49 @@ public class BookViewer extends main {
         sendDisplaySignal(new BookEditor());
     }//GEN-LAST:event_jButton4ActionPerformed
 
-    private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated
-        databaseConnect("books");
-        this.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
-        
-        try{
-            rs=stmt.executeQuery("SELECT * FROM BOOKS WHERE BOOKID = "+currentBookID);
-            while(rs.next()){
-                title=rs.getString("TITLE");
-                author=rs.getString("AUTHOR");
-                genre=rs.getString("GENRE");
-                date=rs.getString("DATE");
-                synopsis=rs.getString("SYNOPSIS");
-                imagesrc=rs.getString("IMAGE");
-                availability=rs.getString("AVAILABILITY");
-                Title_label.setText(title);
-                Author_label.setText(author);
-                Genre_label.setText(genre);
-                Date_label.setText(date);
-                Synopsis_label.setText(synopsis);
-                Availability_label.setText(availability);
-               
-                
-                BufferedImage img = null;
-                try {
-                    img = ImageIO.read(new File(imagesrc));
-                } catch (IOException ex) {
-                    System.out.println(ex.getMessage());
-                }
-                Image dimg = img.getScaledInstance(ImageLabel.getWidth(), ImageLabel.getHeight(),
-                Image.SCALE_SMOOTH);
-        
-                ImageIcon icon=new ImageIcon(dimg);
-                ImageLabel.setText(null);
-                ImageLabel.setIcon(icon);
-            }
-        }
-        catch(SQLException err){
-            System.out.println(err.getMessage());
-        }
-    }//GEN-LAST:event_formWindowActivated
-
     private void btnBorrowActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBorrowActionPerformed
         databaseConnect("books");
-        try{
-            rs=stmt.executeQuery("SELECT * FROM BOOKS WHERE BOOKID = "+currentBookID);
-            while(rs.next()){
-                availability=rs.getString("AVAILABILITY");
-                borrower=rs.getString("BORROWER");
+        try {
+            rs = stmt.executeQuery("SELECT * FROM BOOKS WHERE BOOKID = " + currentBookID);
+            while (rs.next()) {
+                availability = rs.getString("AVAILABILITY");
+                borrower = rs.getString("BORROWER");
             }
-        }
-        catch(SQLException err){
+        } catch (SQLException err) {
             System.out.println(err.getMessage());
         }
-        
+
         System.out.println(availability);
         System.out.println(borrower);
-        
-        if (availability.equals("AVAILABLE")){
-            try{
-                rs=stmt.executeQuery("SELECT * FROM BOOKS WHERE BOOKID = "+currentBookID);
+
+        if (availability.equals("AVAILABLE")) {
+            try {
+                rs = stmt.executeQuery("SELECT * FROM BOOKS WHERE BOOKID = " + currentBookID);
                 rs.next();
                 rs.updateString("AVAILABILITY", "UNAVAILABLE");
                 rs.updateString("BORROWER", currFullName);
                 rs.updateRow();
                 refreshRsStmt("books");
-            }
-            catch(SQLException err){
+            } catch (SQLException err) {
                 System.out.println(err);
             }
             JOptionPane.showMessageDialog(null, "Borrowed the book.");
-        }
-        else
-        {
-            if ("RETURNING".equals(availability)){
+        } else {
+            if ("RETURNING".equals(availability)) {
                 JOptionPane.showMessageDialog(null, "Someone is returning this book, try again later.");
                 return;
             }
-            
-            if ("UNAVAILABLE".equals(availability) && borrower.equals(currFullName))
-            {
+
+            if ("UNAVAILABLE".equals(availability) && borrower.equals(currFullName)) {
                 int option = JOptionPane.showOptionDialog(null, "You have already borrowed this book. Do you want to return it?", "Return book", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
                 if (option == JOptionPane.YES_OPTION) {
-                    try{
-                        rs=stmt.executeQuery("SELECT * FROM BOOKS WHERE BOOKID = "+currentBookID);
+                    try {
+                        rs = stmt.executeQuery("SELECT * FROM BOOKS WHERE BOOKID = " + currentBookID);
                         rs.next();
                         rs.updateString("AVAILABILITY", "RETURNING");
                         rs.updateRow();
                         refreshRsStmt("books");
-                    }
-                    catch(SQLException err){
+                    } catch (SQLException err) {
                         System.out.println(err);
                     }
                 }
@@ -309,8 +264,47 @@ public class BookViewer extends main {
     }//GEN-LAST:event_btnBorrowActionPerformed
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
-         this.setVisible(false);
+        this.setVisible(false);
     }//GEN-LAST:event_formWindowClosing
+
+    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+        databaseConnect("books");
+        this.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+
+        try {
+            rs = stmt.executeQuery("SELECT * FROM BOOKS WHERE BOOKID = " + currentBookID);
+            while (rs.next()) {
+                title = rs.getString("TITLE");
+                author = rs.getString("AUTHOR");
+                genre = rs.getString("GENRE");
+                date = rs.getString("DATE");
+                synopsis = rs.getString("SYNOPSIS");
+                imagesrc = rs.getString("IMAGE");
+                availability = rs.getString("AVAILABILITY");
+                Title_label.setText(title);
+                Author_label.setText(author);
+                Genre_label.setText(genre);
+                Date_label.setText(date);
+                Synopsis_label.setText(synopsis);
+                Availability_label.setText(availability);
+
+                BufferedImage img = null;
+                try {
+                    img = ImageIO.read(new File(imagesrc));
+                } catch (IOException ex) {
+                    System.out.println(ex.getMessage());
+                }
+                Image dimg = img.getScaledInstance(ImageLabel.getWidth(), ImageLabel.getHeight(),
+                        Image.SCALE_SMOOTH);
+
+                ImageIcon icon = new ImageIcon(dimg);
+                ImageLabel.setText(null);
+                ImageLabel.setIcon(icon);
+            }
+        } catch (SQLException err) {
+            System.out.println(err.getMessage());
+        }
+    }//GEN-LAST:event_formWindowOpened
 
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {
