@@ -191,34 +191,6 @@ public class main extends javax.swing.JFrame {
             currFullName = usiFullName;
             toUsertypeBases(userType);
         }
-        else if (matchAcc && matchPass && !matchType)
-        {
-            JOptionPane.showMessageDialog(null, "Wrong Sign in form.");
-            try{
-                rs = stmt.executeQuery("SELECT USERTYPE FROM ACCOUNTS WHERE FULLNAME='" + usiFullName + "'");
-                if(rs.next())
-                {
-                    usiUsertype = rs.getString("USERTYPE");
-                    switch(usiUsertype)
-                    {
-                        case("READER"):
-                            this.dispose();
-                            main.sendDisplaySignal(new ReaderSignIn());
-                            break;
-                        case("LIBRARIAN"):
-                            this.dispose();
-                            main.sendDisplaySignal(new LibrarianSignIn());
-                            break;
-                        case("ADMIN"):
-                            this.dispose();
-                            main.sendDisplaySignal(new AdminSignIn());                     
-                    }
-                }
-            }
-            catch (SQLException e){
-                System.out.println(e);
-            }        
-        }
         else if (matchAcc && !matchPass)
         {
             txtLogName.setText(null);
