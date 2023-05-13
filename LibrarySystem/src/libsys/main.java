@@ -23,7 +23,7 @@ public class main extends javax.swing.JFrame {
     DefaultTableModel LoginModel = new DefaultTableModel();
     
     // universal variables for accounts database 
-    String usiFullName, usiPass, usicPass, usiUsertype, aFullname, aPassword, aUserType, aStringUserID;
+    String usiFullName, usiPass, usicPass, usiUsertype;
     boolean matchAcc = false, matchPass = false, matchType = false;
     int randID, aUserID, currUserID;
     String currUserType;
