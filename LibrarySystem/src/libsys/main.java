@@ -227,9 +227,17 @@ public class main extends javax.swing.JFrame {
             System.out.print(e.getMessage());
         }
     }
-    
+    //Returns true if the length of string in a textfield is less than the limit.
+    public boolean lessthanLength(int limit, JTextField textfield){
+        if(textfield.getText().length() < limit){
+            return true;
+        } else{
+            return false;
+        }
+    }
     // The first statement/s to be called
     public static void main(String[] args) {
         sendDisplaySignal(new MainWindow());
     }
+    
 }

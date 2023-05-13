@@ -77,19 +77,7 @@ public class AdminBase extends main {
 
         jLabel5.setText("User Type:");
         getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 420, -1, -1));
-
-        txtFullname.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                txtFullnameKeyTyped(evt);
-            }
-        });
         getContentPane().add(txtFullname, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 300, 293, -1));
-
-        txtPassword.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                txtPasswordKeyTyped(evt);
-            }
-        });
         getContentPane().add(txtPassword, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 340, 293, -1));
         getContentPane().add(txtUserId, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 380, 293, -1));
 
@@ -367,7 +355,22 @@ public class AdminBase extends main {
                 if (txtUserId.getText().isEmpty()) {
                     fill3.setBorder(BorderFactory.createLineBorder(Color.red));
                 }                
-            } else {
+            }
+            else if(lessthanLength(10, txtFullname) || lessthanLength(8, txtPassword)) {
+                if(lessthanLength(10, txtFullname)){
+                    fill1.setBorder(BorderFactory.createLineBorder(Color.red));
+                    JOptionPane.showMessageDialog(null, "Name less than 10 characters.");
+                }
+                if(lessthanLength(8,txtPassword)){
+                    fill2.setBorder(BorderFactory.createLineBorder(Color.red));
+                    JOptionPane.showMessageDialog(null, "Password less than 8 characters.");
+                }
+                if(lessthanLength(10, txtFullname) && lessthanLength(8,txtPassword)){
+                    fill3.setBorder(BorderFactory.createLineBorder(Color.red));
+                    JOptionPane.showMessageDialog(null, "Name length less than 10 characters, Password length less than 8 characters.");
+                }                
+            }
+            else {
                 aUserID = Integer.parseInt(txtUserId.getText());                
                 rs.moveToInsertRow();
                 rs.updateInt("USERID", aUserID);
@@ -414,6 +417,20 @@ public class AdminBase extends main {
                 }
                 if (txtUserId.getText().isEmpty()) {
                     fill3.setBorder(BorderFactory.createLineBorder(Color.red));
+                }                
+            }
+            else if(lessthanLength(10, txtFullname) || lessthanLength(8, txtPassword)) {
+                if(lessthanLength(10, txtFullname)){
+                    fill1.setBorder(BorderFactory.createLineBorder(Color.red));
+                    JOptionPane.showMessageDialog(null, "Name less than 10 characters.");
+                }
+                if(lessthanLength(8,txtPassword)){
+                    fill2.setBorder(BorderFactory.createLineBorder(Color.red));
+                    JOptionPane.showMessageDialog(null, "Password less than 8 characters.");
+                }
+                if(lessthanLength(10, txtFullname) && lessthanLength(8,txtPassword)){
+                    fill3.setBorder(BorderFactory.createLineBorder(Color.red));
+                    JOptionPane.showMessageDialog(null, "Name length less than 10 characters, Password length less than 8 characters.");
                 }
             }
             else{
@@ -465,25 +482,6 @@ public class AdminBase extends main {
         // TODO add your handling code here:
         logOut();
     }//GEN-LAST:event_btnLogOutActionPerformed
-
-    private void txtPasswordKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPasswordKeyTyped
-        /* TODO add your handling code here:
-        if (txtPassword.getText().equals("")) {
-            btnSave.setEnabled(false);
-        } else {
-            btnSave.setEnabled(true);
-        }*/
-    }//GEN-LAST:event_txtPasswordKeyTyped
-
-    private void txtFullnameKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtFullnameKeyTyped
-        /* TODO add your handling code here:
-        if (txtFullname.getText().equals("")) {
-            btnSave.setEnabled(false);
-        } else {
-            btnSave.setEnabled(true);
-        }*/
-    }//GEN-LAST:event_txtFullnameKeyTyped
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAdd;
