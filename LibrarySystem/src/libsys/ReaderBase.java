@@ -351,6 +351,8 @@ public class ReaderBase extends main {
         bgCategories.add(rbTitle);
         bgCategories.add(rbAuthor);
         bgCategories.add(rbDate);
+        
+        mainTable.setDefaultEditor(Object.class, null);
     }
     
     public void setPersonalization() 
