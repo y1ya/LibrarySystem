@@ -465,7 +465,7 @@ public class ReaderBase extends main {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup bgCategories;
     private javax.swing.JButton btnClear;
-    private javax.swing.JButton btnLogOut;
+    public javax.swing.JButton btnLogOut;
     private javax.swing.JButton btnSearch;
     private javax.swing.JButton btnViewBook;
     private javax.swing.JComboBox<String> cbAvail;
