@@ -1,8 +1,11 @@
 
 package libsys;
 
+import java.awt.Color;
+import static java.awt.Color.red;
 import java.sql.*;
 import javax.swing.*;
+import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
 import libsys.AdminBase;
 
@@ -14,9 +17,13 @@ public class AdminBase extends main {
         initComponents();
         databaseConnect("accounts");
         
+        int ids = randNumGen("accounts", "userid");
+        
         btnSave.setVisible(false);
         btnEdit.setVisible(false);
         btnDelete.setVisible(false);
+        
+        txtUserId.setText(String.valueOf(ids));
     }
 
     @SuppressWarnings("unchecked")
@@ -43,6 +50,8 @@ public class AdminBase extends main {
         btnAdd = new javax.swing.JButton();
         randomNumber = new javax.swing.JButton();
         btnLogOut = new javax.swing.JButton();
+        fill1 = new javax.swing.JPanel();
+        fill2 = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -74,11 +83,16 @@ public class AdminBase extends main {
             }
         });
         getContentPane().add(txtFullname, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 300, 293, -1));
+
+        txtPassword.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtPasswordKeyTyped(evt);
+            }
+        });
         getContentPane().add(txtPassword, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 340, 293, -1));
         getContentPane().add(txtUserId, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 380, 293, -1));
 
         cbUserType.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "READER", "LIBRARIAN", "ADMIN" }));
-        cbUserType.setSelectedIndex(-1);
         getContentPane().add(cbUserType, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 420, 293, -1));
         getContentPane().add(jSeparator1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 277, 740, 10));
 
@@ -156,6 +170,8 @@ public class AdminBase extends main {
             }
         });
         getContentPane().add(btnLogOut, new org.netbeans.lib.awtextra.AbsoluteConstraints(650, 290, -1, -1));
+        getContentPane().add(fill1, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 300, 290, 20));
+        getContentPane().add(fill2, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 340, 290, 20));
 
         pack();
         setLocationRelativeTo(null);
@@ -163,10 +179,12 @@ public class AdminBase extends main {
 
     private void btnClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearActionPerformed
 
+        int ids = randNumGen("accounts", "userid");
+        txtUserId.setText(String.valueOf(ids));
+        
         txtFullname.setText(null);
         txtPassword.setText(null);
-        txtUserId.setText(null);
-        cbUserType.setSelectedIndex(-1);
+        cbUserType.setSelectedIndex(0);
         
         btnAdd.setVisible(true);
         btnSave.setVisible(false);
@@ -302,10 +320,26 @@ public class AdminBase extends main {
                     JOptionPane.showMessageDialog(null, "Account has been deleted!");
                     formWindowOpened(null);
                     
+                    int ids = randNumGen("accounts", "userid");
+                    
+                    txtUserId.setText(String.valueOf(ids));
                     txtFullname.setText(null);
                     txtPassword.setText(null);
-                    txtUserId.setText(null);
-                    cbUserType.setSelectedIndex(-1);
+                    cbUserType.setSelectedIndex(0);
+                    txtFullname.setText(null);
+                    txtPassword.setText(null);
+
+                    btnAdd.setVisible(true);
+                    btnSave.setVisible(false);
+                    btnEdit.setVisible(false);
+                    btnDelete.setVisible(false);
+
+                    txtFullname.setEditable(true);
+                    txtPassword.setEditable(true);
+                    txtUserId.setEditable(true);
+
+                    cbUserType.setEnabled(true);
+                    randomNumber.setEnabled(true);
                 }
             }
         } catch (SQLException err) {
@@ -316,21 +350,43 @@ public class AdminBase extends main {
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
 
         aUserID = Integer.parseInt(txtUserId.getText());
+        aFullname = txtFullname.getText();
+        aPassword = txtPassword.getText();
+        aUserType = String.valueOf(cbUserType.getSelectedItem());
+        
         try {
-            rs.moveToInsertRow();
-            rs.updateInt("USERID", aUserID);
-            rs.updateString("FULLNAME", txtFullname.getText());
-            rs.updateString("PASSWORD", txtPassword.getText());
-            rs.updateString("USERTYPE", String.valueOf(cbUserType.getSelectedItem()));
-            rs.insertRow();
-            formWindowOpened(null);
+            if (aFullname.isEmpty() || aPassword.isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Fill in the blanks.");
+                if (aFullname.isEmpty()) {
+                    JPanel setBorder = new JPanel();
+                    fill1.setBorder(BorderFactory.createLineBorder(Color.red));
+                } 
+                if (aPassword.isEmpty()) {
+                    JPanel setBorder = new JPanel();
+                    fill2.setBorder(BorderFactory.createLineBorder(Color.red));
+                }
+            } else {
+                rs.moveToInsertRow();
+                rs.updateInt("USERID", aUserID);
+                rs.updateString("FULLNAME", aFullname);
+                rs.updateString("PASSWORD", aPassword);
+                rs.updateString("USERTYPE", aUserType);
+                rs.insertRow();
+                formWindowOpened(null);
+
+                JOptionPane.showMessageDialog(null, "Account has been added!");
+
+                int ids = randNumGen("accounts", "userid");
+                
+                txtUserId.setText(String.valueOf(ids));
+                txtFullname.setText(null);
+                txtPassword.setText(null);
+                cbUserType.setSelectedIndex(0);
+                
+                fill1.setVisible(false);
+                fill2.setVisible(false);
+            }
             
-            JOptionPane.showMessageDialog(null, "Account has been added!");
-            
-            txtFullname.setText(null);
-            txtPassword.setText(null);
-            txtUserId.setText(null);
-            cbUserType.setSelectedIndex(-1);
         } catch (SQLException err) {
             JOptionPane.showMessageDialog(AdminBase.this, err.getMessage());
         }
@@ -352,8 +408,7 @@ public class AdminBase extends main {
                 
                 txtFullname.setText(null);
                 txtPassword.setText(null);
-                txtUserId.setText(null);
-                cbUserType.setSelectedIndex(-1);
+                cbUserType.setSelectedIndex(0);
                 
                 btnAdd.setVisible(true);
                 btnSave.setVisible(false);
@@ -381,15 +436,6 @@ public class AdminBase extends main {
         refreshRsStmt("accounts");
     }//GEN-LAST:event_btnEditActionPerformed
 
-    private void txtFullnameKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtFullnameKeyTyped
-        // TODO add your handling code here:
-        if (!txtFullname.getText().equals("")) {
-            btnSave.setEnabled(true);
-        } else {
-            btnSave.setEnabled(false);
-        }
-    }//GEN-LAST:event_txtFullnameKeyTyped
-
     private void randomNumberActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_randomNumberActionPerformed
         // TODO add your handling code here:
         int ids = randNumGen("accounts", "userid");
@@ -402,6 +448,24 @@ public class AdminBase extends main {
         logOut();
     }//GEN-LAST:event_btnLogOutActionPerformed
 
+    private void txtPasswordKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPasswordKeyTyped
+        // TODO add your handling code here:
+        if (txtPassword.getText().equals("")) {
+            btnSave.setEnabled(false);
+        } else {
+            btnSave.setEnabled(true);
+        }
+    }//GEN-LAST:event_txtPasswordKeyTyped
+
+    private void txtFullnameKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtFullnameKeyTyped
+        // TODO add your handling code here:
+        if (txtFullname.getText().equals("")) {
+            btnSave.setEnabled(false);
+        } else {
+            btnSave.setEnabled(true);
+        }
+    }//GEN-LAST:event_txtFullnameKeyTyped
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAdd;
@@ -412,6 +476,8 @@ public class AdminBase extends main {
     private javax.swing.JButton btnSave;
     private javax.swing.JButton btnSearch;
     private javax.swing.JComboBox<String> cbUserType;
+    private javax.swing.JPanel fill1;
+    private javax.swing.JPanel fill2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
