@@ -163,7 +163,7 @@ public class BookBorrowMan extends main {
     }// </editor-fold>//GEN-END:initComponents
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
-                                 
+               
         String[] columnNames = {"BorrowerID", "Title", "BookID", "Availability"};
         borrowTableModel = new DefaultTableModel(columnNames, 0);
         mainTable.setModel(borrowTableModel);
@@ -256,7 +256,7 @@ public class BookBorrowMan extends main {
             if (updateRs.next()) {
                 availability = updateRs.getString("AVAILABILITY");
                 if (availability.equals("BORROWING")) {
-                    availability = "UNAVAILABLE";
+                    availability = "BORROWED";
                 } else if (availability.equals("RETURNING")) {
                     availability = "AVAILABLE";
                 }
@@ -264,7 +264,6 @@ public class BookBorrowMan extends main {
                 updateRs.updateString("AVAILABILITY", availability);
                 updateRs.updateRow();
             }
-
 
             refreshRsStmt("books");
             borrowTableModel.setRowCount(0);
