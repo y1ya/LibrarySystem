@@ -15,6 +15,7 @@ public class BookRegistry extends main {
     ImageInsert imageInsert= new ImageInsert();
     public BookRegistry() {
         initComponents();
+        
     }
             
     @SuppressWarnings("unchecked")
@@ -36,7 +37,7 @@ public class BookRegistry extends main {
         jScrollPane1 = new javax.swing.JScrollPane();
         Synopsis_ta = new javax.swing.JTextArea();
         Btn_Register = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
+        btnBack = new javax.swing.JButton();
 
         ImageLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         ImageLabel.setText("Enter a Title First");
@@ -94,10 +95,10 @@ public class BookRegistry extends main {
             }
         });
 
-        jButton1.setText("BACK");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        btnBack.setText("BACK");
+        btnBack.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                btnBackActionPerformed(evt);
             }
         });
 
@@ -145,7 +146,7 @@ public class BookRegistry extends main {
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                             .addComponent(Btn_Register, javax.swing.GroupLayout.PREFERRED_SIZE, 83, Short.MAX_VALUE)
-                                            .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                            .addComponent(btnBack, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                         .addGap(46, 46, 46)))))))
                 .addContainerGap())
         );
@@ -166,7 +167,7 @@ public class BookRegistry extends main {
                             .addComponent(Title_tf, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnBack, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, 37, Short.MAX_VALUE)
                             .addComponent(Author_tf, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -245,10 +246,9 @@ public class BookRegistry extends main {
         new DropTarget(ImageLabel, imageInsert);
     }//GEN-LAST:event_Title_tfKeyPressed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed
         this.dispose();
-        sendDisplaySignal(new LibrarianBase());
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_btnBackActionPerformed
   
     private void CopyImage(String destinationpath) throws IOException{
         Path source=Paths.get(imageInsert.ImagePath);
@@ -296,7 +296,7 @@ public class BookRegistry extends main {
     private javax.swing.JTextArea Synopsis_ta;
     private javax.swing.JTextField Title_tf;
     private javax.swing.JTextField Year_tf;
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton btnBack;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

@@ -212,24 +212,14 @@ public class main extends javax.swing.JFrame {
         currUserType = rs.getString("USERTYPE");
         currUserID = rs.getInt("USERID");
     }
-    
-    // Insert Borrow Date(today) and ReturnDate to Database
-    public void Dates_to_Database(int add_days)
+     
+    //Returns true if the length of string in a textfield is less than the limit.
+    public boolean lessthanLength(int limit, JTextField textfield)
     {
-        databaseConnect("books");
-        Date borrowDate = Date.valueOf(LocalDate.now());
-        Date returnDate = Date.valueOf(LocalDate.now().plusDays(add_days));
-        try{
-            stmt = con.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
-                    ResultSet.CONCUR_UPDATABLE);
-            rs = stmt.executeQuery("SELECT * FROM USERDB.BOOKS");
-            rs.moveToInsertRow();
-            rs.updateDate("BORROWDATE", borrowDate);
-            rs.updateDate("RETURNDATE", returnDate);
-            rs.insertRow();
-            refreshRsStmt("books");
-        }catch(SQLException e){
-            System.out.print(e.getMessage());
+        if(textfield.getText().length() < limit){
+            return true;
+        } else{
+            return false;
         }
     }
     
