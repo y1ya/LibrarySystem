@@ -7,9 +7,9 @@ import java.sql.*;
 import java.awt.image.*;
 import java.io.*;
 
-public class ReaderBookViewer extends main {
+public class BookViewer extends main {
 
-    public ReaderBookViewer() {
+    public BookViewer() {
         initComponents();
     }
     String title, author, genre, date, synopsis, imagesrc, availability, borrower;
@@ -32,6 +32,7 @@ public class ReaderBookViewer extends main {
         Author_label = new javax.swing.JLabel();
         Genre_label = new javax.swing.JLabel();
         Date_label = new javax.swing.JLabel();
+        btnEdit = new javax.swing.JButton();
         btnBorrow = new javax.swing.JButton();
 
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -122,6 +123,13 @@ public class ReaderBookViewer extends main {
                 .addContainerGap())
         );
 
+        btnEdit.setText("Edit");
+        btnEdit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditActionPerformed(evt);
+            }
+        });
+
         btnBorrow.setText("Borrow");
         btnBorrow.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -143,9 +151,11 @@ public class ReaderBookViewer extends main {
                         .addComponent(Availability_label, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(10, 10, 10)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(46, 46, 46)
-                .addComponent(btnBorrow, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(82, Short.MAX_VALUE))
+                .addGap(31, 31, 31)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(btnEdit, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnBorrow, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(97, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -160,7 +170,9 @@ public class ReaderBookViewer extends main {
                                 .addGap(61, 61, 61)
                                 .addComponent(Availability_label))))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(80, 80, 80)
+                        .addGap(81, 81, 81)
+                        .addComponent(btnEdit, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
                         .addComponent(btnBorrow, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -185,61 +197,16 @@ public class ReaderBookViewer extends main {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnBorrowActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBorrowActionPerformed
-        databaseConnect("books");
-        try {
-            rs = stmt.executeQuery("SELECT * FROM BOOKS WHERE BOOKID = " + currentBookID);
-            while (rs.next()) {
-                availability = rs.getString("AVAILABILITY");
-                borrower = rs.getString("BORROWER");
-            }
-        } catch (SQLException err) {
-            System.out.println(err.getMessage());
-        }
-
-        System.out.println(availability);
-        System.out.println(borrower);
-
-        if (availability.equals("AVAILABLE")) {
-            try {
-                rs = stmt.executeQuery("SELECT * FROM BOOKS WHERE BOOKID = " + currentBookID);
-                rs.next();
-                rs.updateString("AVAILABILITY", "UNAVAILABLE");
-                rs.updateString("BORROWER", currFullName);
-                rs.updateRow();
-                refreshRsStmt("books");
-            } catch (SQLException err) {
-                System.out.println(err);
-            }
-            JOptionPane.showMessageDialog(null, "Borrowed the book.");
-        } else {
-            if ("RETURNING".equals(availability)) {
-                JOptionPane.showMessageDialog(null, "Someone is returning this book, try again later.");
-                return;
-            }
-
-            if ("UNAVAILABLE".equals(availability) && borrower.equals(currFullName)) {
-                int option = JOptionPane.showOptionDialog(null, "You have already borrowed this book. Do you want to return it?", "Return book", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
-                if (option == JOptionPane.YES_OPTION) {
-                    try {
-                        rs = stmt.executeQuery("SELECT * FROM BOOKS WHERE BOOKID = " + currentBookID);
-                        rs.next();
-                        rs.updateString("AVAILABILITY", "RETURNING");
-                        rs.updateRow();
-                        refreshRsStmt("books");
-                    } catch (SQLException err) {
-                        System.out.println(err);
-                    }
-                }
-            }
-        }
-    }//GEN-LAST:event_btnBorrowActionPerformed
+    private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed
+        this.dispose();
+        sendDisplaySignal(new BookEditor());
+    }//GEN-LAST:event_btnEditActionPerformed
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
 
         databaseConnect("books");
         try {
-            rs = stmt.executeQuery("SELECT * FROM BOOKS WHERE BOOKID = " + currentBookID);
+            rs = stmt.executeQuery("SELECT * FROM BOOKS WHERE BOOKID = " + currBookID);
             while (rs.next()) {
                 title = rs.getString("TITLE");
                 author = rs.getString("AUTHOR");
@@ -272,11 +239,71 @@ public class ReaderBookViewer extends main {
             System.out.println(err.getMessage());
         }
     }//GEN-LAST:event_formWindowOpened
- 
+
+    private void btnBorrowActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBorrowActionPerformed
+        databaseConnect("books");
+        try {
+            rs = stmt.executeQuery("SELECT * FROM BOOKS WHERE BOOKID = " + currBookID);
+            while (rs.next()) {
+                availability = rs.getString("AVAILABILITY");
+                borrower = rs.getString("BORROWER");
+            }
+        } catch (SQLException err) {
+            System.out.println(err.getMessage());
+        }
+
+        System.out.println(availability);
+        System.out.println(borrower);
+
+        if (availability.equals("AVAILABLE")) {
+            try {
+                rs = stmt.executeQuery("SELECT * FROM BOOKS WHERE BOOKID = " + currBookID);
+                rs.next();
+                rs.updateString("AVAILABILITY", "UNAVAILABLE");
+                rs.updateString("BORROWER", currFullName);
+                rs.updateRow();
+                refreshRsStmt("books");
+            } catch (SQLException err) {
+                System.out.println(err);
+            }
+            JOptionPane.showMessageDialog(null, "Borrowed the book.");
+        } else {
+            if ("RETURNING".equals(availability)) {
+                JOptionPane.showMessageDialog(null, "Someone is returning this book, try again later.");
+                return;
+            }
+
+            if ("UNAVAILABLE".equals(availability) && borrower.equals(currFullName)) {
+                int option = JOptionPane.showOptionDialog(null, "You have already borrowed this book. Do you want to return it?", "Return book", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
+                if (option == JOptionPane.YES_OPTION) {
+                    try {
+                        rs = stmt.executeQuery("SELECT * FROM BOOKS WHERE BOOKID = " + currBookID);
+                        rs.next();
+                        rs.updateString("AVAILABILITY", "RETURNING");
+                        rs.updateRow();
+                        refreshRsStmt("books");
+                    } catch (SQLException err) {
+                        System.out.println(err);
+                    }
+                }
+            }
+        }
+    }//GEN-LAST:event_btnBorrowActionPerformed
+    
+    public static JButton hideBorrow()
+    {
+        return btnBorrow;
+    }
+    
+    public static JButton hideEdit()
+    {
+        return btnEdit;
+    }
+          
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new ReaderBookViewer().setVisible(true);
+                new BookViewer().setVisible(true);
             }
         });
     }
@@ -289,7 +316,8 @@ public class ReaderBookViewer extends main {
     private javax.swing.JLabel ImageLabel;
     private javax.swing.JTextArea Synopsis_label;
     private javax.swing.JLabel Title_label;
-    private javax.swing.JButton btnBorrow;
+    private static javax.swing.JButton btnBorrow;
+    private static javax.swing.JButton btnEdit;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;

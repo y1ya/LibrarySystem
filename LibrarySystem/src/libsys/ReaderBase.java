@@ -169,7 +169,23 @@ public class ReaderBase extends main {
 
     private void btnViewBookActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnViewBookActionPerformed
         if (mainTable.getSelectedRow() != -1)
-            main.sendDisplaySignal(new ReaderBookViewer());
+            databaseConnect("accounts");           
+            try {
+                rs = stmt.executeQuery("SELECT USERTYPE FROM ACCOUNTS WHERE USERID=" + currUserID);
+                if (rs.next()) {
+                    System.out.println(rs.getString("USERTYPE"));
+                    if (rs.getString("USERTYPE").equals("READER")) {
+                        sendDisplaySignal(new BookViewer());
+                        BookViewer.hideEdit().setVisible(false);
+                    } else if (rs.getString("USERTYPE").equals("LIBRARIAN")) {
+                        sendDisplaySignal(new BookViewer());
+                        BookViewer.hideBorrow().setVisible(false);
+                    }
+                }
+                refreshRsStmt("accounts");
+            } catch (SQLException err) {
+                System.out.println(err.getMessage());
+            }         
     }//GEN-LAST:event_btnViewBookActionPerformed
 
     private void btnLogOutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogOutActionPerformed
@@ -178,7 +194,7 @@ public class ReaderBase extends main {
 
     private void mainTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_mainTableMouseClicked
         Object val = mainTable.getValueAt(mainTable.getSelectedRow(), 4);
-        currentBookID = Integer.parseInt(val.toString());
+        currBookID = Integer.parseInt(val.toString());
     }//GEN-LAST:event_mainTableMouseClicked
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened

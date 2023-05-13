@@ -85,7 +85,7 @@ public class LibrarianBase extends main {
     }//GEN-LAST:event_btnRegistryActionPerformed
 
     private void btnViewerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnViewerActionPerformed
-        sendDisplaySignal(new LibrarianBookViewer());
+        sendDisplaySignal(new ReaderBase());
     }//GEN-LAST:event_btnViewerActionPerformed
 
     private void btnBorrowManActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBorrowManActionPerformed

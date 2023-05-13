@@ -5,8 +5,10 @@
         <group>
             <file>file:/C:/Users/vboxuser/Documents/GitHub/LibrarySystem/LibrarySystem/src/libsys/LibrarianBase.java</file>
             <file>file:/C:/Users/vboxuser/Documents/GitHub/LibrarySystem/LibrarySystem/src/libsys/main.java</file>
-            <file>file:/C:/Users/vboxuser/Documents/GitHub/LibrarySystem/LibrarySystem/src/libsys/BookViewer.java</file>
+            <file>file:/C:/Users/vboxuser/Documents/GitHub/LibrarySystem/LibrarySystem/src/libsys/ReaderSignUp.java</file>
             <file>file:/C:/Users/vboxuser/Documents/GitHub/LibrarySystem/LibrarySystem/src/libsys/ReaderBase.java</file>
+            <file>file:/C:/Users/vboxuser/Documents/GitHub/LibrarySystem/LibrarySystem/src/libsys/LibrarianBookViewer.java</file>
+            <file>file:/C:/Users/vboxuser/Documents/GitHub/LibrarySystem/LibrarySystem/src/libsys/ReaderBookViewer.java</file>
         </group>
     </open-files>
 </project-private>

@@ -23,17 +23,18 @@ public class main extends javax.swing.JFrame {
     DefaultTableModel LoginModel = new DefaultTableModel();
     
     // universal variables for accounts database 
-    String usiFullName, usiPass, usicPass, usiUsertype;
+    String usiFullName, usiPass, usicPass, usiUsertype, aFullname, aPassword, aUserType, aStringUserID;
+    int usiID;
     boolean matchAcc = false, matchPass = false, matchType = false;
-    int randID, aUserID, currUserID;
-    String currUserType;
-  
+    int randID, aUserID;
+   
     // variables for books databases
     String t;
-    public static int currentBookID;
+    public static int currBookID;
     
     // personalization variables
-    public static String currFullName;
+    public static String currFullName, currUserType;
+    public static int currUserID;
 
     // Connects to the reffered database
     public void databaseConnect(String dbName) 
@@ -75,8 +76,7 @@ public class main extends javax.swing.JFrame {
             new MainWindow(), new AdminSignIn(), new LibrarianSignIn(), 
             new ReaderSignIn(), new ReaderSignUp(), new AdminBase(), 
             new BookRegistry(), new LibrarianBase(), new BookBorrowMan(),
-            new BookEditor(), new LibrarianBookViewer(), new ReaderBase(),
-            new ReaderBookViewer(),
+            new BookEditor(), new BookViewer(), new ReaderBase(),
         };
         for (JFrame jframe : jframeArr) {
             if (jframe.getClass().equals(sig.getClass())) {
@@ -126,7 +126,7 @@ public class main extends javax.swing.JFrame {
                 if (usiPass.equals(usicPass)) 
                 {
                     stmt = con.createStatement();
-                    rs = stmt.executeQuery("SELECT USERTYPE FROM ACCOUNTS WHERE FULLNAME='" + usiFullName + "'");
+                    rs = stmt.executeQuery("SELECT * FROM ACCOUNTS WHERE FULLNAME='" + usiFullName + "'");
                     if (rs.next()) 
                     {
                         usiUsertype = rs.getString("USERTYPE");
@@ -135,11 +135,13 @@ public class main extends javax.swing.JFrame {
                             matchAcc = true; 
                             matchPass = true;
                             matchType = true;
+                            currUserID = rs.getInt("USERID");
                         }
                         else
                         {
                             matchAcc = true; 
                             matchPass = true;
+                            matchType = false;
                         }
                     }
                 }

@@ -243,7 +243,7 @@ public class BookEditor extends main {
     private void Btn_saveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Btn_saveActionPerformed
         databaseConnect("books");
         try{
-            rs=stmt.executeQuery("SELECT * FROM BOOKS WHERE BOOKID = "+currentBookID);
+            rs=stmt.executeQuery("SELECT * FROM BOOKS WHERE BOOKID = "+currBookID);
             rs.next();
             rs.updateString("TITLE", Title_tf.getText());
             rs.updateString("AUTHOR", Author_tf.getText());
@@ -266,7 +266,7 @@ public class BookEditor extends main {
        databaseConnect("books");
        new DropTarget(ImageLabel, imageInsert);
         try{
-            rs=stmt.executeQuery("SELECT * FROM BOOKS WHERE BOOKID = "+currentBookID);
+            rs=stmt.executeQuery("SELECT * FROM BOOKS WHERE BOOKID = "+currBookID);
             while(rs.next()){
                 Title_tf.setText(rs.getString("TITLE"));
                 Author_tf.setText(rs.getString("AUTHOR"));
@@ -317,7 +317,7 @@ public class BookEditor extends main {
     private void DeleteAction(){
         databaseConnect("books");
         try {
-            rs = stmt.executeQuery("SELECT * FROM BOOKS WHERE BOOKID = " + currentBookID);
+            rs = stmt.executeQuery("SELECT * FROM BOOKS WHERE BOOKID = " + currBookID);
             rs.next();
             rs.deleteRow();
             refreshRsStmt("books");
