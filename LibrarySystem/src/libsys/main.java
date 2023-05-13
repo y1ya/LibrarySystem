@@ -50,7 +50,7 @@ public class main extends javax.swing.JFrame {
             String sql = "SELECT * FROM USERDB." + dbName.toUpperCase();
             rs = stmt.executeQuery(sql);
         } catch (SQLException err) {
-            JOptionPane.showMessageDialog(main.this, err.getMessage());
+            JOptionPane.showMessageDialog(main.this, "Failed to connect to the database: " + err.getMessage());
         }
     }
 
@@ -135,7 +135,7 @@ public class main extends javax.swing.JFrame {
                             matchAcc = true; 
                             matchPass = true;
                             matchType = true;
-                            currUserID = rs.getInt("USERID");
+                            getCurrProp();
                         }
                         else
                         {
@@ -160,8 +160,6 @@ public class main extends javax.swing.JFrame {
         if (matchAcc && matchPass && matchType)
         {
             JOptionPane.showMessageDialog(null, "Successfully Logged in!");
-            currFullName = usiFullName;
-            currUserType = usiUsertype;
             this.dispose();
             toUsertypeBases(userType);
         }
@@ -206,6 +204,13 @@ public class main extends javax.swing.JFrame {
             this.dispose();
             sendDisplaySignal(new MainWindow());
         }
+    }
+    
+    public void getCurrProp() throws SQLException
+    {
+        currFullName = rs.getString("FULLNAME");
+        currUserType = rs.getString("USERTYPE");
+        currUserID = rs.getInt("USERID");
     }
     
     // Insert Borrow Date(today) and ReturnDate to Database

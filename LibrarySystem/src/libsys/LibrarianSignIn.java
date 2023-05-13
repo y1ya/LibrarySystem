@@ -124,7 +124,6 @@ public class LibrarianSignIn extends main {
         
         usiFullName = txtLogName.getText();
         usiPass = String.valueOf(txtLogPass.getPassword());
-        
      
         try {
             signIn(usiFullName, usiPass, "LIBRARIAN", txtLogName, txtLogPass);

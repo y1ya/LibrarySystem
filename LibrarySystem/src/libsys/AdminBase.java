@@ -15,15 +15,10 @@ public class AdminBase extends main {
 
     public AdminBase() {
         initComponents();
-        databaseConnect("accounts");
-        
-        int ids = randNumGen("accounts", "userid");
-        
+
         btnSave.setVisible(false);
         btnEdit.setVisible(false);
         btnDelete.setVisible(false);
-        
-        txtUserId.setText(String.valueOf(ids));
     }
 
     @SuppressWarnings("unchecked")
@@ -200,7 +195,11 @@ public class AdminBase extends main {
     }//GEN-LAST:event_btnClearActionPerformed
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
-
+        databaseConnect("accounts");                
+        int ids = randNumGen("accounts", "userid");
+        txtUserId.setText(String.valueOf(ids));
+        
+        
         String[] columnNames = {"User ID", "Fullname", "Password", "User Type"};
         tblDataAccounts.setColumnIdentifiers(columnNames);
         tblDataAccounts.setRowCount(0);

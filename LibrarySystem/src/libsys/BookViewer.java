@@ -12,7 +12,8 @@ public class BookViewer extends main {
     public BookViewer() {
         initComponents();
     }
-    String title, author, genre, date, synopsis, imagesrc, availability, borrower;
+    String title, author, genre, date, synopsis, imagesrc, availability;
+    int borrower;
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -34,6 +35,7 @@ public class BookViewer extends main {
         Date_label = new javax.swing.JLabel();
         btnEdit = new javax.swing.JButton();
         btnBorrow = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
 
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowOpened(java.awt.event.WindowEvent evt) {
@@ -137,6 +139,8 @@ public class BookViewer extends main {
             }
         });
 
+        jButton1.setText("Return");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -151,11 +155,12 @@ public class BookViewer extends main {
                         .addComponent(Availability_label, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(10, 10, 10)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(31, 31, 31)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(btnEdit, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnBorrow, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(97, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 73, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(btnEdit, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 82, Short.MAX_VALUE)
+                    .addComponent(btnBorrow, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 82, Short.MAX_VALUE)
+                    .addComponent(jButton1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(55, 55, 55))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -170,10 +175,12 @@ public class BookViewer extends main {
                                 .addGap(61, 61, 61)
                                 .addComponent(Availability_label))))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(81, 81, 81)
+                        .addGap(40, 40, 40)
                         .addComponent(btnEdit, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(btnBorrow, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(btnBorrow, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -204,6 +211,7 @@ public class BookViewer extends main {
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
 
+        this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         databaseConnect("books");
         try {
             rs = stmt.executeQuery("SELECT * FROM BOOKS WHERE BOOKID = " + currBookID);
@@ -246,34 +254,32 @@ public class BookViewer extends main {
             rs = stmt.executeQuery("SELECT * FROM BOOKS WHERE BOOKID = " + currBookID);
             while (rs.next()) {
                 availability = rs.getString("AVAILABILITY");
-                borrower = rs.getString("BORROWER");
+                borrower = rs.getInt("BORROWER");
             }
         } catch (SQLException err) {
             System.out.println(err.getMessage());
         }
 
-        System.out.println(availability);
-        System.out.println(borrower);
-
         if (availability.equals("AVAILABLE")) {
             try {
                 rs = stmt.executeQuery("SELECT * FROM BOOKS WHERE BOOKID = " + currBookID);
                 rs.next();
-                rs.updateString("AVAILABILITY", "UNAVAILABLE");
-                rs.updateString("BORROWER", currFullName);
+                rs.updateString("AVAILABILITY", "BORROWING");
+                rs.updateInt("BORROWER", currUserID);
                 rs.updateRow();
                 refreshRsStmt("books");
             } catch (SQLException err) {
                 System.out.println(err);
             }
             JOptionPane.showMessageDialog(null, "Borrowed the book.");
+            Availability_label.setText("BORROWING");
         } else {
             if ("RETURNING".equals(availability)) {
                 JOptionPane.showMessageDialog(null, "Someone is returning this book, try again later.");
                 return;
             }
 
-            if ("UNAVAILABLE".equals(availability) && borrower.equals(currFullName)) {
+            if ("UNAVAILABLE".equals(availability) && borrower == currUserID) {
                 int option = JOptionPane.showOptionDialog(null, "You have already borrowed this book. Do you want to return it?", "Return book", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
                 if (option == JOptionPane.YES_OPTION) {
                     try {
@@ -282,6 +288,7 @@ public class BookViewer extends main {
                         rs.updateString("AVAILABILITY", "RETURNING");
                         rs.updateRow();
                         refreshRsStmt("books");
+                        Availability_label.setText("RETURNING");
                     } catch (SQLException err) {
                         System.out.println(err);
                     }
@@ -318,6 +325,7 @@ public class BookViewer extends main {
     private javax.swing.JLabel Title_label;
     private static javax.swing.JButton btnBorrow;
     private static javax.swing.JButton btnEdit;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
