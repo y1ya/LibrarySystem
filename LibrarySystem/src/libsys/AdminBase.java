@@ -52,6 +52,7 @@ public class AdminBase extends main {
         btnLogOut = new javax.swing.JButton();
         fill1 = new javax.swing.JPanel();
         fill2 = new javax.swing.JPanel();
+        fill3 = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -172,6 +173,7 @@ public class AdminBase extends main {
         getContentPane().add(btnLogOut, new org.netbeans.lib.awtextra.AbsoluteConstraints(650, 290, -1, -1));
         getContentPane().add(fill1, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 300, 290, 20));
         getContentPane().add(fill2, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 340, 290, 20));
+        getContentPane().add(fill3, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 380, 290, 20));
 
         pack();
         setLocationRelativeTo(null);
@@ -349,23 +351,24 @@ public class AdminBase extends main {
 
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
 
-        aUserID = Integer.parseInt(txtUserId.getText());
         aFullname = txtFullname.getText();
         aPassword = txtPassword.getText();
         aUserType = String.valueOf(cbUserType.getSelectedItem());
         
         try {
-            if (aFullname.isEmpty() || aPassword.isEmpty()) {
+            if (aFullname.isEmpty() || aPassword.isEmpty() || txtUserId.getText().isEmpty()) {
                 JOptionPane.showMessageDialog(null, "Fill in the blanks.");
                 if (aFullname.isEmpty()) {
-                    JPanel setBorder = new JPanel();
                     fill1.setBorder(BorderFactory.createLineBorder(Color.red));
                 } 
                 if (aPassword.isEmpty()) {
-                    JPanel setBorder = new JPanel();
                     fill2.setBorder(BorderFactory.createLineBorder(Color.red));
                 }
+                if (txtUserId.getText().isEmpty()) {
+                    fill3.setBorder(BorderFactory.createLineBorder(Color.red));
+                }                
             } else {
+                aUserID = Integer.parseInt(txtUserId.getText());                
                 rs.moveToInsertRow();
                 rs.updateInt("USERID", aUserID);
                 rs.updateString("FULLNAME", aFullname);
@@ -385,6 +388,7 @@ public class AdminBase extends main {
                 
                 fill1.setVisible(false);
                 fill2.setVisible(false);
+                fill3.setVisible(false);
             }
             
         } catch (SQLException err) {
@@ -478,6 +482,7 @@ public class AdminBase extends main {
     private javax.swing.JComboBox<String> cbUserType;
     private javax.swing.JPanel fill1;
     private javax.swing.JPanel fill2;
+    private javax.swing.JPanel fill3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
