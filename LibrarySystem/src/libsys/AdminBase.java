@@ -397,30 +397,44 @@ public class AdminBase extends main {
     }//GEN-LAST:event_btnAddActionPerformed
 
     private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
-
-        aUserID = Integer.parseInt(txtUserId.getText());
-   
         int ids = Integer.parseInt(mainTable.getValueAt(mainTable.getSelectedRow(), 
-                0).toString());
+             0).toString());
+        aFullname = txtFullname.getText();
+        aPassword = txtPassword.getText();
+        aUserType = String.valueOf(cbUserType.getSelectedItem());
         
         try {
+            if (aFullname.isEmpty() || aPassword.isEmpty() || txtUserId.getText().isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Fill in the blanks.");
+                if (aFullname.isEmpty()) {
+                    fill1.setBorder(BorderFactory.createLineBorder(Color.red));
+                } 
+                if (aPassword.isEmpty()) {
+                    fill2.setBorder(BorderFactory.createLineBorder(Color.red));
+                }
+                if (txtUserId.getText().isEmpty()) {
+                    fill3.setBorder(BorderFactory.createLineBorder(Color.red));
+                }
+            }
+            else{
+            aUserID = Integer.parseInt(txtUserId.getText());                
             boolean b = stmt.execute("UPDATE ACCOUNTS SET FULLNAME = '" + txtFullname.getText() + "', PASSWORD = '" + txtPassword.getText() + "'"
-                    + ", USERTYPE = '" + String.valueOf(cbUserType.getSelectedItem()) + "' WHERE USERID = " + ids);
-            
-            if (!b) {
-                JOptionPane.showMessageDialog(null, "The account has been updated!");
-                
-                txtFullname.setText(null);
-                txtPassword.setText(null);
-                cbUserType.setSelectedIndex(0);
-                
-                btnAdd.setVisible(true);
-                btnSave.setVisible(false);
-                btnEdit.setVisible(false);
-                btnDelete.setVisible(false);
-                
-                refreshRsStmt("accounts");
-                formWindowOpened(null);
+                    + ", USERTYPE = '" + String.valueOf(cbUserType.getSelectedItem()) + "' WHERE USERID = " + ids);                
+                if (!b) {
+                    JOptionPane.showMessageDialog(null, "The account has been updated!");
+
+                    txtFullname.setText(null);
+                    txtPassword.setText(null);
+                    cbUserType.setSelectedIndex(0);
+
+                    btnAdd.setVisible(true);
+                    btnSave.setVisible(false);
+                    btnEdit.setVisible(false);
+                    btnDelete.setVisible(false);
+
+                    refreshRsStmt("accounts");
+                    formWindowOpened(null);
+                }
             }
         } catch (SQLException err) {
             JOptionPane.showMessageDialog(AdminBase.this, err.getMessage());
@@ -453,21 +467,21 @@ public class AdminBase extends main {
     }//GEN-LAST:event_btnLogOutActionPerformed
 
     private void txtPasswordKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPasswordKeyTyped
-        // TODO add your handling code here:
+        /* TODO add your handling code here:
         if (txtPassword.getText().equals("")) {
             btnSave.setEnabled(false);
         } else {
             btnSave.setEnabled(true);
-        }
+        }*/
     }//GEN-LAST:event_txtPasswordKeyTyped
 
     private void txtFullnameKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtFullnameKeyTyped
-        // TODO add your handling code here:
+        /* TODO add your handling code here:
         if (txtFullname.getText().equals("")) {
             btnSave.setEnabled(false);
         } else {
             btnSave.setEnabled(true);
-        }
+        }*/
     }//GEN-LAST:event_txtFullnameKeyTyped
 
 
