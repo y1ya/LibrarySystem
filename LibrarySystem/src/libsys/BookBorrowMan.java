@@ -1,5 +1,7 @@
 package libsys;
 
+import libsys.AdminBase;
+
 public class BookBorrowMan extends javax.swing.JFrame {
 
     public BookBorrowMan() {

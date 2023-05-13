@@ -8,7 +8,7 @@ import java.awt.image.*;
 import java.io.*;
 import java.nio.file.*;
 import java.util.logging.*;
-
+import libsys.AdminBase;
 
 
 public class BookRegistry extends main {
@@ -144,7 +144,7 @@ public class BookRegistry extends main {
                                                 .addComponent(Year_tf, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                            .addComponent(Btn_Register, javax.swing.GroupLayout.DEFAULT_SIZE, 83, Short.MAX_VALUE)
+                                            .addComponent(Btn_Register, javax.swing.GroupLayout.PREFERRED_SIZE, 83, Short.MAX_VALUE)
                                             .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                         .addGap(46, 46, 46)))))))
                 .addContainerGap())

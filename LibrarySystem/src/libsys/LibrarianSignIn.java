@@ -1,5 +1,9 @@
 package libsys;
 
+import libsys.AdminBase;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 public class LibrarianSignIn extends main {
 
     public LibrarianSignIn() {
@@ -121,7 +125,11 @@ public class LibrarianSignIn extends main {
         usiFullName = txtLogName.getText();
         usiPass = String.valueOf(txtLogPass.getPassword());
         
-        signIn(usiFullName, usiPass, "LIBRARIAN", txtLogName, txtLogPass);
+        try {
+            signIn(usiFullName, usiPass, "LIBRARIAN", txtLogName, txtLogPass);
+        } catch (Exception ex) {
+            Logger.getLogger(LibrarianSignIn.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_btnConfirmActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -1,5 +1,11 @@
 package libsys;
 
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import static libsys.main.currFullName;
+
 public class ReaderSignUp extends main {
     public ReaderSignUp() {
         initComponents();
@@ -144,13 +150,43 @@ public class ReaderSignUp extends main {
     
     // Reader account register
     private void btnConfirmActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConfirmActionPerformed
-        databaseConnect("accounts");
+        databaseConnect("accounts");    
         
-        usuFullName = txtNewName.getText();
-        usuPass = String.valueOf(txtNewPass.getPassword());
-        id = randNumGen("accounts", "userid");
+        usiFullName = txtNewName.getText();
+        usiPass = String.valueOf(txtNewPass.getPassword());
+        randID = randNumGen("accounts", "userid");
         
-        signUp(usuFullName, usuPass, "READER", txtNewName, txtNewPass, txtNewPassConf, lblPassNotAligned, id);
+        try 
+        {  
+            if (!String.valueOf(txtNewPass.getPassword()).equals(String.valueOf(txtNewPassConf.getPassword())))
+                lblPassNotAligned.setVisible(true);
+            else
+            {
+                rs.moveToInsertRow();
+                rs.updateString("PASSWORD", usiPass);
+                rs.updateString("FULLNAME", usiFullName);
+                rs.updateInt("USERID", randID); 
+                rs.updateString("USERTYPE", "READER");
+                rs.insertRow();
+                refreshRsStmt("accounts");
+                
+                JOptionPane.showMessageDialog(null, "Registration Complete!");
+                JOptionPane.showMessageDialog(null, "User ID: " + randID + "\nFullname: " + usiFullName + 
+                        "\nPassword: " + usiPass + "\nUser Type: " + "READER", "Account Registered Information."
+                        , JOptionPane.INFORMATION_MESSAGE);
+                this.dispose();
+                currFullName = usiFullName;
+                currUserType = usiUsertype;
+                toUsertypeBases("READER");       
+            }
+            refreshRsStmt("accounts");    
+        } 
+        catch (SQLException err)
+        {
+            System.out.println(err.getMessage());
+        } catch (Exception ex) {
+            Logger.getLogger(ReaderSignUp.class.getName()).log(Level.SEVERE, null, ex);
+        }  
     }//GEN-LAST:event_btnConfirmActionPerformed
     
     private void btnClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearActionPerformed

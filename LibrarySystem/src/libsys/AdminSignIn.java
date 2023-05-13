@@ -1,5 +1,9 @@
 package libsys;
 
+import libsys.AdminBase;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 public class AdminSignIn extends main {
 
     public AdminSignIn() {
@@ -120,7 +124,11 @@ public class AdminSignIn extends main {
         usiFullName = txtLogName.getText();
         usiPass = String.valueOf(txtLogPass.getPassword());
         
-        signIn(usiFullName, usiPass, "ADMIN", txtLogName, txtLogPass);
+        try {
+            signIn(usiFullName, usiPass, "ADMIN", txtLogName, txtLogPass);
+        } catch (Exception ex) {
+            Logger.getLogger(AdminSignIn.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_btnConfirmActionPerformed
 
     private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed

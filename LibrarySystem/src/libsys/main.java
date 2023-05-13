@@ -23,11 +23,11 @@ public class main extends javax.swing.JFrame {
     DefaultTableModel LoginModel = new DefaultTableModel();
     
     // universal variables for accounts database 
-    String usiFullName, usiPass, usicPass, usiUsertype, 
-           usuFullName, usuPass, usucPass, usuUserType;
-    int id, userid;
+    String usiFullName, usiPass, usicPass, usiUsertype;
     boolean matchAcc = false, matchPass = false, matchType = false;
-    
+    int randID, aUserID, currUserID;
+    String currUserType;
+  
     // variables for books databases
     String t;
     public static int currentBookID;
@@ -36,7 +36,8 @@ public class main extends javax.swing.JFrame {
     public static String currFullName;
 
     // Connects to the reffered database
-    public void databaseConnect(String dbName) {
+    public void databaseConnect(String dbName) 
+    {
         try {
             String host = "jdbc:derby://localhost:1527/" + dbName;
             String uName = "userdb";
@@ -53,7 +54,8 @@ public class main extends javax.swing.JFrame {
     }
 
     // Refreshes the reffered database contents
-    public void refreshRsStmt(String dbName) {
+    public void refreshRsStmt(String dbName) 
+    {
         try {
             stmt.close();
             stmt = con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,
@@ -66,22 +68,23 @@ public class main extends javax.swing.JFrame {
     }
 
     // Gets called in every end of a JFrame so everything goes through the main
-    // rather than being thrown and adjusted from JFrame to JFrame
+    // rather than being thrown and samely adjusted from JFrame to JFrame
     public static void sendDisplaySignal(JFrame sig) 
     {
-        JFrame[] jframe = {
+        JFrame[] jframeArr = {
             new MainWindow(), new AdminSignIn(), new LibrarianSignIn(), 
             new ReaderSignIn(), new ReaderSignUp(), new AdminBase(), 
             new BookRegistry(), new LibrarianBase(), new BookBorrowMan(),
-            new BookEditor(), new BookViewer(), new ReaderBase()
+            new BookEditor(), new LibrarianBookViewer(), new ReaderBase(),
+            new ReaderBookViewer(),
         };
-        for (JFrame jframe1 : jframe) {
-            if (jframe1.getClass().equals(sig.getClass())) {
-                jframe1.setSize(new java.awt.Dimension(1280, 720));
-                jframe1.setLocationRelativeTo(null);
+        for (JFrame jframe : jframeArr) {
+            if (jframe.getClass().equals(sig.getClass())) {
+                jframe.setSize(new java.awt.Dimension(1366, 768));
+                jframe.setLocationRelativeTo(null);
                 //Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();  // adapt to machinee's screen size
                 //jframe1.setSize(screenSize.width, screenSize.height); // set size to screen size
-                jframe1.setVisible(true);
+                jframe.setVisible(true);
             }
         }
     }
@@ -109,41 +112,9 @@ public class main extends javax.swing.JFrame {
         return randNum;
     }
     
-    public void signUp(String usuFullName, String usuPass, String userType, JTextField txtNewName, 
-            JPasswordField txtNewPass, JPasswordField txtNewPassConf, JLabel lblPassNotAligned, int id) 
-    {
-        try 
-        {  
-            if (!String.valueOf(txtNewPass.getPassword()).equals(String.valueOf(txtNewPassConf.getPassword())))
-                lblPassNotAligned.setVisible(true);
-            else
-            {
-                rs.moveToInsertRow();
-                rs.updateString("PASSWORD", usuPass);
-                rs.updateString("FULLNAME", usuFullName);
-                rs.updateInt("USERID", id); // <--- temporary changes
-                rs.updateString("USERTYPE", "READER");
-                rs.insertRow();
-                refreshRsStmt("accounts");
-                
-                JOptionPane.showMessageDialog(null, "Registration Complete!");
-                JOptionPane.showMessageDialog(null, "User ID: " + id + "\nFullname: " + usuFullName + 
-                        "\nPassword: " + usuPass + "\nUser Type: " + userType, "Account Registered Information."
-                        , JOptionPane.INFORMATION_MESSAGE);
-                this.dispose();
-                currFullName = usuFullName;
-                toUsertypeBases(userType);       
-            }
-            refreshRsStmt("accounts");
-        } 
-        catch (SQLException err)
-        {
-            System.out.println(err.getMessage());
-        }
-    }
-
+    // Sign in functionality for every Usertype
     public void signIn(String usiFullName, String usiPass, String userType, 
-            JTextField txtLogName, JPasswordField txtLogPass) 
+            JTextField txtLogName, JPasswordField txtLogPass) throws Exception 
     {
         try 
         {
@@ -187,8 +158,9 @@ public class main extends javax.swing.JFrame {
         if (matchAcc && matchPass && matchType)
         {
             JOptionPane.showMessageDialog(null, "Successfully Logged in!");
-            this.dispose();
             currFullName = usiFullName;
+            currUserType = usiUsertype;
+            this.dispose();
             toUsertypeBases(userType);
         }
         else if (matchAcc && !matchPass)
@@ -205,6 +177,7 @@ public class main extends javax.swing.JFrame {
         }
     }
     
+    // Provides the next destination for different Usertypes onced signed in or up
     public void toUsertypeBases(String userType)
     {
         switch (userType) 
@@ -220,7 +193,8 @@ public class main extends javax.swing.JFrame {
                 break;
         }
     }
-        
+    
+    // Provides Log out functionality for every usertype
     public void logOut()
     {
         int logoutoption = JOptionPane.YES_NO_OPTION;
@@ -232,8 +206,9 @@ public class main extends javax.swing.JFrame {
         }
     }
     
-    //Insert Borrow Date(today) and ReturnDate to Database
-    public void Dates_to_Database(int add_days){
+    // Insert Borrow Date(today) and ReturnDate to Database
+    public void Dates_to_Database(int add_days)
+    {
         databaseConnect("books");
         Date borrowDate = Date.valueOf(LocalDate.now());
         Date returnDate = Date.valueOf(LocalDate.now().plusDays(add_days));
@@ -247,10 +222,10 @@ public class main extends javax.swing.JFrame {
             rs.insertRow();
             refreshRsStmt("books");
         }catch(SQLException e){
-            System.out.print(e);
+            System.out.print(e.getMessage());
         }
     }
-
+    
     // The first statement/s to be called
     public static void main(String[] args) {
         sendDisplaySignal(new MainWindow());

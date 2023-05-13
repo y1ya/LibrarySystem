@@ -1,6 +1,5 @@
 package libsys;
 
-
 public class LibrarianBase extends main {
 
     
@@ -86,7 +85,7 @@ public class LibrarianBase extends main {
     }//GEN-LAST:event_btnRegistryActionPerformed
 
     private void btnViewerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnViewerActionPerformed
-        sendDisplaySignal(new BookViewer());
+        sendDisplaySignal(new LibrarianBookViewer());
     }//GEN-LAST:event_btnViewerActionPerformed
 
     private void btnBorrowManActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBorrowManActionPerformed

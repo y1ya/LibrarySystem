@@ -8,7 +8,7 @@ import java.awt.image.*;
 import java.io.*;
 import java.nio.file.*;
 import java.util.logging.*;
-
+import libsys.AdminBase;
 
 
 public class BookEditor extends main {
@@ -37,10 +37,10 @@ public class BookEditor extends main {
         Genre_tf = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         Synopsis_ta = new javax.swing.JTextArea();
-        Btn_Register = new javax.swing.JButton();
+        Btn_save = new javax.swing.JButton();
         Btn_back = new javax.swing.JButton();
+        Btn_Delete = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowOpened(java.awt.event.WindowEvent evt) {
                 formWindowOpened(evt);
@@ -90,10 +90,10 @@ public class BookEditor extends main {
         Synopsis_ta.setWrapStyleWord(true);
         jScrollPane1.setViewportView(Synopsis_ta);
 
-        Btn_Register.setText("EDIT");
-        Btn_Register.addActionListener(new java.awt.event.ActionListener() {
+        Btn_save.setText("SAVE");
+        Btn_save.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                Btn_RegisterActionPerformed(evt);
+                Btn_saveActionPerformed(evt);
             }
         });
 
@@ -101,6 +101,13 @@ public class BookEditor extends main {
         Btn_back.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 Btn_backActionPerformed(evt);
+            }
+        });
+
+        Btn_Delete.setText("DELETE");
+        Btn_Delete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Btn_DeleteActionPerformed(evt);
             }
         });
 
@@ -125,7 +132,7 @@ public class BookEditor extends main {
                                     .addGroup(layout.createSequentialGroup()
                                         .addGap(107, 107, 107)
                                         .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 320, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(layout.createSequentialGroup()
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                         .addGap(44, 44, 44)
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -147,8 +154,9 @@ public class BookEditor extends main {
                                                 .addComponent(Year_tf, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                            .addComponent(Btn_Register, javax.swing.GroupLayout.DEFAULT_SIZE, 83, Short.MAX_VALUE)
-                                            .addComponent(Btn_back, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                            .addComponent(Btn_save, javax.swing.GroupLayout.DEFAULT_SIZE, 83, Short.MAX_VALUE)
+                                            .addComponent(Btn_back, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .addComponent(Btn_Delete, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                         .addGap(46, 46, 46)))))))
                 .addContainerGap())
         );
@@ -165,27 +173,37 @@ public class BookEditor extends main {
                                 .addGap(32, 32, 32)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(Btn_Register, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addComponent(Btn_save, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addComponent(Title_tf, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(Btn_back, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, 37, Short.MAX_VALUE)
-                            .addComponent(Author_tf, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(Year_tf, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addGap(9, 9, 9)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(18, 18, 18)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(Author_tf, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(Year_tf, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(48, 48, 48)
+                                .addComponent(Btn_back, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel2)
-                    .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(Genre_tf, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(21, 21, 21)
-                .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(12, 12, 12)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel2)
+                            .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(Genre_tf, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(21, 21, 21)
+                        .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(7, 7, 7))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(Btn_Delete, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(34, 34, 34)))
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(19, Short.MAX_VALUE))
+                .addContainerGap(15, Short.MAX_VALUE))
         );
 
         pack();
@@ -222,7 +240,7 @@ public class BookEditor extends main {
         }
     }//GEN-LAST:event_ImageLabelMouseExited
 
-    private void Btn_RegisterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Btn_RegisterActionPerformed
+    private void Btn_saveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Btn_saveActionPerformed
         databaseConnect("books");
         try{
             rs=stmt.executeQuery("SELECT * FROM BOOKS WHERE BOOKID = "+currentBookID);
@@ -238,11 +256,11 @@ public class BookEditor extends main {
         } catch(SQLException err){
             System.out.println(err);
         }
-        Btn_Register.setEnabled(false);
+        Btn_save.setEnabled(false);
         JOptionPane.showMessageDialog(null, "Editing is successful!");
         this.dispose();
         sendDisplaySignal(new LibrarianBase());
-    }//GEN-LAST:event_Btn_RegisterActionPerformed
+    }//GEN-LAST:event_Btn_saveActionPerformed
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
        databaseConnect("books");
@@ -281,7 +299,40 @@ public class BookEditor extends main {
         this.dispose();
         sendDisplaySignal(new LibrarianBase());
     }//GEN-LAST:event_Btn_backActionPerformed
-  
+
+    private void Btn_DeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Btn_DeleteActionPerformed
+        int response;
+        response=JOptionPane.showConfirmDialog(null, "This will completely wipe the book from the System, Are you sure?", "Confirmation?", 0);
+        System.out.println(response);
+        //0=yes 1=no
+        switch(response){
+            case 0:
+                DeleteAction();
+                break;
+            case 1:
+                break;
+        }
+    }//GEN-LAST:event_Btn_DeleteActionPerformed
+    
+    private void DeleteAction(){
+        databaseConnect("books");
+        try {
+            rs = stmt.executeQuery("SELECT * FROM BOOKS WHERE BOOKID = " + currentBookID);
+            rs.next();
+            rs.deleteRow();
+            refreshRsStmt("books");
+        } catch (SQLException err) {
+            System.out.println(err.getMessage());
+        }
+        try{
+                Files.delete(Paths.get(imagesrc));
+        }catch(IOException err){
+                System.out.println(err);
+        }
+        this.dispose();
+        sendDisplaySignal(new LibrarianBase());
+    }
+        
     private void CopyImage(String destinationpath) throws IOException{
         Path source=Paths.get(imageInsert.ImagePath);
         Path destination=Paths.get(destinationpath);
@@ -321,8 +372,9 @@ public class BookEditor extends main {
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField Author_tf;
-    private javax.swing.JButton Btn_Register;
+    private javax.swing.JButton Btn_Delete;
     private javax.swing.JButton Btn_back;
+    private javax.swing.JButton Btn_save;
     private javax.swing.JTextField Genre_tf;
     private javax.swing.JLabel ImageLabel;
     private javax.swing.JTextArea Synopsis_ta;

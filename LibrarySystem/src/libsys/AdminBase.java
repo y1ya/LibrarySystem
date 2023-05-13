@@ -4,6 +4,7 @@ package libsys;
 import java.sql.*;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import libsys.AdminBase;
 
 public class AdminBase extends main {
     DefaultTableModel tblDataAccounts = new DefaultTableModel();
@@ -265,13 +266,13 @@ public class AdminBase extends main {
             ResultSet rs = stmt.executeQuery("SELECT * FROM ACCOUNTS WHERE USERID = " 
                     + searchUserId);
             if (rs.next()) {
-                JOptionPane.showMessageDialog(null, "User ID: " + userid + "\nFullname: " + rs.getString("FULLNAME") +
+                JOptionPane.showMessageDialog(null, "User ID: " + aUserID + "\nFullname: " + rs.getString("FULLNAME") +
                             "\nPassword: " + rs.getString("PASSWORD") + "\nUser Type: " + rs.getString("USERTYPE"), "Account Details", 
                             JOptionPane.INFORMATION_MESSAGE);
                 
                 txtFullname.setText(rs.getString("FULLNAME"));
                 txtPassword.setText(rs.getString("PASSWORD"));
-                txtUserId.setText(String.valueOf(userid));
+                txtUserId.setText(String.valueOf(aUserID));
                 cbUserType.setSelectedItem(rs.getString("USERTYPE"));
                 } else {
                     JOptionPane.showMessageDialog(null, "Account not Found!");
@@ -314,10 +315,10 @@ public class AdminBase extends main {
 
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
 
-        userid = Integer.parseInt(txtUserId.getText());
+        aUserID = Integer.parseInt(txtUserId.getText());
         try {
             rs.moveToInsertRow();
-            rs.updateInt("USERID", userid);
+            rs.updateInt("USERID", aUserID);
             rs.updateString("FULLNAME", txtFullname.getText());
             rs.updateString("PASSWORD", txtPassword.getText());
             rs.updateString("USERTYPE", String.valueOf(cbUserType.getSelectedItem()));
@@ -337,7 +338,7 @@ public class AdminBase extends main {
 
     private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
 
-        userid = Integer.parseInt(txtUserId.getText());
+        aUserID = Integer.parseInt(txtUserId.getText());
    
         int ids = Integer.parseInt(mainTable.getValueAt(mainTable.getSelectedRow(), 
                 0).toString());
