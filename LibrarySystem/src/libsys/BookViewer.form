@@ -136,8 +136,16 @@
                               </Group>
                               <EmptySpace max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="Title_label" alignment="0" max="32767" attributes="0"/>
-                                  <Component id="Author_label" alignment="0" max="32767" attributes="0"/>
+                                  <Group type="102" alignment="0" attributes="0">
+                                      <Component id="Title_label" max="32767" attributes="0"/>
+                                      <EmptySpace min="-2" pref="47" max="-2" attributes="0"/>
+                                  </Group>
+                                  <Group type="102" alignment="0" attributes="0">
+                                      <Component id="Author_label" max="32767" attributes="0"/>
+                                      <EmptySpace max="-2" attributes="0"/>
+                                      <Component id="lblOneBook" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace min="-2" pref="25" max="-2" attributes="0"/>
+                                  </Group>
                                   <Component id="Genre_label" max="32767" attributes="0"/>
                                   <Component id="Date_label" alignment="0" max="32767" attributes="0"/>
                               </Group>
@@ -156,9 +164,12 @@
                           <Component id="Title_label" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="jLabel4" alignment="3" min="-2" pref="42" max="-2" attributes="0"/>
-                          <Component id="Author_label" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="jLabel4" alignment="3" min="-2" pref="42" max="-2" attributes="0"/>
+                              <Component id="Author_label" alignment="3" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <Component id="lblOneBook" alignment="1" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
@@ -254,6 +265,11 @@
             <Component class="javax.swing.JLabel" name="Date_label">
               <Properties>
                 <Property name="text" type="java.lang.String" value="jLabel3"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="lblOneBook">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="You can only borrow one book at a time."/>
               </Properties>
             </Component>
           </SubComponents>

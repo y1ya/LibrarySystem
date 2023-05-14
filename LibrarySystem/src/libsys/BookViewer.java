@@ -7,11 +7,14 @@ import java.sql.*;
 import java.awt.image.*;
 import java.io.*;
 import java.time.LocalDate;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class BookViewer extends main {
 
     public BookViewer() {
         initComponents();
+        lblOneBook.setVisible(false);
     }
     String title, author, genre, date, synopsis, imagesrc, availability;
     int borrower;
@@ -34,6 +37,7 @@ public class BookViewer extends main {
         Author_label = new javax.swing.JLabel();
         Genre_label = new javax.swing.JLabel();
         Date_label = new javax.swing.JLabel();
+        lblOneBook = new javax.swing.JLabel();
         btnEdit = new javax.swing.JButton();
         btnBorrow = new javax.swing.JButton();
 
@@ -79,6 +83,8 @@ public class BookViewer extends main {
 
         Date_label.setText("jLabel3");
 
+        lblOneBook.setText("You can only borrow one book at a time.");
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -95,8 +101,14 @@ public class BookViewer extends main {
                             .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(Title_label, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(Author_label, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addComponent(Title_label, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGap(47, 47, 47))
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addComponent(Author_label, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(lblOneBook)
+                                .addGap(25, 25, 25))
                             .addComponent(Genre_label, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(Date_label, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addContainerGap())))
@@ -109,9 +121,11 @@ public class BookViewer extends main {
                     .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(Title_label))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(Author_label))
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(Author_label))
+                    .addComponent(lblOneBook, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -206,6 +220,11 @@ public class BookViewer extends main {
         updateView(); 
         databaseConnect("books");
         try {
+            alreadyBorrowed();
+        } catch (SQLException ex) {
+            Logger.getLogger(BookViewer.class.getName()).log(Level.SEVERE, null, ex);
+        }    
+        try {
             rs = stmt.executeQuery("SELECT * FROM BOOKS WHERE BOOKID = " + currBookID);
             while (rs.next()) {
                 title = rs.getString("TITLE");
@@ -255,13 +274,16 @@ public class BookViewer extends main {
         {
             System.out.println(err.getMessage());
         }
+        
+        try {
+            alreadyBorrowed();
+        } catch (SQLException ex) {
+            Logger.getLogger(BookViewer.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
         if (availability.equals("AVAILABLE")) 
         {
             try{
-                rs = stmt.executeQuery("SELECT * FROM BOOKS WHERE BORROWER = " + currUserID);                
-                if(rs.next())JOptionPane.showMessageDialog(null, "You already borrowed a book.");
-                else{
                     rs = stmt.executeQuery("SELECT * FROM BOOKS WHERE BOOKID = " + currBookID);
                     if (rs.next())
                     {                    
@@ -276,11 +298,11 @@ public class BookViewer extends main {
                     refreshRsStmt("books");
                     updateView();                    
                 }
-                }catch(SQLException err)
+                catch(SQLException err)
                 {
                     System.out.println(err);
                 }                 
-        } 
+        }
         
         else if ((availability.equals("BORROWED") || availability.equals("BORROWING") || availability.equals("RETURNING")) && borrower != currUserID) 
         {
@@ -358,6 +380,17 @@ public class BookViewer extends main {
             System.out.println(err.getMessage());
         }
     }
+    
+    public void alreadyBorrowed() throws SQLException
+    {
+        rs = stmt.executeQuery("SELECT * FROM BOOKS WHERE BORROWER = " + currUserID);
+        if (rs.next())
+        {
+            //btnBorrow.setVisible(false);
+            lblOneBook.setVisible(true);         
+        }
+        refreshRsStmt("books");
+    }
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -377,5 +410,6 @@ public class BookViewer extends main {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel lblOneBook;
     // End of variables declaration//GEN-END:variables
 }
