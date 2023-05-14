@@ -50,7 +50,7 @@ public class main extends javax.swing.JFrame {
             String sql = "SELECT * FROM USERDB." + dbName.toUpperCase();
             rs = stmt.executeQuery(sql);
         } catch (SQLException err) {
-            JOptionPane.showMessageDialog(main.this, err.getMessage());
+            JOptionPane.showMessageDialog(main.this, "Failed to connect to the database: " + err.getMessage());
         }
     }
 
@@ -135,7 +135,7 @@ public class main extends javax.swing.JFrame {
                             matchAcc = true; 
                             matchPass = true;
                             matchType = true;
-                            currUserID = rs.getInt("USERID");
+                            getCurrProp();
                         }
                         else
                         {
@@ -160,8 +160,6 @@ public class main extends javax.swing.JFrame {
         if (matchAcc && matchPass && matchType)
         {
             JOptionPane.showMessageDialog(null, "Successfully Logged in!");
-            currFullName = usiFullName;
-            currUserType = usiUsertype;
             this.dispose();
             toUsertypeBases(userType);
         }
@@ -208,23 +206,20 @@ public class main extends javax.swing.JFrame {
         }
     }
     
-    // Insert Borrow Date(today) and ReturnDate to Database
-    public void Dates_to_Database(int add_days)
+    public void getCurrProp() throws SQLException
     {
-        databaseConnect("books");
-        Date borrowDate = Date.valueOf(LocalDate.now());
-        Date returnDate = Date.valueOf(LocalDate.now().plusDays(add_days));
-        try{
-            stmt = con.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
-                    ResultSet.CONCUR_UPDATABLE);
-            rs = stmt.executeQuery("SELECT * FROM USERDB.BOOKS");
-            rs.moveToInsertRow();
-            rs.updateDate("BORROWDATE", borrowDate);
-            rs.updateDate("RETURNDATE", returnDate);
-            rs.insertRow();
-            refreshRsStmt("books");
-        }catch(SQLException e){
-            System.out.print(e.getMessage());
+        currFullName = rs.getString("FULLNAME");
+        currUserType = rs.getString("USERTYPE");
+        currUserID = rs.getInt("USERID");
+    }
+     
+    //Returns true if the length of string in a textfield is less than the limit.
+    public boolean lessthanLength(int limit, JTextField textfield)
+    {
+        if(textfield.getText().length() < limit){
+            return true;
+        } else{
+            return false;
         }
     }
     //Returns true if the length of string in a textfield is less than the limit.

@@ -7,6 +7,7 @@ public class LibrarianBase extends main {
     
     public LibrarianBase() {
         initComponents();
+        
     }
 
     
@@ -81,13 +82,15 @@ public class LibrarianBase extends main {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+    
     ReaderBase viewer = new ReaderBase();
     BookRegistry register = new BookRegistry();
     BookBorrowMan borrower = new BookBorrowMan();
+    
     private void btnRegistryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistryActionPerformed
         register.setVisible(true);
     }//GEN-LAST:event_btnRegistryActionPerformed
-    
+
     private void btnViewerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnViewerActionPerformed
         viewer.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         viewer.setVisible(true);
@@ -102,7 +105,7 @@ public class LibrarianBase extends main {
         logOut();
         viewer.dispatchEvent(new WindowEvent(viewer, WindowEvent.WINDOW_CLOSING));
         register.dispatchEvent(new WindowEvent(register, WindowEvent.WINDOW_CLOSING));
-        borrower.dispatchEvent(new WindowEvent(borrower, WindowEvent.WINDOW_CLOSING));        
+        borrower.dispatchEvent(new WindowEvent(borrower, WindowEvent.WINDOW_CLOSING));  
     }//GEN-LAST:event_btnLogOutActionPerformed
 
     
