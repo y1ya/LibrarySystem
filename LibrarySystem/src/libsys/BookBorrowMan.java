@@ -1,9 +1,12 @@
 package libsys;
 
 import java.awt.event.ItemEvent;
+import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDate;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 public class BookBorrowMan extends main {
@@ -343,17 +346,27 @@ public class BookBorrowMan extends main {
                int selectedRow = borrowedTable.getSelectedRow();
                Object val = borrowedTable.getValueAt(selectedRow, 2);
                borredBookID = Integer.parseInt(val.toString());
-
+               
                String availability = null;
                Statement updateStmt = con.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
-               ResultSet updateRs = updateStmt.executeQuery("SELECT AVAILABILITY FROM BOOKS WHERE BOOKID = " + borredBookID);
-
+               ResultSet updateRs = updateStmt.executeQuery("SELECT * FROM BOOKS WHERE BOOKID = " + borredBookID);
+                          
                if (updateRs.next()) {
+                   Date localNow = Date.valueOf(LocalDate.now());
+                   Date bookDue = updateRs.getDate("DUEDATE");
+                   long diff_of_dates = dateDiff(bookDue, localNow);
                    availability = updateRs.getString("AVAILABILITY");
-                   if (availability.equals("BORROWED")) 
-                       availability = "AVAILABLE";
-                   updateRs.updateString("AVAILABILITY", availability);
-                   updateRs.updateRow();
+                   
+                   if (availability.equals("BORROWED") && (diff_of_dates >= 0)){
+                       System.out.println(availability.equals("BORROWED"));
+                       availability = "AVAILABLE";                   
+                       updateRs.updateString("AVAILABILITY", availability);
+                       updateRs.updateNull("BORROWER");
+                       updateRs.updateNull("DUEDATE");
+                       updateRs.updateRow();
+                   }else{
+                       JOptionPane.showMessageDialog(null, "Book Overdue. Just add what to do if book is overdue.");
+                   }
                }
                refreshRsStmt("books");
                borrowedTableModel.setRowCount(0);
@@ -412,7 +425,11 @@ public class BookBorrowMan extends main {
             }
         }
     }
-
+    public long dateDiff(Date duedate, Date currentdate){
+        long millDiff = duedate.getTime() - currentdate.getTime();
+        long daysDiff = millDiff/(1000 * 60 * 60 * 24);
+        return daysDiff;
+    }
     public static void main(String args[]) {
 
         java.awt.EventQueue.invokeLater(new Runnable() {
