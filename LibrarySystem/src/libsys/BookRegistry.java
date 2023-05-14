@@ -85,6 +85,7 @@ public class BookRegistry extends main {
         Synopsis_ta.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         Synopsis_ta.setLineWrap(true);
         Synopsis_ta.setRows(5);
+        Synopsis_ta.setWrapStyleWord(true);
         jScrollPane1.setViewportView(Synopsis_ta);
 
         Btn_Register.setText("REGISTER");
@@ -238,6 +239,8 @@ public class BookRegistry extends main {
         catch(SQLException err){
             JOptionPane.showMessageDialog(null, err);
             System.out.println(err);
+            JOptionPane.showMessageDialog(null, "Registry is successful!");
+            this.dispose();
         }
     }//GEN-LAST:event_Btn_RegisterActionPerformed
 
