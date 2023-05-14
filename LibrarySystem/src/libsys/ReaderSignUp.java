@@ -253,8 +253,5 @@ public class ReaderSignUp extends main {
     private javax.swing.JPasswordField txtNewPassConf;
     // End of variables declaration//GEN-END:variables
 
-    public boolean lessthanLength(int i, JTextField txtNewName) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
 
 }

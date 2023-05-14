@@ -201,8 +201,9 @@ public class main extends javax.swing.JFrame {
         int logoutresult = JOptionPane.showConfirmDialog(null, "Log Out?", "Log Out Confirmation", logoutoption);
         if(logoutresult == 0)
         {
-            this.dispose();
             sendDisplaySignal(new MainWindow());
+            this.dispose();
+            
         }
     }
     
@@ -222,9 +223,9 @@ public class main extends javax.swing.JFrame {
             return false;
         }
     }
-    
     // The first statement/s to be called
     public static void main(String[] args) {
         sendDisplaySignal(new MainWindow());
     }
+    
 }

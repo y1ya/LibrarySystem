@@ -103,9 +103,9 @@ public class LibrarianBase extends main {
 
     private void btnLogOutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogOutActionPerformed
         logOut();
-        viewer.dispatchEvent(new WindowEvent(viewer, WindowEvent.WINDOW_CLOSING));
-        register.dispatchEvent(new WindowEvent(register, WindowEvent.WINDOW_CLOSING));
-        borrower.dispatchEvent(new WindowEvent(borrower, WindowEvent.WINDOW_CLOSING));  
+        viewer.dispose();
+        register.dispose();
+        borrower.dispose();        
     }//GEN-LAST:event_btnLogOutActionPerformed
 
     
