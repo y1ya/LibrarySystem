@@ -297,7 +297,8 @@ public class BookEditor extends main {
 
     private void Btn_backActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Btn_backActionPerformed
         this.dispose();
-        sendDisplaySignal(new LibrarianBase());
+        sendDisplaySignal(new BookEditor());
+        BookViewer.hideBorrow().setVisible(false);
     }//GEN-LAST:event_Btn_backActionPerformed
 
     private void Btn_DeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Btn_DeleteActionPerformed

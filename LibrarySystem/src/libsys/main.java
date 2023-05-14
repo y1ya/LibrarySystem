@@ -201,8 +201,9 @@ public class main extends javax.swing.JFrame {
         int logoutresult = JOptionPane.showConfirmDialog(null, "Log Out?", "Log Out Confirmation", logoutoption);
         if(logoutresult == 0)
         {
-            this.dispose();
             sendDisplaySignal(new MainWindow());
+            this.dispose();
+            
         }
     }
     
@@ -216,14 +217,6 @@ public class main extends javax.swing.JFrame {
     //Returns true if the length of string in a textfield is less than the limit.
     public boolean lessthanLength(int limit, JTextField textfield)
     {
-        if(textfield.getText().length() < limit){
-            return true;
-        } else{
-            return false;
-        }
-    }
-    //Returns true if the length of string in a textfield is less than the limit.
-    public boolean lessthanLength(int limit, JTextField textfield){
         if(textfield.getText().length() < limit){
             return true;
         } else{

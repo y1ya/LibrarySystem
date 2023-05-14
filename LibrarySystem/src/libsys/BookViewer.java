@@ -250,7 +250,7 @@ public class BookViewer extends main {
                 availability = rs.getString("AVAILABILITY");
                 borrower = rs.getInt("BORROWER");
             }
-        } 
+        }
         catch (SQLException err) 
         {
             System.out.println(err.getMessage());
@@ -258,38 +258,38 @@ public class BookViewer extends main {
 
         if (availability.equals("AVAILABLE")) 
         {
-            try 
-            {
-                rs = stmt.executeQuery("SELECT * FROM BOOKS WHERE BOOKID = " + currBookID);
-                if (rs.next())
-                {
-                    rs.updateString("AVAILABILITY", "BORROWING");
-                    rs.updateInt("BORROWER", currUserID);   
-                    LocalDate currentDate = LocalDate.now();
-                    LocalDate dueDate = currentDate.plusDays(3);
-                    rs.updateDate("DUEDATE", java.sql.Date.valueOf(dueDate));
-                    rs.updateRow();
+            try{
+                rs = stmt.executeQuery("SELECT * FROM BOOKS WHERE BORROWER = " + currUserID);                
+                if(rs.next())JOptionPane.showMessageDialog(null, "You already borrowed a book.");
+                else{
+                    rs = stmt.executeQuery("SELECT * FROM BOOKS WHERE BOOKID = " + currBookID);
+                    if (rs.next())
+                    {                    
+                        rs.updateString("AVAILABILITY", "BORROWING");
+                        rs.updateInt("BORROWER", currUserID);   
+                        LocalDate currentDate = LocalDate.now();
+                        LocalDate dueDate = currentDate.plusDays(3);
+                        rs.updateDate("DUEDATE", java.sql.Date.valueOf(dueDate));
+                        rs.updateRow();
+                    }
+                    JOptionPane.showMessageDialog(null, "You successfully borrowed the book.");
+                    refreshRsStmt("books");
+                    updateView();                    
                 }
-                refreshRsStmt("books");
-                updateView();
-            } 
-            catch (SQLException err) 
-            {
-                System.out.println(err);
-            }
-            JOptionPane.showMessageDialog(null, "You successfully borrowed the book.");
+                }catch(SQLException err)
+                {
+                    System.out.println(err);
+                }                 
         } 
         
         else if ((availability.equals("BORROWED") || availability.equals("BORROWING") || availability.equals("RETURNING")) && borrower != currUserID) 
         {
             JOptionPane.showMessageDialog(null, "Someone is in the process of borrowing this book, please try again later.");
-            return;
         }
         
         else if (availability.equals("UNAVAILABLE"))
         {
             JOptionPane.showMessageDialog(null, "Sorry, this book is unavailable at this time");
-            return;
         }
 
         else if ((availability.equals("BORROWING") || (availability.equals("BORROWED")) && borrower == currUserID)) 
@@ -358,14 +358,7 @@ public class BookViewer extends main {
             System.out.println(err.getMessage());
         }
     }
-          
-    public static void main(String args[]) {
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new BookViewer().setVisible(true);
-            }
-        });
-    }
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel Author_label;

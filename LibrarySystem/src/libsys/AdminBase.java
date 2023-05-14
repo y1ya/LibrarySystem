@@ -508,8 +508,5 @@ public class AdminBase extends main {
     private javax.swing.JTextField txtUserId;
     // End of variables declaration//GEN-END:variables
 
-    public boolean lessthanLength(int i, JTextField txtFullname) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
 
 }
