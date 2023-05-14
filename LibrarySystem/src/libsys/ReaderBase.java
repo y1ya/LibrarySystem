@@ -1,5 +1,6 @@
 package libsys;
 
+import java.awt.Window;
 import libsys.AdminBase;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -11,6 +12,7 @@ import java.util.List;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JFrame;
 
 import javax.swing.table.DefaultTableModel;
 
@@ -22,7 +24,7 @@ public class ReaderBase extends main {
         setGuiBase();
         setPersonalization();
     }
-
+    
     private DefaultTableModel bookTableModel;
     private final String[] DEFAULT_COLUMNS = {"TITLE", "AUTHOR", "GENRE", "DATE", "BOOKID"};
 
@@ -190,6 +192,7 @@ public class ReaderBase extends main {
 
     private void btnLogOutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogOutActionPerformed
         logOut();
+        sendCloseSignal(new BookViewer());
     }//GEN-LAST:event_btnLogOutActionPerformed
 
     private void mainTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_mainTableMouseClicked
@@ -463,6 +466,20 @@ public class ReaderBase extends main {
         });
     }
 
+    public static List<JFrame> getOpenJFrames() {
+        List<JFrame> openJFrames = new ArrayList<>();
+
+        for (Window window : Window.getWindows()) {
+            if (window instanceof JFrame) {
+                JFrame frame = (JFrame) window;
+                if (frame.isVisible()) {
+                    openJFrames.add(frame);
+                }
+            }
+        }
+
+        return openJFrames;
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup bgCategories;
