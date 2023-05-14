@@ -15,6 +15,7 @@ public class BookViewer extends main {
     public BookViewer() {
         initComponents();
         lblOneBook.setVisible(false);
+        
     }
     String title, author, genre, date, synopsis, imagesrc, availability;
     int borrower;
@@ -218,13 +219,15 @@ public class BookViewer extends main {
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
         updateView(); 
-        databaseConnect("books");
+        databaseConnect("books"); 
         try {
-            alreadyBorrowed();
-        } catch (SQLException ex) {
-            Logger.getLogger(BookViewer.class.getName()).log(Level.SEVERE, null, ex);
-        }    
-        try {
+            
+            if(alreadyBorrowed()){
+                if(!sameID()){
+                lblOneBook.setVisible(true);
+                btnBorrow.setEnabled(false);
+                }
+            }
             rs = stmt.executeQuery("SELECT * FROM BOOKS WHERE BOOKID = " + currBookID);
             while (rs.next()) {
                 title = rs.getString("TITLE");
@@ -274,29 +277,23 @@ public class BookViewer extends main {
         {
             System.out.println(err.getMessage());
         }
-        
-        try {
-            alreadyBorrowed();
-        } catch (SQLException ex) {
-            Logger.getLogger(BookViewer.class.getName()).log(Level.SEVERE, null, ex);
-        }
 
         if (availability.equals("AVAILABLE")) 
         {
-            try{
-                    rs = stmt.executeQuery("SELECT * FROM BOOKS WHERE BOOKID = " + currBookID);
-                    if (rs.next())
-                    {                    
-                        rs.updateString("AVAILABILITY", "BORROWING");
-                        rs.updateInt("BORROWER", currUserID);   
-                        LocalDate currentDate = LocalDate.now();
-                        LocalDate dueDate = currentDate.plusDays(3);
-                        rs.updateDate("DUEDATE", java.sql.Date.valueOf(dueDate));
-                        rs.updateRow();
-                    }
-                    JOptionPane.showMessageDialog(null, "You successfully borrowed the book.");
-                    refreshRsStmt("books");
-                    updateView();                    
+            try{                    
+                rs = stmt.executeQuery("SELECT * FROM BOOKS WHERE BOOKID = " + currBookID);
+                if (rs.next())
+                {                    
+                    rs.updateString("AVAILABILITY", "BORROWING");
+                    rs.updateInt("BORROWER", currUserID);   
+                    LocalDate currentDate = LocalDate.now();
+                    LocalDate dueDate = currentDate.plusDays(3);
+                    rs.updateDate("DUEDATE", java.sql.Date.valueOf(dueDate));
+                    rs.updateRow();
+                }
+                JOptionPane.showMessageDialog(null, "You successfully borrowed the book.");
+                refreshRsStmt("books");
+                updateView();
                 }
                 catch(SQLException err)
                 {
@@ -381,15 +378,16 @@ public class BookViewer extends main {
         }
     }
     
-    public void alreadyBorrowed() throws SQLException
+    public boolean alreadyBorrowed() throws SQLException
     {
-        rs = stmt.executeQuery("SELECT * FROM BOOKS WHERE BORROWER = " + currUserID);
-        if (rs.next())
-        {
-            //btnBorrow.setVisible(false);
-            lblOneBook.setVisible(true);         
-        }
+       rs = stmt.executeQuery("SELECT * FROM BOOKS WHERE BORROWER = " + currUserID);
+        return rs.next();
+    }
+    public boolean sameID() throws SQLException
+    {
+        int bookid = rs.getInt("BOOKID");
         refreshRsStmt("books");
+        return bookid == currBookID;
     }
 
 
