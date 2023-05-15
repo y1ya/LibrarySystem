@@ -208,9 +208,6 @@ public class ReaderSignUp extends main {
                     
 
                     JOptionPane.showMessageDialog(null, "Registration Complete!");
-                    JOptionPane.showMessageDialog(null, "User ID: " + randID + "\nFullname: " + usiFullName + 
-                            "\nPassword: " + usiPass + "\nUser Type: " + "READER", "Account Registered Information."
-                            , JOptionPane.INFORMATION_MESSAGE);
                     this.dispose();
                     currFullName = usiFullName;
                     currUserType = usiUsertype;

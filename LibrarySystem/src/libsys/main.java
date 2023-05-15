@@ -68,6 +68,36 @@ public class main extends javax.swing.JFrame {
             Logger.getLogger(main.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    
+    public void closeResultSet(ResultSet rs) {
+        try {
+            if (rs != null) {
+                rs.close();
+            }
+        } catch (SQLException e) {
+            System.out.println("Error closing result set: " + e.getMessage());
+        }
+    }
+
+    public void closeStatement(Statement stmt) {
+        try {
+            if (stmt != null) {
+                stmt.close();
+            }
+        } catch (SQLException e) {
+            System.out.println("Error closing statement: " + e.getMessage());
+        }
+    }
+
+    public void closeConnection() {
+        try {
+            if (con != null) {
+                con.close();
+            }
+        } catch (SQLException e) {
+            System.out.println("Error closing database connection: " + e.getMessage());
+        }
+    }
 
     // Gets called in every end of a JFrame so everything goes through the main
     // rather than being thrown and samely adjusted from JFrame to JFrame

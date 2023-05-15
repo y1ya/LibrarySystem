@@ -209,50 +209,15 @@ public class AdminBase extends main {
             JOptionPane.showMessageDialog(AdminBase.this, err.getMessage());
         }
     }//GEN-LAST:event_formWindowOpened
-
+    public int ids;
+    
     private void mainTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_mainTableMouseClicked
-        databaseConnect("accounts");
-        int ids = Integer.parseInt(mainTable.getValueAt(mainTable.getSelectedRow(),0).toString());
-        String[] types = {"ADMIN", "LIBRARIAN", "READER"};
+      
+        ids = Integer.parseInt(mainTable.getValueAt(mainTable.getSelectedRow(), 0).toString());
         
-        btnAdd.setVisible(false);
         btnSave.setVisible(true);
         btnEdit.setVisible(true);
         btnDelete.setVisible(true);
-        
-        txtFullname.setEditable(false);
-        txtPassword.setEditable(false);
-        txtUserId.setEditable(false);
-        
-        cbUserType.setEnabled(false);
-        randomNumber.setEnabled(false);
-        
-        try 
-        {
-            ResultSet rs = stmt.executeQuery("SELECT * FROM USERDB.ACCOUNTS WHERE USERID = " + ids);
-            if (rs.next()) 
-            {
-                txtFullname.setText(rs.getString("FULLNAME"));
-                txtPassword.setText(rs.getString("PASSWORD"));
-                txtUserId.setText(rs.getString("USERID"));
-                
-                if (rs.getString("USERTYPE").equals(types[0])) 
-                {
-                    cbUserType.setSelectedIndex(2);
-                } 
-                else if (rs.getString("USERTYPE").equals(types[1])) 
-                {
-                    cbUserType.setSelectedIndex(1);
-                }
-                else 
-                {
-                    cbUserType.setSelectedIndex(0);
-                }
-            }
-            refreshRsStmt("accounts");
-        } catch (SQLException err) {
-            JOptionPane.showMessageDialog(AdminBase.this, err.getMessage());
-        }
     }//GEN-LAST:event_mainTableMouseClicked
 
     private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
@@ -293,23 +258,21 @@ public class AdminBase extends main {
 
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
         
-        int del, id;
-        id = Integer.parseInt(txtUserId.getText());
+        int del;
 
         try {
-            ResultSet rs = stmt.executeQuery("SELECT * FROM ACCOUNTS WHERE USERID = " + id);
+            ResultSet rs = stmt.executeQuery("SELECT * FROM ACCOUNTS WHERE USERID = " + ids);
             if (rs.next()) {
                 del = JOptionPane.showConfirmDialog(null, "Are you sure you want to delete this account?", 
                         "Confirmation", JOptionPane.YES_NO_OPTION);
                 if (del == JOptionPane.YES_OPTION) {
-                    boolean hasBorrowedBooks = checkBorrowedBooks(id);
+                    boolean hasBorrowedBooks = checkBorrowedBooks(ids);
 
                     if (hasBorrowedBooks) {
                         int confirm = JOptionPane.showConfirmDialog(null, "This account has borrowed books. Do you want to proceed with deletion?",
                                 "Confirmation", JOptionPane.YES_NO_OPTION);
                         if (confirm == JOptionPane.YES_OPTION) {
 
-                            rs.getRow();
                             rs.deleteRow();
 
                             JOptionPane.showMessageDialog(null, "Account has been deleted!");
@@ -337,11 +300,10 @@ public class AdminBase extends main {
                             randomNumber.setEnabled(true);
                         }
                     } else {
-                        rs.getRow();
+                        
                         rs.deleteRow();
             
                         JOptionPane.showMessageDialog(null, "Account has been deleted!");
-                        formWindowOpened(null);
 
                         //int ids = randNumGen("accounts", "userid");
 
@@ -365,7 +327,7 @@ public class AdminBase extends main {
                         randomNumber.setEnabled(true);
                         
                         
-                        updateBorrowedBooks(id);
+                        updateBorrowedBooks(ids);
                     }
                 }
             }
@@ -378,19 +340,14 @@ public class AdminBase extends main {
     private boolean checkBorrowedBooks(int userId) {
         try {
             databaseConnect("books");
-            ResultSet rs = stmt.executeQuery("SELECT * FROM BOOKS WHERE BORROWER = " + userId);
-
-            // Check if the result set has any rows
+            ResultSet rs = stmt.executeQuery("SELECT AVAILABILITY FROM BOOKS WHERE BORROWER = " + userId);
             if (rs.next()) {
                 String availability = rs.getString("AVAILABILITY");
-                System.out.print(availability);
                 if (availability.equals("BORROWED") || availability.equals("RETURNING")) {
                     //databaseConnect("accounts");
                     return true;
                 }
             }
-
-            // No borrowed books found
             return false;
         } catch (SQLException err) {
             JOptionPane.showMessageDialog(AdminBase.this, err.getMessage());
@@ -401,7 +358,13 @@ public class AdminBase extends main {
     private void updateBorrowedBooks(int userId) {
         try {
             databaseConnect("books");
-            stmt.executeUpdate("UPDATE BOOKS SET AVAILABILITY = 'AVAILABLE', BORROWER = NULL, DUEDATE = NULL WHERE BORROWER = " + userId);
+            ResultSet rs = stmt.executeQuery("SELECT AVAILABILITY, BORROWER, DUEDATE FROM BOOKS WHERE BORROWER = " + userId);
+            if (rs.next()) {
+                rs.updateString("AVAILABILITY", "AVAILABLE");
+                rs.updateNull("BORROWER");
+                rs.updateNull("DUEDATE");
+                rs.updateRow();
+            }
         } catch (SQLException err) {
             JOptionPane.showMessageDialog(AdminBase.this, err.getMessage());
         }

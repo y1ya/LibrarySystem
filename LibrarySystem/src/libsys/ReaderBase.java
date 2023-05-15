@@ -189,7 +189,11 @@ public class ReaderBase extends main {
                 refreshRsStmt("accounts");
             } catch (SQLException err) {
                 System.out.println(err.getMessage());
-            }         
+            } finally {
+                closeResultSet(rs);
+                closeStatement(stmt);
+                closeConnection();
+        }   
     }//GEN-LAST:event_btnViewBookActionPerformed
 
     private void btnLogOutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogOutActionPerformed
@@ -198,10 +202,13 @@ public class ReaderBase extends main {
     }//GEN-LAST:event_btnLogOutActionPerformed
 
     private void mainTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_mainTableMouseClicked
-        Object val = mainTable.getValueAt(mainTable.getSelectedRow(), 4);
-        currBookID = Integer.parseInt(val.toString());
-//        refreshRsStmt("books");
-//System.out.println(currBookID);
+        int selectedRow = mainTable.getSelectedRow();
+        if (selectedRow != -1) {
+            Object val = mainTable.getValueAt(selectedRow, 4);
+            currBookID = Integer.parseInt(val.toString());
+            // refreshRsStmt("books");
+            // System.out.println(currBookID);
+        }
     }//GEN-LAST:event_mainTableMouseClicked
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
