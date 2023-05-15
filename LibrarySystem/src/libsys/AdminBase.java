@@ -19,8 +19,7 @@ public class AdminBase extends main {
         btnSave.setVisible(false);
         btnEdit.setVisible(false);
         btnDelete.setVisible(false);
-        
-
+        mainTable.setDefaultEditor(Object.class, null);
     }
 
     @SuppressWarnings("unchecked")
@@ -212,7 +211,7 @@ public class AdminBase extends main {
     }//GEN-LAST:event_formWindowOpened
 
     private void mainTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_mainTableMouseClicked
-
+        databaseConnect("accounts");
         int ids = Integer.parseInt(mainTable.getValueAt(mainTable.getSelectedRow(),0).toString());
         String[] types = {"ADMIN", "LIBRARIAN", "READER"};
         
@@ -231,7 +230,7 @@ public class AdminBase extends main {
         try 
         {
             ResultSet rs = stmt.executeQuery("SELECT * FROM USERDB.ACCOUNTS WHERE USERID = " + ids);
-            while (rs.next()) 
+            if (rs.next()) 
             {
                 txtFullname.setText(rs.getString("FULLNAME"));
                 txtPassword.setText(rs.getString("PASSWORD"));
@@ -250,6 +249,7 @@ public class AdminBase extends main {
                     cbUserType.setSelectedIndex(0);
                 }
             }
+            refreshRsStmt("accounts");
         } catch (SQLException err) {
             JOptionPane.showMessageDialog(AdminBase.this, err.getMessage());
         }
@@ -292,56 +292,128 @@ public class AdminBase extends main {
     }//GEN-LAST:event_btnSearchActionPerformed
 
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
-        // TODO add your handling code here:
+        
         int del, id;
-        
         id = Integer.parseInt(txtUserId.getText());
-        
+
         try {
             ResultSet rs = stmt.executeQuery("SELECT * FROM ACCOUNTS WHERE USERID = " + id);
             if (rs.next()) {
                 del = JOptionPane.showConfirmDialog(null, "Are you sure you want to delete this account?", 
                         "Confirmation", JOptionPane.YES_NO_OPTION);
                 if (del == JOptionPane.YES_OPTION) {
-                    rs.getRow();
-                    rs.deleteRow();
-                    refreshRsStmt("accounts");
-                    JOptionPane.showMessageDialog(null, "Account has been deleted!");
-                    formWindowOpened(null);
-                    
-                    int ids = randNumGen("accounts", "userid");
-                    
-                    txtUserId.setText(String.valueOf(ids));
-                    txtFullname.setText(null);
-                    txtPassword.setText(null);
-                    cbUserType.setSelectedIndex(0);
-                    txtFullname.setText(null);
-                    txtPassword.setText(null);
+                    boolean hasBorrowedBooks = checkBorrowedBooks(id);
 
-                    btnAdd.setVisible(true);
-                    btnSave.setVisible(false);
-                    btnEdit.setVisible(false);
-                    btnDelete.setVisible(false);
+                    if (hasBorrowedBooks) {
+                        int confirm = JOptionPane.showConfirmDialog(null, "This account has borrowed books. Do you want to proceed with deletion?",
+                                "Confirmation", JOptionPane.YES_NO_OPTION);
+                        if (confirm == JOptionPane.YES_OPTION) {
 
-                    txtFullname.setEditable(true);
-                    txtPassword.setEditable(true);
-                    txtUserId.setEditable(true);
+                            rs.getRow();
+                            rs.deleteRow();
 
-                    cbUserType.setEnabled(true);
-                    randomNumber.setEnabled(true);
+                            JOptionPane.showMessageDialog(null, "Account has been deleted!");
+                          
+
+                            //int ids = randNumGen("accounts", "userid");
+
+                            //txtUserId.setText(String.valueOf(ids));
+                            txtFullname.setText(null);
+                            txtPassword.setText(null);
+                            cbUserType.setSelectedIndex(0);
+                            txtFullname.setText(null);
+                            txtPassword.setText(null);
+
+                            btnAdd.setVisible(true);
+                            btnSave.setVisible(false);
+                            btnEdit.setVisible(false);
+                            btnDelete.setVisible(false);
+
+                            txtFullname.setEditable(true);
+                            txtPassword.setEditable(true);
+                            txtUserId.setEditable(true);
+
+                            cbUserType.setEnabled(true);
+                            randomNumber.setEnabled(true);
+                        }
+                    } else {
+                        rs.getRow();
+                        rs.deleteRow();
+            
+                        JOptionPane.showMessageDialog(null, "Account has been deleted!");
+                        formWindowOpened(null);
+
+                        //int ids = randNumGen("accounts", "userid");
+
+                        //txtUserId.setText(String.valueOf(ids));
+                        txtFullname.setText(null);
+                        txtPassword.setText(null);
+                        cbUserType.setSelectedIndex(0);
+                        txtFullname.setText(null);
+                        txtPassword.setText(null);
+
+                        btnAdd.setVisible(true);
+                        btnSave.setVisible(false);
+                        btnEdit.setVisible(false);
+                        btnDelete.setVisible(false);
+
+                        txtFullname.setEditable(true);
+                        txtPassword.setEditable(true);
+                        txtUserId.setEditable(true);
+
+                        cbUserType.setEnabled(true);
+                        randomNumber.setEnabled(true);
+                        
+                        
+                        updateBorrowedBooks(id);
+                    }
                 }
             }
+            formWindowOpened(null);
         } catch (SQLException err) {
             JOptionPane.showMessageDialog(AdminBase.this, err.getMessage());
         }
     }//GEN-LAST:event_btnDeleteActionPerformed
 
+    private boolean checkBorrowedBooks(int userId) {
+        try {
+            databaseConnect("books");
+            ResultSet rs = stmt.executeQuery("SELECT * FROM BOOKS WHERE BORROWER = " + userId);
+
+            // Check if the result set has any rows
+            if (rs.next()) {
+                String availability = rs.getString("AVAILABILITY");
+                System.out.print(availability);
+                if (availability.equals("BORROWED") || availability.equals("RETURNING")) {
+                    //databaseConnect("accounts");
+                    return true;
+                }
+            }
+
+            // No borrowed books found
+            return false;
+        } catch (SQLException err) {
+            JOptionPane.showMessageDialog(AdminBase.this, err.getMessage());
+            return false;
+        }
+    }
+    
+    private void updateBorrowedBooks(int userId) {
+        try {
+            databaseConnect("books");
+            stmt.executeUpdate("UPDATE BOOKS SET AVAILABILITY = 'AVAILABLE', BORROWER = NULL, DUEDATE = NULL WHERE BORROWER = " + userId);
+        } catch (SQLException err) {
+            JOptionPane.showMessageDialog(AdminBase.this, err.getMessage());
+        }
+    }
+
+
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
-        databaseConnect("accounts");
+
         aFullname = txtFullname.getText();
         aPassword = txtPassword.getText();
         aUserType = String.valueOf(cbUserType.getSelectedItem());
- 
+        
         try {
             if (aFullname.isEmpty() || aPassword.isEmpty() || txtUserId.getText().isEmpty()) {
                 JOptionPane.showMessageDialog(null, "Fill in the blanks.");
@@ -360,11 +432,11 @@ public class AdminBase extends main {
                     fill1.setBorder(BorderFactory.createLineBorder(Color.red));
                     JOptionPane.showMessageDialog(null, "Name less than 10 characters.");
                 }
-                else if(lessthanLength(8,txtPassword)){
+                if(lessthanLength(8,txtPassword)){
                     fill2.setBorder(BorderFactory.createLineBorder(Color.red));
                     JOptionPane.showMessageDialog(null, "Password less than 8 characters.");
                 }
-                else if(lessthanLength(10, txtFullname) && lessthanLength(8,txtPassword)){
+                if(lessthanLength(10, txtFullname) && lessthanLength(8,txtPassword)){
                     fill3.setBorder(BorderFactory.createLineBorder(Color.red));
                     JOptionPane.showMessageDialog(null, "Name length less than 10 characters, Password length less than 8 characters.");
                 }                
@@ -377,6 +449,8 @@ public class AdminBase extends main {
                 rs.updateString("PASSWORD", aPassword);
                 rs.updateString("USERTYPE", aUserType);
                 rs.insertRow();
+                refreshRsStmt("accounts");
+                formWindowOpened(null);
 
                 JOptionPane.showMessageDialog(null, "Account has been added!");
 
@@ -391,7 +465,7 @@ public class AdminBase extends main {
                 fill2.setVisible(false);
                 fill3.setVisible(false);
             }
-            formWindowOpened(null);
+            
         } catch (SQLException err) {
             JOptionPane.showMessageDialog(AdminBase.this, err.getMessage());
         }
@@ -448,10 +522,9 @@ public class AdminBase extends main {
                     btnDelete.setVisible(false);
 
                     refreshRsStmt("accounts");
-                    
+                    formWindowOpened(null);
                 }
             }
-            formWindowOpened(null);
         } catch (SQLException err) {
             JOptionPane.showMessageDialog(AdminBase.this, err.getMessage());
         }

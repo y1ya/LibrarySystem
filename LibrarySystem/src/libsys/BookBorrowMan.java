@@ -302,7 +302,7 @@ public class BookBorrowMan extends main {
 
                 String availability = null;
                 Statement updateStmt = con.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
-                ResultSet updateRs = updateStmt.executeQuery("SELECT AVAILABILITY FROM BOOKS WHERE BOOKID = " + borrBookID);
+                ResultSet updateRs = updateStmt.executeQuery("SELECT * FROM BOOKS WHERE BOOKID = " + borrBookID);
 
                 if (updateRs.next()) {
                     availability = updateRs.getString("AVAILABILITY");
@@ -310,21 +310,26 @@ public class BookBorrowMan extends main {
                         availability = "BORROWED";
                     } else if (availability.equals("RETURNING")) {
                         availability = "AVAILABLE";
+                        updateRs.updateNull("BORROWER");
+                        updateRs.updateNull("DUEDATE");
+                        updateRs.updateRow();
                     }
 
                     updateRs.updateString("AVAILABILITY", availability);
                     updateRs.updateRow();
                 }
-                updateBorrowedTable(availability);
+                refreshRsStmt("books");
+                updateBorrowedTable();
                 refreshRsStmt("books");
                 borrowTableModel.setRowCount(0);
-                while (rs.next()) {
-                    availability = rs.getString("AVAILABILITY");
+                updateRs.beforeFirst();
+                while (updateRs.next()) {
+                    availability = updateRs.getString("AVAILABILITY");
                     if (availability.equals("RETURNING") || availability.equals("BORROWING")) {
                         borrowTableModel.addRow(new Object[]{
-                            rs.getString("BORROWER"),
-                            rs.getString("TITLE"),
-                            rs.getInt("BOOKID"),
+                            updateRs.getString("BORROWER"),
+                            updateRs.getString("TITLE"),
+                            updateRs.getInt("BOOKID"),
                             availability
                         });
                     }
@@ -346,28 +351,29 @@ public class BookBorrowMan extends main {
                int selectedRow = borrowedTable.getSelectedRow();
                Object val = borrowedTable.getValueAt(selectedRow, 2);
                borredBookID = Integer.parseInt(val.toString());
-               
+
                String availability = null;
                Statement updateStmt = con.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
                ResultSet updateRs = updateStmt.executeQuery("SELECT * FROM BOOKS WHERE BOOKID = " + borredBookID);
-                          
+
                if (updateRs.next()) {
                    Date localNow = Date.valueOf(LocalDate.now());
                    Date bookDue = updateRs.getDate("DUEDATE");
                    long diff_of_dates = dateDiff(bookDue, localNow);
                    availability = updateRs.getString("AVAILABILITY");
-                   
-                   if (availability.equals("BORROWED") && (diff_of_dates >= 0)){
-                       System.out.println(availability.equals("BORROWED"));
-                       availability = "AVAILABLE";                   
+
+                   if (availability.equals("BORROWED") && (diff_of_dates >= 0)) {
+                       availability = "AVAILABLE";
                        updateRs.updateString("AVAILABILITY", availability);
                        updateRs.updateNull("BORROWER");
                        updateRs.updateNull("DUEDATE");
                        updateRs.updateRow();
-                   }else{
-                       JOptionPane.showMessageDialog(null, "Book Overdue. Just add what to do if book is overdue.");
+                   } else {
+                       JOptionPane.showMessageDialog(null, "Book Overdue. Just add what to do if the book is overdue.");
                    }
                }
+               refreshRsStmt("books");
+               updateBorrowTable();
                refreshRsStmt("books");
                borrowedTableModel.setRowCount(0);
                while (rs.next()) {
@@ -381,12 +387,13 @@ public class BookBorrowMan extends main {
                        });
                    }
                }
+
                updateRs.close();
                updateStmt.close();
            } catch (SQLException err) {
                System.out.println(err.getMessage());
            }
-       }                                               
+       }                         
     }//GEN-LAST:event_btnAcceptBorrowedActionPerformed
 
     private void borrowedTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_borrowedTableMouseClicked
@@ -394,12 +401,13 @@ public class BookBorrowMan extends main {
         borredBookID = Integer.parseInt(valed.toString());
     }//GEN-LAST:event_borrowedTableMouseClicked
 
-    public void updateBorrowedTable(String availability) throws SQLException {
+    public void updateBorrowedTable() throws SQLException {
         borrowedTableModel.setRowCount(0);
         rs.beforeFirst(); 
+        rs = stmt.executeQuery("SELECT * FROM BOOKS WHERE AVAILABILITY = 'BORROWED'");
         while (rs.next()) {
             String bookAvailability = rs.getString("AVAILABILITY");
-            if (bookAvailability.equals(availability)) {
+            if (bookAvailability.equals("BORROWED")) {
                 borrowedTableModel.addRow(new Object[]{
                     rs.getString("BORROWER"),
                     rs.getString("TITLE"),
@@ -409,13 +417,14 @@ public class BookBorrowMan extends main {
             }
         }
     }
-    
-    public void updateBorrowTable(String availability) throws SQLException {
+
+        public void updateBorrowTable() throws SQLException {
         borrowTableModel.setRowCount(0);
         rs.beforeFirst(); 
+        rs = stmt.executeQuery("SELECT * FROM BOOKS WHERE AVAILABILITY = 'BORROWING' AND AVAILABILITY = 'BORROWING'");
         while (rs.next()) {
             String bookAvailability = rs.getString("AVAILABILITY");
-            if (bookAvailability.equals(availability)) {
+            if (bookAvailability.equals("BORROWING") || bookAvailability.equals("RETURNING")) {
                 borrowTableModel.addRow(new Object[]{
                     rs.getString("BORROWER"),
                     rs.getString("TITLE"),
@@ -424,7 +433,7 @@ public class BookBorrowMan extends main {
                 });
             }
         }
-    }
+}
     public long dateDiff(Date duedate, Date currentdate){
         long millDiff = duedate.getTime() - currentdate.getTime();
         long daysDiff = millDiff/(1000 * 60 * 60 * 24);

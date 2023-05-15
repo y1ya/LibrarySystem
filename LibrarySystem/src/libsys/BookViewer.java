@@ -280,7 +280,7 @@ public class BookViewer extends main {
 
         if (availability.equals("AVAILABLE")) 
         {
-            try{                    
+           try{                    
                 rs = stmt.executeQuery("SELECT * FROM BOOKS WHERE BOOKID = " + currBookID);
                 if (rs.next())
                 {                    

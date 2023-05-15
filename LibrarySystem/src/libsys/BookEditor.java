@@ -259,7 +259,6 @@ public class BookEditor extends main {
         Btn_save.setEnabled(false);
         JOptionPane.showMessageDialog(null, "Editing is successful!");
         this.dispose();
-        sendDisplaySignal(new LibrarianBase());
     }//GEN-LAST:event_Btn_saveActionPerformed
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
