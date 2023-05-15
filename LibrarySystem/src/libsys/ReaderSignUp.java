@@ -214,6 +214,7 @@ public class ReaderSignUp extends main {
                     this.dispose();
                     currFullName = usiFullName;
                     currUserType = usiUsertype;
+                    currUserID = randID;
                     toUsertypeBases("READER");       
                 }  
             }
