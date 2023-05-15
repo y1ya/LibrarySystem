@@ -82,30 +82,29 @@ public class LibrarianBase extends main {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-    
     ReaderBase viewer = new ReaderBase();
-    BookRegistry register = new BookRegistry();
-    BookBorrowMan borrower = new BookBorrowMan();
-    
+    BookBorrowMan borrow = new BookBorrowMan();
+    BookRegistry register = new BookRegistry();    
     private void btnRegistryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistryActionPerformed
-        register.setVisible(true);
+       register.setVisible(true);
     }//GEN-LAST:event_btnRegistryActionPerformed
 
     private void btnViewerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnViewerActionPerformed
         viewer.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-        viewer.setVisible(true);
         viewer.btnLogOut.setVisible(false);
+        viewer.setVisible(true);
     }//GEN-LAST:event_btnViewerActionPerformed
 
     private void btnBorrowManActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBorrowManActionPerformed
-        borrower.setVisible(true);
+        borrow.setVisible(true);
     }//GEN-LAST:event_btnBorrowManActionPerformed
 
     private void btnLogOutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogOutActionPerformed
         logOut();
-        viewer.dispose();
-        register.dispose();
-        borrower.dispose();        
+        sendCloseSignal(new BookRegistry());
+        sendCloseSignal(new BookBorrowMan());
+        sendCloseSignal(new ReaderBase());
+        sendCloseSignal(new BookViewer());
     }//GEN-LAST:event_btnLogOutActionPerformed
 
     

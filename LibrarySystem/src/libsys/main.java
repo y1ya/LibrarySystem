@@ -7,6 +7,7 @@ import javax.swing.table.DefaultTableModel;
 import java.util.Random;
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.awt.Window;
 import java.time.LocalDate;
 import javax.swing.JFrame;
 import javax.swing.JTextField;
@@ -88,7 +89,18 @@ public class main extends javax.swing.JFrame {
             }
         }
     }
-    
+    //An attempt to make an inverse sendDisplaySignal function
+    public static void sendCloseSignal(JFrame sig) 
+    {
+        for (Window window : Window.getWindows()) {
+            if (window instanceof JFrame) {
+                JFrame frame = (JFrame) window;
+                if (frame.getClass().equals(sig.getClass())) {
+                    frame.dispose();
+                }
+            }
+        }
+    }    
     // When called, it provides a random number for the unique ID of databases
     public int randNumGen(String dbName, String dbId) {
         Random random = new Random();
