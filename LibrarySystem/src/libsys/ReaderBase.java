@@ -24,7 +24,7 @@ public class ReaderBase extends main {
         setGuiBase();
         setPersonalization();
     }
-    BookViewer viewer = new BookViewer();
+    
     private DefaultTableModel bookTableModel;
     private final String[] DEFAULT_COLUMNS = {"TITLE", "AUTHOR", "GENRE", "DATE", "BOOKID"};
 
@@ -170,15 +170,18 @@ public class ReaderBase extends main {
     }//GEN-LAST:event_btnSearchActionPerformed
 
     private void btnViewBookActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnViewBookActionPerformed
+        BookViewer viewer = new BookViewer();
         if (mainTable.getSelectedRow() != -1)
             databaseConnect("accounts");           
             try {
                 rs = stmt.executeQuery("SELECT USERTYPE FROM ACCOUNTS WHERE USERID=" + currUserID);
                 if (rs.next()) {
                     if (rs.getString("USERTYPE").equals("READER")) {
+                        sendCloseSignal(viewer);
                         viewer.setVisible(true);
                         BookViewer.hideEdit().setVisible(false);
                     } else if (rs.getString("USERTYPE").equals("LIBRARIAN")) {
+                        sendCloseSignal(viewer);
                         viewer.setVisible(true);
                         BookViewer.hideBorrow().setVisible(false);
                     }
