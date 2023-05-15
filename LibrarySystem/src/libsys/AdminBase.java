@@ -337,11 +337,11 @@ public class AdminBase extends main {
     }//GEN-LAST:event_btnDeleteActionPerformed
 
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
-
+        databaseConnect("accounts");
         aFullname = txtFullname.getText();
         aPassword = txtPassword.getText();
         aUserType = String.valueOf(cbUserType.getSelectedItem());
-        
+ 
         try {
             if (aFullname.isEmpty() || aPassword.isEmpty() || txtUserId.getText().isEmpty()) {
                 JOptionPane.showMessageDialog(null, "Fill in the blanks.");
@@ -360,11 +360,11 @@ public class AdminBase extends main {
                     fill1.setBorder(BorderFactory.createLineBorder(Color.red));
                     JOptionPane.showMessageDialog(null, "Name less than 10 characters.");
                 }
-                if(lessthanLength(8,txtPassword)){
+                else if(lessthanLength(8,txtPassword)){
                     fill2.setBorder(BorderFactory.createLineBorder(Color.red));
                     JOptionPane.showMessageDialog(null, "Password less than 8 characters.");
                 }
-                if(lessthanLength(10, txtFullname) && lessthanLength(8,txtPassword)){
+                else if(lessthanLength(10, txtFullname) && lessthanLength(8,txtPassword)){
                     fill3.setBorder(BorderFactory.createLineBorder(Color.red));
                     JOptionPane.showMessageDialog(null, "Name length less than 10 characters, Password length less than 8 characters.");
                 }                
@@ -377,7 +377,6 @@ public class AdminBase extends main {
                 rs.updateString("PASSWORD", aPassword);
                 rs.updateString("USERTYPE", aUserType);
                 rs.insertRow();
-                formWindowOpened(null);
 
                 JOptionPane.showMessageDialog(null, "Account has been added!");
 
@@ -392,7 +391,7 @@ public class AdminBase extends main {
                 fill2.setVisible(false);
                 fill3.setVisible(false);
             }
-            
+            formWindowOpened(null);
         } catch (SQLException err) {
             JOptionPane.showMessageDialog(AdminBase.this, err.getMessage());
         }
@@ -449,9 +448,10 @@ public class AdminBase extends main {
                     btnDelete.setVisible(false);
 
                     refreshRsStmt("accounts");
-                    formWindowOpened(null);
+                    
                 }
             }
+            formWindowOpened(null);
         } catch (SQLException err) {
             JOptionPane.showMessageDialog(AdminBase.this, err.getMessage());
         }
