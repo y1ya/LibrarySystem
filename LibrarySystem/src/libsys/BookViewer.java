@@ -15,7 +15,7 @@ public class BookViewer extends main {
     public BookViewer() {
         initComponents();
         lblOneBook.setVisible(false);
-        
+        //System.out.println("test");
     }
     String title, author, genre, date, synopsis, imagesrc, availability;
     int borrower;

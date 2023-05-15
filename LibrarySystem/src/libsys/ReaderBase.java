@@ -200,6 +200,8 @@ public class ReaderBase extends main {
     private void mainTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_mainTableMouseClicked
         Object val = mainTable.getValueAt(mainTable.getSelectedRow(), 4);
         currBookID = Integer.parseInt(val.toString());
+//        refreshRsStmt("books");
+System.out.println(currBookID);
     }//GEN-LAST:event_mainTableMouseClicked
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
