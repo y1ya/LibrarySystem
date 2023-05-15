@@ -205,7 +205,7 @@ public class ReaderSignUp extends main {
                     rs.updateInt("USERID", randID); 
                     rs.updateString("USERTYPE", "READER");
                     rs.insertRow();
-                    refreshRsStmt("accounts");
+                    
 
                     JOptionPane.showMessageDialog(null, "Registration Complete!");
                     JOptionPane.showMessageDialog(null, "User ID: " + randID + "\nFullname: " + usiFullName + 
@@ -215,10 +215,10 @@ public class ReaderSignUp extends main {
                     currFullName = usiFullName;
                     currUserType = usiUsertype;
                     toUsertypeBases("READER");       
-                }
-                refreshRsStmt("accounts");
+                }  
             }
-        } 
+        refreshRsStmt("accounts");
+        }
         catch (SQLException err)
         {
             System.out.println(err.getMessage());
