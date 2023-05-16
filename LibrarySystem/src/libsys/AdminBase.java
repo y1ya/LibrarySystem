@@ -264,13 +264,13 @@ public class AdminBase extends main {
             if (rs.next()) {
                 del = JOptionPane.showConfirmDialog(null, "Are you sure you want to delete this account?", 
                         "Confirmation", JOptionPane.YES_NO_OPTION);
-                if (del == JOptionPane.YES_OPTION) {
+                if (del == 0) {
                     boolean hasBorrowedBooks = checkBorrowedBooks(ids);
 
                     if (hasBorrowedBooks) {
                         int confirm = JOptionPane.showConfirmDialog(null, "This account has borrowed books. Do you want to proceed with deletion?",
                                 "Confirmation", JOptionPane.YES_NO_OPTION);
-                        if (confirm == JOptionPane.YES_OPTION) {
+                        if (confirm == 0) {
 
                             rs.deleteRow();
 
@@ -297,6 +297,7 @@ public class AdminBase extends main {
 
                             cbUserType.setEnabled(true);
                             randomNumber.setEnabled(true);
+                            formWindowOpened(null);
                         }
                     } else {
                         
@@ -327,6 +328,7 @@ public class AdminBase extends main {
                         
                         
                         updateBorrowedBooks(ids);
+                        formWindowOpened(null);
                     }
                 }
             }
