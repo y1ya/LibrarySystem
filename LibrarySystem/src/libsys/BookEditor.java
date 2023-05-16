@@ -17,6 +17,8 @@ public class BookEditor extends main {
     
     public BookEditor() {
         initComponents();
+        
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
     }
             
     @SuppressWarnings("unchecked")
