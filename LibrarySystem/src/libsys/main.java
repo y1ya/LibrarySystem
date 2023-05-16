@@ -60,6 +60,7 @@ public class main extends javax.swing.JFrame {
     {
         try {
             stmt.close();
+            rs.close(); /////the holy code
             stmt = con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,
                     ResultSet.CONCUR_UPDATABLE);
             String sql = "SELECT * FROM USERDB." + dbName.toUpperCase();

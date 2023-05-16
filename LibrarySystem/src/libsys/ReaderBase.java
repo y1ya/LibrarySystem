@@ -171,9 +171,9 @@ public class ReaderBase extends main {
 
     private void btnViewBookActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnViewBookActionPerformed
         BookViewer viewer = new BookViewer();
-        if (mainTable.getSelectedRow() != -1)
-            databaseConnect("accounts");           
+        if (mainTable.getSelectedRow() != -1)  
             try {
+                databaseConnect("accounts");    
                 rs = stmt.executeQuery("SELECT USERTYPE FROM ACCOUNTS WHERE USERID=" + currUserID);
                 if (rs.next()) {
                     if (rs.getString("USERTYPE").equals("READER")) {
@@ -216,7 +216,7 @@ public class ReaderBase extends main {
     }//GEN-LAST:event_formWindowOpened
 
     private void btnClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearActionPerformed
-        // TODO add your handling code here:
+        btnClear.setText(null);
     }//GEN-LAST:event_btnClearActionPerformed
 
     public void allAddBook(String[] bookData) throws Exception 

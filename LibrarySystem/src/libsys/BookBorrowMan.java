@@ -22,7 +22,7 @@ public class BookBorrowMan extends main {
     private DefaultTableModel borrowTableModel;
     private DefaultTableModel borrowedTableModel;
     public static int borrBookID;
-    public static int borredBookID;
+
     
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -39,7 +39,7 @@ public class BookBorrowMan extends main {
         jScrollPane1 = new javax.swing.JScrollPane();
         borrowedTable = new javax.swing.JTable();
         jLabel3 = new javax.swing.JLabel();
-        btnAcceptBorrowed = new javax.swing.JButton();
+        btnDeny = new javax.swing.JButton();
 
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowOpened(java.awt.event.WindowEvent evt) {
@@ -100,20 +100,15 @@ public class BookBorrowMan extends main {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        borrowedTable.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                borrowedTableMouseClicked(evt);
-            }
-        });
         jScrollPane1.setViewportView(borrowedTable);
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel3.setText("BOOK BORROWING / RETURNING");
 
-        btnAcceptBorrowed.setText("ACCEPT");
-        btnAcceptBorrowed.addActionListener(new java.awt.event.ActionListener() {
+        btnDeny.setText("DENY");
+        btnDeny.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAcceptBorrowedActionPerformed(evt);
+                btnDenyActionPerformed(evt);
             }
         });
 
@@ -123,25 +118,27 @@ public class BookBorrowMan extends main {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(btnAcceptBorrow, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(rbBorrowing, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 114, Short.MAX_VALUE)
-                    .addComponent(rbReturning, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 505, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(btnAcceptBorrowed, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 512, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(34, 34, 34))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addGap(237, 237, 237)
-                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 279, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 279, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(88, 88, 88))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(rbBorrowing, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(rbReturning, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(btnAcceptBorrow, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(btnDeny, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGap(18, 18, 18)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 505, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(33, 33, 33)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 512, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(141, 141, 141))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(231, 231, 231)
+                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 279, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 279, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(200, 200, 200))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -149,27 +146,24 @@ public class BookBorrowMan extends main {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(20, 20, 20)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(18, 18, 18)
-                                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 663, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(201, 201, 201)
-                                .addComponent(btnAcceptBorrowed, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(18, 18, 18)
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 663, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(256, 256, 256)
-                        .addComponent(btnAcceptBorrow, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(34, 34, 34)
-                        .addComponent(rbBorrowing)
+                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(rbReturning)))
-                .addContainerGap(25, Short.MAX_VALUE))
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 663, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(173, 173, 173)
+                        .addComponent(btnAcceptBorrow, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(52, 52, 52)
+                        .addComponent(rbBorrowing)
+                        .addGap(29, 29, 29)
+                        .addComponent(rbReturning)
+                        .addGap(36, 36, 36)
+                        .addComponent(btnDeny, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(28, 28, 28)
+                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 663, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -178,15 +172,14 @@ public class BookBorrowMan extends main {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 1185, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(141, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -305,23 +298,31 @@ public class BookBorrowMan extends main {
                 ResultSet updateRs = updateStmt.executeQuery("SELECT * FROM BOOKS WHERE BOOKID = " + borrBookID);
 
                 if (updateRs.next()) {
+                    Date localNow = Date.valueOf(LocalDate.now());
+                    Date bookDue = updateRs.getDate("DUEDATE");
+                    long diff_of_dates = dateDiff(bookDue, localNow);
                     availability = updateRs.getString("AVAILABILITY");
+
                     if (availability.equals("BORROWING")) {
                         availability = "BORROWED";
-                    } else if (availability.equals("RETURNING")) {
+                    } else if (availability.equals("RETURNING") && (diff_of_dates >= 0)) {
                         availability = "AVAILABLE";
                         updateRs.updateNull("BORROWER");
                         updateRs.updateNull("DUEDATE");
-                        updateRs.updateRow();
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Book Overdue. Please handle the case for overdue books.");
                     }
 
                     updateRs.updateString("AVAILABILITY", availability);
                     updateRs.updateRow();
                 }
+
+                updateRs.close();
+                updateStmt.close();
                 refreshRsStmt("books");
                 updateBorrowedTable();
-                refreshRsStmt("books");
                 borrowTableModel.setRowCount(0);
+
                 updateRs.beforeFirst();
                 while (updateRs.next()) {
                     availability = updateRs.getString("AVAILABILITY");
@@ -334,72 +335,69 @@ public class BookBorrowMan extends main {
                         });
                     }
                 }
-                updateRs.close();
-                updateStmt.close();
 
                 bgBorrower.clearSelection();
-
             } catch (SQLException err) {
-                System.out.println(err.getMessage());
+                JOptionPane.showMessageDialog(null, "Error: " + err.getMessage());
             }
         }
     }//GEN-LAST:event_btnAcceptBorrowActionPerformed
 
-    private void btnAcceptBorrowedActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAcceptBorrowedActionPerformed
-        if (borrowedTable.getSelectedRow() != -1) {
-           try {
-               int selectedRow = borrowedTable.getSelectedRow();
-               Object val = borrowedTable.getValueAt(selectedRow, 2);
-               borredBookID = Integer.parseInt(val.toString());
+    private void btnDenyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDenyActionPerformed
+        if (borrowTable.getSelectedRow() != -1) {
+            try {
+                int selectedRow = borrowTable.getSelectedRow();
+                Object val = borrowTable.getValueAt(selectedRow, 2);
+                borrBookID = Integer.parseInt(val.toString());
 
-               String availability = null;
-               Statement updateStmt = con.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
-               ResultSet updateRs = updateStmt.executeQuery("SELECT * FROM BOOKS WHERE BOOKID = " + borredBookID);
+                String availability = null;
+                Statement updateStmt = con.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
+                ResultSet updateRs = updateStmt.executeQuery("SELECT * FROM BOOKS WHERE BOOKID = " + borrBookID);
 
-               if (updateRs.next()) {
-                   Date localNow = Date.valueOf(LocalDate.now());
-                   Date bookDue = updateRs.getDate("DUEDATE");
-                   long diff_of_dates = dateDiff(bookDue, localNow);
-                   availability = updateRs.getString("AVAILABILITY");
+                while (updateRs.next()) {
+                    availability = updateRs.getString("AVAILABILITY");
+                    if (availability.equals("BORROWING")) {
+                        availability = "AVAILABLE";
+                    } else if (availability.equals("RETURNING")) {
+                        availability = "BORROWED";
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Book Overdue. Please handle the case for overdue books.");
+                    }
 
-                   if (availability.equals("BORROWED") && (diff_of_dates >= 0)) {
-                       availability = "AVAILABLE";
-                       updateRs.updateString("AVAILABILITY", availability);
-                       updateRs.updateNull("BORROWER");
-                       updateRs.updateNull("DUEDATE");
-                       updateRs.updateRow();
-                   } else {
-                       JOptionPane.showMessageDialog(null, "Book Overdue. Just add what to do if the book is overdue.");
-                   }
-               }
-               refreshRsStmt("books");
-               updateBorrowTable();
-               refreshRsStmt("books");
-               borrowedTableModel.setRowCount(0);
-               while (rs.next()) {
-                   availability = rs.getString("AVAILABILITY");
-                   if (availability.equals("BORROWED")) {
-                       borrowedTableModel.addRow(new Object[]{
-                           rs.getString("BORROWER"),
-                           rs.getString("TITLE"),
-                           rs.getInt("BOOKID"),
-                           rs.getDate("DUEDATE")
-                       });
-                   }
-               }
+                    updateRs.updateString("AVAILABILITY", availability);
+                    updateRs.updateRow();
+                }
 
-               updateRs.close();
-               updateStmt.close();
-           } catch (SQLException err) {
-               System.out.println(err.getMessage());
-           }
-       }                         
-    }//GEN-LAST:event_btnAcceptBorrowedActionPerformed
+                updateRs.close();
+                updateStmt.close();
+                refreshRsStmt("books");
+                updateBorrowedTable();
+                borrowTableModel.setRowCount(0);
 
-    private void borrowedTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_borrowedTableMouseClicked
-        Object valed = borrowedTable.getValueAt(borrowedTable.getSelectedRow(), 2);
-        borredBookID = Integer.parseInt(valed.toString());
-    }//GEN-LAST:event_borrowedTableMouseClicked
+                Statement selectStmt = con.createStatement();
+                ResultSet selectRs = selectStmt.executeQuery("SELECT * FROM BOOKS");
+
+                while (selectRs.next()) {
+                    availability = selectRs.getString("AVAILABILITY");
+                    if (availability.equals("RETURNING") || availability.equals("BORROWING")) {
+                        borrowTableModel.addRow(new Object[]{
+                            selectRs.getString("BORROWER"),
+                            selectRs.getString("TITLE"),
+                            selectRs.getInt("BOOKID"),
+                            availability
+                        });
+                    }
+                }
+
+                selectRs.close();
+                selectStmt.close();
+                bgBorrower.clearSelection();
+            } catch (SQLException err) {
+                JOptionPane.showMessageDialog(null, "Error: " + err.getMessage());
+            }
+        }
+    
+    }//GEN-LAST:event_btnDenyActionPerformed
 
     public void updateBorrowedTable() throws SQLException {
         borrowedTableModel.setRowCount(0);
@@ -418,7 +416,7 @@ public class BookBorrowMan extends main {
         }
     }
 
-        public void updateBorrowTable() throws SQLException {
+    public void updateBorrowTable() throws SQLException {
         borrowTableModel.setRowCount(0);
         rs.beforeFirst(); 
         rs = stmt.executeQuery("SELECT * FROM BOOKS WHERE AVAILABILITY = 'BORROWING' AND AVAILABILITY = 'BORROWING'");
@@ -453,7 +451,7 @@ public class BookBorrowMan extends main {
     private javax.swing.JTable borrowTable;
     private javax.swing.JTable borrowedTable;
     private javax.swing.JButton btnAcceptBorrow;
-    private javax.swing.JButton btnAcceptBorrowed;
+    private javax.swing.JButton btnDeny;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;

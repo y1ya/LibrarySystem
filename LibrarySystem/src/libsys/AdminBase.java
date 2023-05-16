@@ -124,6 +124,9 @@ public class AdminBase extends main {
 
         mainTable.setModel(tblDataAccounts);
         mainTable.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                mainTableMousePressed(evt);
+            }
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 mainTableMouseClicked(evt);
             }
@@ -212,48 +215,44 @@ public class AdminBase extends main {
     public int ids;
     
     private void mainTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_mainTableMouseClicked
-      
-        ids = Integer.parseInt(mainTable.getValueAt(mainTable.getSelectedRow(), 0).toString());
-        
-        btnSave.setVisible(true);
-        btnEdit.setVisible(true);
-        btnDelete.setVisible(true);
+
     }//GEN-LAST:event_mainTableMouseClicked
 
     private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
-        // TODO add your handling code here:
         String searchUserId;
-        int newId;
         
         searchUserId = JOptionPane.showInputDialog(null, "Search for User ID:", "Finding the Account", 
                 JOptionPane.QUESTION_MESSAGE);
-        newId = Integer.parseInt(searchUserId);
-        
-        txtFullname.setEditable(false);
-        txtPassword.setEditable(false);
-        txtUserId.setEditable(false);
-        cbUserType.setEnabled(false);
-        
-        try {
-            ResultSet rs = stmt.executeQuery("SELECT * FROM ACCOUNTS WHERE USERID = " 
-                    + searchUserId);
-            if (rs.next()) {
-                JOptionPane.showMessageDialog(null, "User ID: " + aUserID + "\nFullname: " + rs.getString("FULLNAME") +
-                            "\nPassword: " + rs.getString("PASSWORD") + "\nUser Type: " + rs.getString("USERTYPE"), "Account Details", 
-                            JOptionPane.INFORMATION_MESSAGE);
-                
-                txtFullname.setText(rs.getString("FULLNAME"));
-                txtPassword.setText(rs.getString("PASSWORD"));
-                txtUserId.setText(String.valueOf(aUserID));
-                cbUserType.setSelectedItem(rs.getString("USERTYPE"));
-                } else {
-                    JOptionPane.showMessageDialog(null, "Account not Found!");
-                }
-                //break;
-        } catch (SQLException err) {
-            JOptionPane.showMessageDialog(AdminBase.this, err.getMessage());
-        }
-        
+        if(searchUserId!=null){
+            try{
+                int newId = Integer.parseInt(searchUserId); 
+                txtFullname.setEditable(false);
+                txtPassword.setEditable(false);
+                txtUserId.setEditable(false);
+                cbUserType.setEnabled(false);
+
+                try {
+                    ResultSet rs = stmt.executeQuery("SELECT * FROM ACCOUNTS WHERE USERID = " 
+                            + searchUserId);
+                    if (rs.next()) {
+                        JOptionPane.showMessageDialog(null, "User ID: " + aUserID + "\nFullname: " + rs.getString("FULLNAME") +
+                                    "\nPassword: " + rs.getString("PASSWORD") + "\nUser Type: " + rs.getString("USERTYPE"), "Account Details", 
+                                    JOptionPane.INFORMATION_MESSAGE);
+
+                        txtFullname.setText(rs.getString("FULLNAME"));
+                        txtPassword.setText(rs.getString("PASSWORD"));
+                        txtUserId.setText(String.valueOf(aUserID));
+                        cbUserType.setSelectedItem(rs.getString("USERTYPE"));
+                        } else {
+                            JOptionPane.showMessageDialog(null, "Account not Found!");
+                        }
+                } catch (SQLException err) {
+                    JOptionPane.showMessageDialog(AdminBase.this, err.getMessage());
+                }        
+            } catch(NumberFormatException e){
+                JOptionPane.showMessageDialog(null, "Invalid input. Please enter an integer value.");
+            }
+        }    
     }//GEN-LAST:event_btnSearchActionPerformed
 
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
@@ -331,7 +330,6 @@ public class AdminBase extends main {
                     }
                 }
             }
-            formWindowOpened(null);
         } catch (SQLException err) {
             JOptionPane.showMessageDialog(AdminBase.this, err.getMessage());
         }
@@ -517,6 +515,15 @@ public class AdminBase extends main {
         // TODO add your handling code here:
         logOut();
     }//GEN-LAST:event_btnLogOutActionPerformed
+
+    private void mainTableMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_mainTableMousePressed
+              
+        ids = Integer.parseInt(mainTable.getValueAt(mainTable.getSelectedRow(), 0).toString());
+        
+        btnSave.setVisible(true);
+        btnEdit.setVisible(true);
+        btnDelete.setVisible(true);
+    }//GEN-LAST:event_mainTableMousePressed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAdd;
