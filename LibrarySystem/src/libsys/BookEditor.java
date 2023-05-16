@@ -13,7 +13,7 @@ import libsys.AdminBase;
 
 public class BookEditor extends main {
     ImageInsert imageInsert= new ImageInsert();
-    String title,author,genre,date,synopsis, imagesrc, availability,destinationpath;
+    String imagesrc, validfilename,destinationpath;
     
     public BookEditor() {
         initComponents();
@@ -197,7 +197,12 @@ public class BookEditor extends main {
 
     private void ImageLabelMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ImageLabelMouseExited
         if(imageInsert.ImagePath!=null){
-            destinationpath="src/libsys_images/"+Title_tf.getText()+".jpg";
+            String[] InvalidChars={"\\?","\\:","\\<","\\>","\\/","\\*","\"","\\|"};
+            validfilename=Title_tf.getText();
+            for(String x:InvalidChars){
+                validfilename=validfilename.replaceAll(x, "");
+            }
+            destinationpath="src/libsys_images/"+validfilename+".jpg";
             try{
                 Files.delete(Paths.get(imagesrc));
             }catch(IOException err){

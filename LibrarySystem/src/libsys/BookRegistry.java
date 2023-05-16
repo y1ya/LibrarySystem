@@ -211,8 +211,16 @@ public class BookRegistry extends main {
 
     private void Btn_RegisterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Btn_RegisterActionPerformed
         databaseConnect("books");
-        String destinationpath="src/libsys_images/"+Title_tf.getText()+".jpeg";
-        
+        String[] InvalidChars={"\\?","\\:","\\<","\\>","\\/","\\*","\"","\\|"};
+        String destinationpath="";
+        String validfilename=Title_tf.getText();
+        //destinationpath="src/libsys_images/"+Title_tf.getText().replaceAll("", "")+".jpeg";
+
+        for(String x:InvalidChars){
+            validfilename=validfilename.replaceAll(x, "");
+        }
+
+        destinationpath="src/libsys_images/"+validfilename+".jpeg";
         try{
             int newBookID=randNumGen("books","bookid");
             //The columns that are easiest to enter
