@@ -176,9 +176,6 @@ public class AdminBase extends main {
 
         mainTable.setModel(tblDataAccounts);
         mainTable.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                mainTableMouseClicked(evt);
-            }
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 mainTableMousePressed(evt);
             }
@@ -502,16 +499,30 @@ public class AdminBase extends main {
        txtUserId.setText(String.valueOf(ids));
     }//GEN-LAST:event_randomNumberActionPerformed
 
-    private void mainTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_mainTableMouseClicked
-       
-    }//GEN-LAST:event_mainTableMouseClicked
-
     private void btnLogOutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogOutActionPerformed
         logOut();
     }//GEN-LAST:event_btnLogOutActionPerformed
 
     private void mainTableMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_mainTableMousePressed
         ids = Integer.parseInt(mainTable.getValueAt(mainTable.getSelectedRow(), 0).toString());
+        
+        try {
+           ResultSet rs = stmt.executeQuery("SELECT * FROM ACCOUNTS WHERE USERID = " + ids);
+           
+           if (rs.next()) {
+               txtFullname.setText(rs.getString("FULLNAME"));
+               txtPassword.setText(rs.getString("PASSWORD"));
+               txtUserId.setText(String.valueOf(rs.getInt("USERID")));
+               cbUserType.setSelectedItem(rs.getString("USERTYPE"));
+               
+               txtFullname.setEditable(false);
+               txtPassword.setEditable(false);
+               txtUserId.setEditable(false);
+               cbUserType.setEnabled(false);
+           }
+       } catch (SQLException err) {
+           JOptionPane.showMessageDialog(AdminBase.this, err.getMessage());
+       }
         
         btnSave.setVisible(true);
         btnEdit.setVisible(true);
