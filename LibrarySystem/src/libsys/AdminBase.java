@@ -43,6 +43,7 @@ public class AdminBase extends main {
         btnLogOut = new Button_Gradient.ButtonGradient();
         btnSearch = new Button_Gradient.ButtonGradient();
         randomNumber = new Button_Gradient.ButtonGradient();
+        btnClear = new Button_Gradient.ButtonGradient();
         jScrollPane1 = new javax.swing.JScrollPane();
         mainTable = new javax.swing.JTable();
         jLabel2 = new javax.swing.JLabel();
@@ -148,7 +149,7 @@ public class AdminBase extends main {
                 btnLogOutActionPerformed(evt);
             }
         });
-        kGradientPanel1.add(btnLogOut, new org.netbeans.lib.awtextra.AbsoluteConstraints(650, 620, -1, -1));
+        kGradientPanel1.add(btnLogOut, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 620, -1, -1));
 
         btnSearch.setBackground(new java.awt.Color(32, 58, 67));
         btnSearch.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/search_14px.png"))); // NOI18N
@@ -160,7 +161,7 @@ public class AdminBase extends main {
                 btnSearchActionPerformed(evt);
             }
         });
-        kGradientPanel1.add(btnSearch, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 620, -1, -1));
+        kGradientPanel1.add(btnSearch, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 620, -1, -1));
 
         randomNumber.setBackground(new java.awt.Color(32, 58, 67));
         randomNumber.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/where_what_quest_14px.png"))); // NOI18N
@@ -173,6 +174,18 @@ public class AdminBase extends main {
             }
         });
         kGradientPanel1.add(randomNumber, new org.netbeans.lib.awtextra.AbsoluteConstraints(620, 480, -1, -1));
+
+        btnClear.setBackground(new java.awt.Color(32, 58, 67));
+        btnClear.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/remove_14px.png"))); // NOI18N
+        btnClear.setText("Clear");
+        btnClear.setColor1(new java.awt.Color(32, 58, 67));
+        btnClear.setColor2(new java.awt.Color(32, 58, 67));
+        btnClear.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnClearActionPerformed(evt);
+            }
+        });
+        kGradientPanel1.add(btnClear, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 620, -1, -1));
 
         mainTable.setModel(tblDataAccounts);
         mainTable.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -402,9 +415,7 @@ public class AdminBase extends main {
                             txtFullname.setText(null);
                             txtPassword.setText(null);
                             cbUserType.setSelectedIndex(0);
-                            txtFullname.setText(null);
-                            txtPassword.setText(null);
-
+                            
                             btnAdd.setVisible(true);
                             btnSave.setVisible(false);
                             btnEdit.setVisible(false);
@@ -430,8 +441,6 @@ public class AdminBase extends main {
                         txtFullname.setText(null);
                         txtPassword.setText(null);
                         cbUserType.setSelectedIndex(0);
-                        txtFullname.setText(null);
-                        txtPassword.setText(null);
 
                         btnAdd.setVisible(true);
                         btnSave.setVisible(false);
@@ -529,6 +538,18 @@ public class AdminBase extends main {
         btnDelete.setVisible(true);
     }//GEN-LAST:event_mainTableMousePressed
 
+    private void btnClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearActionPerformed
+        // TODO add your handling code here:
+        txtFullname.setText("");
+        txtPassword.setText("");
+        txtUserId.setText("");
+        cbUserType.setSelectedIndex(0);
+        
+        btnSave.setVisible(false);
+        btnDelete.setVisible(false);
+        btnAdd.setVisible(true);
+    }//GEN-LAST:event_btnClearActionPerformed
+
     private boolean checkBorrowedBooks(int userId) {
         try {
             databaseConnect("books");
@@ -564,6 +585,7 @@ public class AdminBase extends main {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private Button_Gradient.ButtonGradient btnAdd;
+    private Button_Gradient.ButtonGradient btnClear;
     private Button_Gradient.ButtonGradient btnDelete;
     private Button_Gradient.ButtonGradient btnEdit;
     private Button_Gradient.ButtonGradient btnLogOut;

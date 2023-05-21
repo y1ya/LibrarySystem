@@ -106,7 +106,7 @@ public class main extends javax.swing.JFrame {
     {
         JFrame[] jframeArr = {
             new MainWindow(), new AdminSignIn(), new LibrarianSignIn(), 
-            new ReaderSignIn(), new ReaderSignUp(), new AdminBase(), 
+            new ReaderSignIn(), new ReaderSignUp(), new AdminBase(), new AdminBase_new(), 
             new BookRegistry(), new LibrarianBase(), new BookBorrowMan(),
             new BookEditor(), new BookViewer(), new ReaderBase(),
         };
@@ -226,7 +226,7 @@ public class main extends javax.swing.JFrame {
         switch (userType) 
         {
             case "ADMIN":
-                sendDisplaySignal(new AdminBase()); 
+                sendDisplaySignal(new AdminBase_new()); 
                 break;
             case "LIBRARIAN":
                 sendDisplaySignal(new LibrarianBase()); 
