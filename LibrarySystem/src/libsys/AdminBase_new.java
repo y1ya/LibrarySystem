@@ -14,7 +14,7 @@ public class AdminBase_new extends main {
     DefaultTableModel tblAccounts = new DefaultTableModel();
     int x = 0;
     
-    String username, password, usertype, searchUserID;
+    String username, password, usertype, stringuserid, searchUserID;
     int userid, ids;
     
     public AdminBase_new() {
@@ -409,32 +409,33 @@ public class AdminBase_new extends main {
 
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
         // TODO add your handling code here:
-        userid = Integer.parseInt(txtUserID.getText());
+        userid = Integer.parseInt(mainTable.getValueAt(mainTable.getSelectedRow(), 0).toString());
+        //userid = Integer.parseInt(txtUserID.getText());
         
         try {
             ResultSet rs = stmt.executeQuery("SELECT * FROM ACCOUNTS WHERE USERID = " + userid);
             if (rs.next()) {
-                int del = JOptionPane.showConfirmDialog(null, "Are you sure to delete this account?", "Confirmation"
+                int del = JOptionPane.showConfirmDialog(null, "Are you sure you want to delete this account?", "Confirmation"
                         , JOptionPane.YES_NO_OPTION);
                 if (del == JOptionPane.YES_OPTION) {
                     boolean hasBorrowedBooks = checkBorrowedBooks(userid);
                     if (hasBorrowedBooks) {
-                        int confirm = JOptionPane.showConfirmDialog(null, "This account has borrowed books." 
-                                + "\nAre you sure to delete this account?", "Confirmation", 
+                        int confirm = JOptionPane.showConfirmDialog(null, "This account has borrowed books."
+                                + "\nAre you sure to delete this account?", "Confirmation",
                                 JOptionPane.YES_NO_OPTION);
                         if (confirm == 0) {
+                            updateBorrowedBooks(userid);
                             rs.deleteRow();
-                            
+
                             adding();
                             Default();
                             randNum();
                             Table();
                             refreshRsStmt("accounts");
-                            updateBorrowedBooks(userid);
                         }
                     } else {
                         rs.deleteRow();
-                        
+
                         adding();
                         Default();
                         randNum();
@@ -467,17 +468,21 @@ public class AdminBase_new extends main {
     }//GEN-LAST:event_btnLogoutActionPerformed
 
     private boolean checkBorrowedBooks(int userid) {
-        databaseConnect("books");
         try {
+            databaseConnect("books");
             ResultSet res = stmt.executeQuery("SELECT AVAILABILITY FROM BOOKS WHERE BORROWER = " + userid);
             if (res.next()) {
                 String avail = res.getString("AVAILABILITY");
                 if (avail.equals("BORROWED") || avail.equals("RETURNING")) {
+                    refreshRsStmt("books");
                     return true;
                 } else {
+                    refreshRsStmt("books");
                     return false;
                 }
-            } return false;
+            }
+            refreshRsStmt("books");
+            return false;
         } catch (SQLException err) {
             JOptionPane.showMessageDialog(null, err.getMessage());
             return false;
@@ -485,15 +490,16 @@ public class AdminBase_new extends main {
         
     }
     
-    private void updateBorrowedBooks(int userId) {
-        databaseConnect("books");
+    private void updateBorrowedBooks(int userid) {
         try {
-            ResultSet res = stmt.executeQuery("SELECT AVAILABILITY, BORROWER, DUEDATE FROM BOOKS WHERE BORROWER = " + userId);
+            databaseConnect("books");
+            ResultSet res = stmt.executeQuery("SELECT AVAILABILITY, BORROWER, DUEDATE FROM BOOKS WHERE BORROWER = " + userid);
             if (res.next()) {
                 res.updateString("AVAILABILITY", "AVAILABLE");
                 res.updateNull("BORROWER");
                 res.updateNull("DUEDATE");
                 res.updateRow();
+                refreshRsStmt("books");
             }
         } catch (SQLException err) {
             JOptionPane.showMessageDialog(null, err.getMessage());
