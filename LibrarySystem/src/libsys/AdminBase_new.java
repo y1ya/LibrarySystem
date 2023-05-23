@@ -19,10 +19,10 @@ public class AdminBase_new extends main {
     
     public AdminBase_new() {
         initComponents();
-        databaseConnect("accounts");
         Table();
         adding();
         randNum();
+        
         mainTable.setDefaultEditor(Object.class, null);
     }
     
@@ -61,6 +61,7 @@ public class AdminBase_new extends main {
         btnAdd.setEnabled(false);
         txtUsername.setEditable(true);
         txtPassword.setEditable(true);
+        cbUserType.setEnabled(true);
         
         btnSave.setVisible(false);
         btnEdit.setVisible(false);
@@ -90,6 +91,7 @@ public class AdminBase_new extends main {
         tblAccounts.setRowCount(0);
         
         try {
+            databaseConnect("accounts");
             while(rs.next()) {
                 tblAccounts.addRow(new Object[] 
                 {
@@ -271,6 +273,7 @@ public class AdminBase_new extends main {
         usertype = String.valueOf(cbUserType.getSelectedItem());
         
         try {
+            databaseConnect("accounts");
             if (username.isEmpty() || password.isEmpty()) {
                 JOptionPane.showMessageDialog(null, "Fill in the blanks!");
                 req();
@@ -312,18 +315,22 @@ public class AdminBase_new extends main {
         
         if (searchUserID != null) {
             try {
+                databaseConnect("accounts");
                 int newId = Integer.parseInt(searchUserID);
-                notEditing();
                 
                 try {
                     ResultSet rs = stmt.executeQuery("SELECT * FROM ACCOUNTS WHERE USERID = " + searchUserID);
                     if (rs.next()) {
+                        notEditing();
+                        
                         txtUsername.setText(rs.getString("FULLNAME"));
                         txtPassword.setText(rs.getString("PASSWORD"));
                         txtUserID.setText(String.valueOf(rs.getInt("USERID")));
                         cbUserType.setSelectedItem(rs.getString("USERTYPE"));
                     } else {
                         JOptionPane.showMessageDialog(null, "Account not Found.");
+                        Default();
+                        adding();
                     }
                 } catch (SQLException err) {
                         JOptionPane.showMessageDialog(null, err.getMessage());
@@ -339,18 +346,19 @@ public class AdminBase_new extends main {
         ids = Integer.parseInt(mainTable.getValueAt(mainTable.getSelectedRow(), 0).toString());
         
         try {
-           ResultSet rs = stmt.executeQuery("SELECT * FROM ACCOUNTS WHERE USERID = " + ids);
-           if (rs.next()) {
-               txtUsername.setText(rs.getString("FULLNAME"));
-               txtPassword.setText(rs.getString("PASSWORD"));
-               txtUserID.setText(String.valueOf(rs.getInt("USERID")));
-               cbUserType.setSelectedItem(rs.getString("USERTYPE"));
+            databaseConnect("accounts");
+            ResultSet rs = stmt.executeQuery("SELECT * FROM ACCOUNTS WHERE USERID = " + ids);
+            if (rs.next()) {
+                txtUsername.setText(rs.getString("FULLNAME"));
+                txtPassword.setText(rs.getString("PASSWORD"));
+                txtUserID.setText(String.valueOf(rs.getInt("USERID")));
+                cbUserType.setSelectedItem(rs.getString("USERTYPE"));
                
-               notEditing();
-           }
-       } catch (SQLException err) {
-           JOptionPane.showMessageDialog(null, err.getMessage());
-       }
+                notEditing();
+            }
+        } catch (SQLException err) {
+            JOptionPane.showMessageDialog(null, err.getMessage());
+        }
     }//GEN-LAST:event_mainTableMousePressed
 
     private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed
@@ -388,6 +396,7 @@ public class AdminBase_new extends main {
                 req();
         } else {
             try {
+                databaseConnect("accounts");
                 ResultSet rs = stmt.executeQuery("SELECT * FROM ACCOUNTS WHERE USERID = " + userid);
                 if (rs.next()) {
                     rs.updateString("FULLNAME", username);
@@ -409,10 +418,10 @@ public class AdminBase_new extends main {
 
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
         // TODO add your handling code here:
-        userid = Integer.parseInt(mainTable.getValueAt(mainTable.getSelectedRow(), 0).toString());
-        //userid = Integer.parseInt(txtUserID.getText());
+        userid = Integer.parseInt(txtUserID.getText());
         
         try {
+            databaseConnect("accounts");
             ResultSet rs = stmt.executeQuery("SELECT * FROM ACCOUNTS WHERE USERID = " + userid);
             if (rs.next()) {
                 int del = JOptionPane.showConfirmDialog(null, "Are you sure you want to delete this account?", "Confirmation"
@@ -426,6 +435,8 @@ public class AdminBase_new extends main {
                         if (confirm == 0) {
                             updateBorrowedBooks(userid);
                             rs.deleteRow();
+                            
+                            JOptionPane.showMessageDialog(null, "Account has been Deleted.");
 
                             adding();
                             Default();
@@ -435,6 +446,8 @@ public class AdminBase_new extends main {
                         }
                     } else {
                         rs.deleteRow();
+                        
+                        JOptionPane.showMessageDialog(null, "Account has been Deleted.");
 
                         adding();
                         Default();
